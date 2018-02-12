@@ -104,4 +104,4 @@ ENV/
 .flake8
 
 # images
-.png
+*.png
