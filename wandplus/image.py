@@ -1,6 +1,7 @@
 from wand.image import CHANNELS
 from wand.api import library, libmagick
 from wand.color import Color
+from wand.compat import string_type
 import numbers
 import ctypes
 import collections
@@ -19,6 +20,11 @@ library.MagickAdaptiveBlurImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickAddNoiseImage.restype = ctypes.c_bool
+library.MagickAddNoiseImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int
+]
 library.MagickAutoGammaImage.restype = ctypes.c_bool
 library.MagickAutoGammaImage.argtypes = [
     ctypes.c_void_p
@@ -27,16 +33,52 @@ library.MagickAutoLevelImage.restype = ctypes.c_bool
 library.MagickAutoLevelImage.argtypes = [
     ctypes.c_void_p
 ]
+library.MagickBlackThresholdImage.restype = ctypes.c_bool
+library.MagickBlackThresholdImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
 library.MagickBlurImage.restype = ctypes.c_bool
 library.MagickBlurImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickBrightnessContrastImage.restype = ctypes.c_bool
+library.MagickBrightnessContrastImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickCharcoalImage.restype = ctypes.c_bool
+library.MagickCharcoalImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickChopImage.restype = ctypes.c_bool
+library.MagickChopImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t
+]
 library.MagickClutImage.restype = ctypes.c_bool
 library.MagickClutImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p
+]
+library.MagickColorizeImage.restype = ctypes.c_bool
+library.MagickColorizeImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+library.MagickCommentImage.restype = ctypes.c_bool
+library.MagickCommentImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p
 ]
 library.MagickMorphologyImage.restype = ctypes.c_bool
 library.MagickMorphologyImage.argtypes = [
@@ -113,6 +155,9 @@ MORPHOLOGY_METHODS = ('undefined', 'convolve', 'correlate', 'erode', 'dilate',
                       'bottomhat', 'hitandmiss', 'thinning', 'thicken',
                       'voronoi', 'iterativedistance')
 
+NOISE_TYPES = ('undefined', 'uniform', 'gaussian', 'multiplicative',
+               'impulse', 'laplacian', 'poisson', 'random')
+
 INTERPOLATEPIXEL_METHODS = ('undefined', 'average', 'bicubic', 'bilinear',
                             'filter', 'integer', 'mesh', 'nearestneighbor',
                             'spline', 'average9', 'average16', 'blend',
@@ -140,6 +185,16 @@ def adaptiveblur(image, radius, sigma):
         image.raise_exception()
 
 
+def addnoise(image, type):
+    if type not in NOISE_TYPES:
+        raise ValueError('expected string from NOISE_TYPES, not ' +
+                         repr(type))
+    index = NOISE_TYPES.index(type)
+    r = library.MagickAddNoiseImage(image.wand, index)
+    if not r:
+        image.raise_exception()
+
+
 def autogamma(image):
     r = library.MagickAutoGammaImage(image.wand)
     if not r:
@@ -148,6 +203,28 @@ def autogamma(image):
 
 def autolevel(image):
     r = library.MagickAutoLevelImage(image.wand)
+    if not r:
+        image.raise_exception()
+
+
+def blackthreshold(image, threshold):
+    if not isinstance(threshold, Color):
+        raise TypeError('threshold must be a wand.color.Color, not ' +
+                        repr(threshold))
+    with threshold:
+        r = library.MagickBlackThresholdImage(image.wand, threshold.resource)
+        if not r:
+            image.raise_exception()
+
+
+def brightnesscontrast(image, brightness, contrast):
+    if not isinstance(brightness, numbers.Real):
+        raise TypeError('brightness has to be a numbers.Real, not ' +
+                        repr(brightness))
+    elif not isinstance(contrast, numbers.Real):
+        raise TypeError('contrast has to be a numbers.Real, not ' +
+                        repr(contrast))
+    r = library.MagickBrightnessContrastImage(image.wand, brightness, contrast)
     if not r:
         image.raise_exception()
 
@@ -164,8 +241,62 @@ def blur(image, radius, sigma):
         image.raise_exception()
 
 
+def charcoal(image, radius, sigma):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    elif not isinstance(sigma, numbers.Real):
+        raise TypeError('sigma has to be a numbers.Real, not ' +
+                        repr(sigma))
+    r = library.MagickCharcoalImage(image.wand, radius, sigma)
+    if not r:
+        image.raise_exception()
+
+
+def chop(image, x, y, width, height):
+    if not isinstance(x, numbers.Integral):
+        raise TypeError('x has to be a numbers.Real, not ' +
+                        repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise TypeError('y has to be a numbers.Real, not ' +
+                        repr(y))
+    elif not isinstance(width, numbers.Integral):
+        raise TypeError('width has to be a numbers.Real, not ' +
+                        repr(width))
+    elif not isinstance(height, numbers.Integral):
+        raise TypeError('height has to be a numbers.Real, not ' +
+                        repr(height))
+    r = library.MagickChopImage(image.wand, width, height, x, y)
+    if not r:
+        image.raise_exception()
+
+
 def clut(image, clutimage):
     r = library.MagickClutImage(image.wand, clutimage.wand)
+    if not r:
+        image.raise_exception()
+
+
+def colorize(image, color, opacity):
+    if not isinstance(color, Color):
+        raise TypeError('color must be a wand.color.Color, not ' +
+                        repr(color))
+    elif not isinstance(opacity, Color):
+        raise TypeError('opacity must be a wand.color.Color, not ' +
+                        repr(opacity))
+    with color:
+        with opacity:
+            r = library.MagickColorizeImage(image.wand, color.resource,
+                                            opacity.resource)
+            if not r:
+                image.raise_exception()
+
+
+def comment(image, text):
+    if not isinstance(text, string_type):
+        raise TypeError('expected a string, not ' + repr(text))
+    buffer = ctypes.create_string_buffer(text.encode())
+    r = library.MagickCommentImage(image.wand, buffer)
     if not r:
         image.raise_exception()
 
