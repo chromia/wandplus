@@ -80,6 +80,37 @@ library.MagickCommentImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p
 ]
+library.MagickContrastImage.restype = ctypes.c_bool
+library.MagickContrastImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_bool
+]
+library.MagickConvolveImage.restype = ctypes.c_bool
+library.MagickConvolveImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.POINTER(ctypes.c_double)
+]
+library.MagickCycleColormapImage.restype = ctypes.c_bool
+library.MagickCycleColormapImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_ssize_t
+]
+library.MagickDespeckleImage.restype = ctypes.c_bool
+library.MagickDespeckleImage.argtypes = [
+    ctypes.c_void_p
+]
+library.MagickEdgeImage.restype = ctypes.c_bool
+library.MagickEdgeImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
+]
+library.MagickEmbossImage.restype = ctypes.c_bool
+library.MagickEmbossImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double
+]
 library.MagickMorphologyImage.restype = ctypes.c_bool
 library.MagickMorphologyImage.argtypes = [
     ctypes.c_void_p,
@@ -297,6 +328,65 @@ def comment(image, text):
         raise TypeError('expected a string, not ' + repr(text))
     buffer = ctypes.create_string_buffer(text.encode())
     r = library.MagickCommentImage(image.wand, buffer)
+    if not r:
+        image.raise_exception()
+
+
+def contrast(image, sharpen):
+    if not isinstance(sharpen, bool):
+        raise TypeError('sharpen must be a bool, not ' +
+                        repr(sharpen))
+    r = library.MagickContrastImage(image.wand, sharpen)
+    if not r:
+        image.raise_exception()
+
+
+def convolve(image, order, kernel):
+    if not isinstance(order, numbers.Integral):
+        raise ValueError('order has to be a numbers.Integral, not ' +
+                         repr(order))
+    elif not isinstance(kernel, collections.Sequence):
+        raise TypeError('expecting sequence of arguments, not ' +
+                        repr(kernel))
+    assert(len(kernel) == order * order)
+    p_kernel = (ctypes.c_double * len(kernel))(*kernel)
+    r = library.MagickConvolveImage(image.wand, order, p_kernel)
+    if not r:
+        image.raise_exception()
+
+
+def cycle(image, displace):
+    if not isinstance(displace, numbers.Integral):
+        raise ValueError('displace has to be a numbers.Integral, not ' +
+                         repr(displace))
+    r = library.MagickCycleColormapImage(image.wand, displace)
+    if not r:
+        image.raise_exception()
+
+
+def despeckle(image):
+    r = library.MagickDespeckleImage(image.wand)
+    if not r:
+        image.raise_exception()
+
+
+def edge(image, radius):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    r = library.MagickEdgeImage(image.wand, radius)
+    if not r:
+        image.raise_exception()
+
+
+def emboss(image, radius, sigma):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    elif not isinstance(sigma, numbers.Real):
+        raise TypeError('sigma has to be a numbers.Real, not ' +
+                        repr(sigma))
+    r = library.MagickEmbossImage(image.wand, radius, sigma)
     if not r:
         image.raise_exception()
 

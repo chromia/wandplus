@@ -86,6 +86,40 @@ with grad.clone() as t:
     f(t, 'hello')
     save(t, f)
 
+with rose.clone() as t:
+    f = contrast
+    f(t, False)
+    save(t, f)
+
+with rose.clone() as t:
+    f = convolve
+    k = [1/16, 2/16, 1/16,
+         2/16, 4/16, 2/16,
+         1/16, 2/16, 1/16]
+    f(t, 3, k)
+    save(t, f)
+
+with logo.clone() as t:
+    f = cycle
+    f(t, 5)
+    save(t, f)
+
+with rose.clone() as t:
+    f = despeckle
+    # TODO: add speckle noise
+    f(t)
+    save(t, f)
+
+with logo.clone() as t:
+    f = edge
+    f(t, 3)
+    save(t, f)
+
+with logo.clone() as t:
+    f = emboss
+    f(t, 0, 3)
+    save(t, f)
+
 with logo.clone() as t:
     f = morphology
     f(t, 'dilate', 1, 'Diamond')
