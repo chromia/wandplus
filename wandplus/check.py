@@ -167,6 +167,32 @@ with logo.clone() as t:
     f(t, 30, 10, 45)
     save(t, f)
 
+with rose.clone() as t:
+    f = oilpaint
+    f(t, 2.0)
+    save(t, f)
+
+with logo.clone() as t:
+    f = opaquepaint
+    f(t, Color('red'), Color('blue'), 1.0, False)
+    save(t, f)
+
+with grad.clone() as t:
+    f = orderedposterize
+    f(t, 'o4x4,3,3')
+    save(t, f)
+
+with logo.clone() as t:
+    f = polaroid
+    with Drawing() as d:
+        f(t, d, 1.0)
+        save(t, f)
+
+with rose.clone() as t:
+    f = posterize
+    f(t, 3, True)
+    save(t, f)
+
 with logo.clone() as t:
     f = shade
     f(t, True, 45, 135)

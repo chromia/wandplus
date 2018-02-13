@@ -27,6 +27,11 @@ MagickMagnifyImage,library,b,v,image,,,,,,,,
 MagickMinifyImage,library,b,v,image,,,,,,,,
 MagickMorphologyImage,library,b,v,image,i,method,ss,iterations,v,kernelinfo,,
 MagickMotionBlurImage,library,b,v,image,d,radius,d,sigma,d,angle,,
+MagickOilPaintImage,library,b,v,image,d,radius,,,,,,
+MagickOpaquePaintImage,library,b,v,image,Color,target,Color,fill,d,fuzz,b,invert
+MagickOrderedPosterizeImage,library,b,v,image,S,threshold_map,,,,,,
+MagickPolaroidImage,library,b,v,image,v,drawing,d,angle,,,,
+MagickPosterizeImage,library,b,v,image,s,levels,b,dither,,,,
 MagickShadeImage,library,b,v,image,b,gray,d,azimuth,d,elevation,,
 MagickShadowImage,library,b,v,image,d,opacity,d,sigma,ss,x,ss,y
 MagickShaveImage,library,b,v,image,s,columns,s,rows,,,,

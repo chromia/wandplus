@@ -1,5 +1,6 @@
 from wand.image import CHANNELS
 from wand.api import library, libmagick
+from wand.drawing import Drawing
 from wand.color import Color
 from wand.compat import string_type
 import numbers
@@ -159,6 +160,36 @@ library.MagickMotionBlurImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double,
     ctypes.c_double
+]
+library.MagickOilPaintImage.restype = ctypes.c_bool
+library.MagickOilPaintImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
+]
+library.MagickOpaquePaintImage.restype = ctypes.c_bool
+library.MagickOpaquePaintImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_bool
+]
+library.MagickOrderedPosterizeImage.restype = ctypes.c_bool
+library.MagickOrderedPosterizeImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p
+]
+library.MagickPolaroidImage.restype = ctypes.c_bool
+library.MagickPolaroidImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_double
+]
+library.MagickPosterizeImage.restype = ctypes.c_bool
+library.MagickPosterizeImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_bool
 ]
 library.MagickShadeImage.restype = ctypes.c_bool
 library.MagickShadeImage.argtypes = [
@@ -514,6 +545,69 @@ def motionblur(image, radius, sigma, angle):
         raise TypeError('angle has to be a numbers.Real, not ' +
                         repr(angle))
     r = library.MagickMotionBlurImage(image.wand, radius, sigma, angle)
+    if not r:
+        image.raise_exception()
+
+
+def oilpaint(image, radius):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    r = library.MagickOilPaintImage(image.wand, radius)
+    if not r:
+        image.raise_exception()
+
+
+def opaquepaint(image, target, fill, fuzz, invert=False):
+    if not isinstance(target, Color):
+        raise TypeError('target must be a wand.color.Color instance, '
+                        'not ' + repr(target))
+    elif not isinstance(fill, Color):
+        raise TypeError('fill must be a wand.color.Color instance, '
+                        'not ' + repr(fill))
+    elif not isinstance(fuzz, numbers.Real):
+        raise TypeError('fuzz has to be a numbers.Real, not ' +
+                        repr(fuzz))
+    elif not isinstance(invert, bool):
+        raise TypeError('invert must be a bool, not ' +
+                        repr(invert))
+    with target:
+        with fill:
+            r = library.MagickOpaquePaintImage(image.wand, target.resource,
+                                               fill.resource, fuzz, invert)
+            if not r:
+                image.raise_exception()
+
+
+def orderedposterize(image, threshold_map):
+    if not isinstance(threshold_map, string_type):
+        raise TypeError('expected a string, not ' + repr(threshold_map))
+    buffer = ctypes.create_string_buffer(threshold_map.encode())
+    r = library.MagickOrderedPosterizeImage(image.wand, buffer)
+    if not r:
+        image.raise_exception()
+
+
+def polaroid(image, drawing, angle):
+    if not isinstance(drawing, Drawing):
+        raise TypeError('drawing must be a wand.drawing.Drawing instance, '
+                        'not ' + repr(drawing))
+    elif not isinstance(angle, numbers.Real):
+        raise TypeError('angle has to be a numbers.Real, not ' +
+                        repr(angle))
+    r = library.MagickPolaroidImage(image.wand, drawing.resource, angle)
+    if not r:
+        image.raise_exception()
+
+
+def posterize(image, levels, dither):
+    if not isinstance(levels, numbers.Integral):
+        raise TypeError('levels has to be a numbers.Integral, not ' +
+                        repr(levels))
+    elif not isinstance(dither, bool):
+        raise TypeError('dither must be a bool, not ' +
+                        repr(dither))
+    r = library.MagickPosterizeImage(image.wand, levels, dither)
     if not r:
         image.raise_exception()
 
