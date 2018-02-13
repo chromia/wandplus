@@ -111,6 +111,41 @@ library.MagickEmbossImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickEnhanceImage.restype = ctypes.c_bool
+library.MagickEnhanceImage.argtypes = [
+    ctypes.c_void_p
+]
+library.MagickExtentImage.restype = ctypes.c_bool
+library.MagickExtentImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t
+]
+library.MagickHaldClutImage.restype = ctypes.c_bool
+library.MagickHaldClutImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+library.MagickImplodeImage.restype = ctypes.c_bool
+library.MagickImplodeImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
+]
+library.MagickLabelImage.restype = ctypes.c_bool
+library.MagickLabelImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p
+]
+library.MagickMagnifyImage.restype = ctypes.c_bool
+library.MagickMagnifyImage.argtypes = [
+    ctypes.c_void_p
+]
+library.MagickMinifyImage.restype = ctypes.c_bool
+library.MagickMinifyImage.argtypes = [
+    ctypes.c_void_p
+]
 library.MagickMorphologyImage.restype = ctypes.c_bool
 library.MagickMorphologyImage.argtypes = [
     ctypes.c_void_p,
@@ -387,6 +422,66 @@ def emboss(image, radius, sigma):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
     r = library.MagickEmbossImage(image.wand, radius, sigma)
+    if not r:
+        image.raise_exception()
+
+
+def enhance(image):
+    r = library.MagickEnhanceImage(image.wand)
+    if not r:
+        image.raise_exception()
+
+
+def extent(image, x, y, width, height):
+    if not isinstance(x, numbers.Integral):
+        raise TypeError('x has to be a numbers.Real, not ' +
+                        repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise TypeError('y has to be a numbers.Real, not ' +
+                        repr(y))
+    elif not isinstance(width, numbers.Integral):
+        raise TypeError('width has to be a numbers.Real, not ' +
+                        repr(width))
+    elif not isinstance(height, numbers.Integral):
+        raise TypeError('height has to be a numbers.Real, not ' +
+                        repr(height))
+    r = library.MagickExtentImage(image.wand, width, height, x, y)
+    if not r:
+        image.raise_exception()
+
+
+def haldclut(image, clutimage):
+    r = library.MagickHaldClutImage(image.wand, clutimage.wand)
+    if not r:
+        image.raise_exception()
+
+
+def implode(image, amount):
+    if not isinstance(amount, numbers.Real):
+        raise TypeError('amount has to be a numbers.Real, not ' +
+                        repr(amount))
+    r = library.MagickImplodeImage(image.wand, amount)
+    if not r:
+        image.raise_exception()
+
+
+def label(image, text):
+    if not isinstance(text, string_type):
+        raise TypeError('expected a string, not ' + repr(text))
+    buffer = ctypes.create_string_buffer(text.encode())
+    r = library.MagickLabelImage(image.wand, buffer)
+    if not r:
+        image.raise_exception()
+
+
+def magnify(image):
+    r = library.MagickMagnifyImage(image.wand)
+    if not r:
+        image.raise_exception()
+
+
+def minify(image):
+    r = library.MagickMinifyImage(image.wand)
     if not r:
         image.raise_exception()
 

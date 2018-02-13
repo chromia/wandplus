@@ -3,7 +3,6 @@ from wand.drawing import Drawing
 from wand.color import Color
 from image import *
 from textutil import calcSuitableFontsize, calcSuitableImagesize
-import os
 
 
 def save(img, function):
@@ -118,6 +117,44 @@ with logo.clone() as t:
 with logo.clone() as t:
     f = emboss
     f(t, 0, 3)
+    save(t, f)
+
+with Image(filename='plasma:', width=100, height=100) as t:
+    f = enhance
+    f(t)
+    save(t, f)
+
+with rose.clone() as t:
+    f = extent
+    t.gravity = 'center'
+    t.background_color = Color('blue')
+    f(t, -10, -10, rose.width+20, rose.height+20)
+    save(t, f)
+
+with rose.clone() as t:
+    f = haldclut
+    with Image(filename='hald:12') as p:
+        f(t, p)
+        save(t, f)
+
+with rose.clone() as t:
+    f = implode
+    f(t, 1.0)
+    save(t, f)
+
+with rose.clone() as t:
+    f = label
+    f(t, 'hello')
+    save(t, f)
+
+with rose.clone() as t:
+    f = magnify
+    f(t)
+    save(t, f)
+
+with rose.clone() as t:
+    f = minify
+    f(t)
     save(t, f)
 
 with logo.clone() as t:
