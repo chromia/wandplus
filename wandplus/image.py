@@ -1,4 +1,4 @@
-from wand.image import CHANNELS
+from wand.image import CHANNELS, FILTER_TYPES
 from wand.api import library, libmagick
 from wand.drawing import Drawing
 from wand.color import Color
@@ -191,6 +191,41 @@ library.MagickPosterizeImage.argtypes = [
     ctypes.c_size_t,
     ctypes.c_bool
 ]
+library.MagickRaiseImage.restype = ctypes.c_bool
+library.MagickRaiseImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t,
+    ctypes.c_bool
+]
+library.MagickRandomThresholdImage.restype = ctypes.c_bool
+library.MagickRandomThresholdImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t
+]
+library.MagickRemapImage.restype = ctypes.c_bool
+library.MagickRemapImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_int
+]
+library.MagickResampleImage.restype = ctypes.c_bool
+library.MagickResampleImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_int,
+    ctypes.c_double
+]
+library.MagickRollImage.restype = ctypes.c_bool
+library.MagickRollImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t
+]
 library.MagickShadeImage.restype = ctypes.c_bool
 library.MagickShadeImage.argtypes = [
     ctypes.c_void_p,
@@ -244,6 +279,8 @@ library.MagickWhiteThresholdImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p
 ]
+
+DITHER_METHODS = ('undefined', 'nodither', 'riemersma', 'floydsteinberg')
 
 MORPHOLOGY_METHODS = ('undefined', 'convolve', 'correlate', 'erode', 'dilate',
                       'erodeintensity', 'dilateintensity', 'distance',
@@ -608,6 +645,81 @@ def posterize(image, levels, dither):
         raise TypeError('dither must be a bool, not ' +
                         repr(dither))
     r = library.MagickPosterizeImage(image.wand, levels, dither)
+    if not r:
+        image.raise_exception()
+
+
+def raiseimage(image, x, y, width, height, raiseeffect):  # raise is keyword
+    if not isinstance(x, numbers.Integral):
+        raise TypeError('x has to be a numbers.Real, not ' +
+                        repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise TypeError('y has to be a numbers.Real, not ' +
+                        repr(y))
+    elif not isinstance(width, numbers.Integral):
+        raise TypeError('width has to be a numbers.Real, not ' +
+                        repr(width))
+    elif not isinstance(height, numbers.Integral):
+        raise TypeError('height has to be a numbers.Real, not ' +
+                        repr(height))
+    elif not isinstance(raiseeffect, bool):
+        raise TypeError('raiseeffect must be a bool, not ' +
+                        repr(raiseeffect))
+    r = library.MagickRaiseImage(image.wand, x, y, width, height, raiseeffect)
+    if not r:
+        image.raise_exception()
+
+
+def randomthreshold(image, low, high):
+    if not isinstance(low, numbers.Integral):
+        raise TypeError('low has to be a numbers.Integral, not ' +
+                        repr(low))
+    elif not isinstance(high, numbers.Integral):
+        raise TypeError('high has to be a numbers.Integral, not ' +
+                        repr(high))
+    r = library.MagickRandomThresholdImage(image.wand, low, high)
+    if not r:
+        image.raise_exception()
+
+
+def remap(image, mapimage, method):
+    if method not in DITHER_METHODS:
+        raise ValueError('expected value from DITHER_METHODS, not ' +
+                         repr(method))
+    index = DITHER_METHODS.index(method)
+    r = library.MagickRemapImage(image.wand, mapimage.wand, index)
+    if not r:
+        image.raise_exception()
+
+
+def resample(image, x_resolution, y_resolution, filtertype, blur):
+    if not isinstance(x_resolution, numbers.Integral):
+        raise TypeError('x_resolution has to be a numbers.Real, not ' +
+                        repr(x_resolution))
+    elif not isinstance(y_resolution, numbers.Integral):
+        raise TypeError('y_resolution has to be a numbers.Real, not ' +
+                        repr(y_resolution))
+    elif filtertype not in FILTER_TYPES:
+        raise ValueError('expected value from FILTER_TYPES, not ' +
+                         repr(filter))
+    elif not isinstance(blur, numbers.Real):
+        raise TypeError('blur has to be a numbers.Real, not ' +
+                        repr(blur))
+    filterindex = FILTER_TYPES.index(filtertype)
+    r = library.MagickResampleImage(image.wand, x_resolution, y_resolution,
+                                    filterindex, blur)
+    if not r:
+        image.raise_exception()
+
+
+def roll(image, x, y):
+    if not isinstance(x, numbers.Integral):
+        raise TypeError('x has to be a numbers.Integral, not ' +
+                        repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise TypeError('y has to be a numbers.Integral, not ' +
+                        repr(y))
+    r = library.MagickRollImage(image.wand, x, y)
     if not r:
         image.raise_exception()
 

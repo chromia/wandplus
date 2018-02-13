@@ -15,12 +15,21 @@ rose = Image(filename='rose:')
 grad = Image(filename='gradient:', width=400, height=400)
 logo = Image(filename='logo:')
 text = Image(filename='label:Confirm', width=200, height=60)
+text_a = Image(width=70, height=60)
+with Drawing() as draw:
+    draw.font = 'Arial'
+    draw.font_size = 50
+    draw.gravity = 'center'
+    draw.fill_color = Color('white')
+    draw.stroke_color = Color('black')
+    draw.text(0, 0, 'A')
+    draw(text_a)
 
 rose.save(filename='image/rose.png')
 grad.save(filename='image/grad.png')
 logo.save(filename='image/logo.png')
 text.save(filename='image/text.png')
-
+text_a.save(filename='image/a.png')
 
 with rose.clone() as t:
     f = adaptiveblur
@@ -191,6 +200,34 @@ with logo.clone() as t:
 with rose.clone() as t:
     f = posterize
     f(t, 3, True)
+    save(t, f)
+
+with rose.clone() as t:
+    f = raiseimage
+    f(t, 10, 10, 10, 10, True)
+    save(t, f)
+
+with text_a.clone() as t:
+    f = randomthreshold
+    rng = t.quantum_range
+    f(t, int(rng * 0.05), int(rng * 0.95))
+    save(t, f)
+
+with logo.clone() as t:
+    with rose.clone() as p:
+        f = remap
+        f(t, p, 'nodither')
+        save(t, f)
+
+with rose.clone() as t:
+    f = resample
+    dpi = 72 * 2
+    f(t, dpi, dpi, 'lanczos', 1.0)
+    save(t, f)
+
+with rose.clone() as t:
+    f = roll
+    f(t, 10, 10)
     save(t, f)
 
 with logo.clone() as t:
