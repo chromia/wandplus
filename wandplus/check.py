@@ -231,7 +231,7 @@ with logo.clone() as t:
 with grad.clone() as t:
     f = wave
     f(t, 40, 200)
-    save(t ,f)
+    save(t, f)
 
 with grad.clone() as t:
     f = whitethreshold
