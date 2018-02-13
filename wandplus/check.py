@@ -230,6 +230,36 @@ with rose.clone() as t:
     f(t, 10, 10)
     save(t, f)
 
+with rose.clone() as t:
+    f = rotationalblur
+    f(t, 45)
+    save(t, f)
+
+with rose.clone() as t:
+    f = scale
+    f(t, t.width*2, t.height*2)
+    save(t, f)
+
+with logo.clone() as t:
+    f = segment
+    f(t, 'rgb', False, 5, 20)
+    save(t, f)
+
+with logo.clone() as t:
+    f = selectiveblur
+    f(t, 20, 20, 0.5*t.quantum_range)
+    save(t, f)
+
+with rose.clone() as t:
+    f = separate_channel
+    f(t, 'red')
+    save(t, f)
+
+with rose.clone() as t:
+    f = sepiatone
+    f(t, 0.5*t.quantum_range)
+    save(t, f)
+
 with logo.clone() as t:
     f = shade
     f(t, True, 45, 135)

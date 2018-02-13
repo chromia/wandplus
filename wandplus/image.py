@@ -1,4 +1,4 @@
-from wand.image import CHANNELS, FILTER_TYPES
+from wand.image import CHANNELS, FILTER_TYPES, COLORSPACE_TYPES
 from wand.api import library, libmagick
 from wand.drawing import Drawing
 from wand.color import Color
@@ -225,6 +225,42 @@ library.MagickRollImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_ssize_t,
     ctypes.c_ssize_t
+]
+library.MagickRotationalBlurImage.restype = ctypes.c_bool
+library.MagickRotationalBlurImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
+]
+library.MagickScaleImage.restype = ctypes.c_bool
+library.MagickScaleImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t
+]
+library.MagickSegmentImage.restype = ctypes.c_bool
+library.MagickSegmentImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_bool,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickSelectiveBlurImage.restype = ctypes.c_bool
+library.MagickSelectiveBlurImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickSeparateImageChannel.restype = ctypes.c_bool
+library.MagickSeparateImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int
+]
+library.MagickSepiaToneImage.restype = ctypes.c_bool
+library.MagickSepiaToneImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
 ]
 library.MagickShadeImage.restype = ctypes.c_bool
 library.MagickShadeImage.argtypes = [
@@ -720,6 +756,80 @@ def roll(image, x, y):
         raise TypeError('y has to be a numbers.Integral, not ' +
                         repr(y))
     r = library.MagickRollImage(image.wand, x, y)
+    if not r:
+        image.raise_exception()
+
+
+def rotationalblur(image, angle):
+    if not isinstance(angle, numbers.Real):
+        raise TypeError('angle has to be a numbers.Real, not ' +
+                        repr(angle))
+    r = library.MagickRotationalBlurImage(image.wand, angle)
+    if not r:
+        image.raise_exception()
+
+
+def scale(image, columns, rows):
+    if not isinstance(columns, numbers.Integral):
+        raise TypeError('columns has to be a numbers.Integral, not ' +
+                        repr(columns))
+    elif not isinstance(rows, numbers.Integral):
+        raise TypeError('rows has to be a numbers.Integral, not ' +
+                        repr(rows))
+    r = library.MagickScaleImage(image.wand, columns, rows)
+    if not r:
+        image.raise_exception()
+
+
+def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
+    if colorspace not in COLORSPACE_TYPES:
+        raise ValueError('colorspace value from COLORSPACE_TYPES, not ' +
+                         repr(colorspace))
+    elif not isinstance(verbose, bool):
+        raise TypeError('verbose must be a bool, not ' +
+                        repr(verbose))
+    elif not isinstance(cluster_threshold, numbers.Real):
+        raise TypeError('cluster_threshold has to be a numbers.Real, not ' +
+                        repr(cluster_threshold))
+    elif not isinstance(smooth_threshold, numbers.Real):
+        raise TypeError('smooth_threshold has to be a numbers.Real, not ' +
+                        repr(smooth_threshold))
+    csindex = COLORSPACE_TYPES.index(colorspace)
+    r = library.MagickSegmentImage(image.wand, csindex, verbose,
+                                   cluster_threshold, smooth_threshold)
+    if not r:
+        image.raise_exception()
+
+
+def selectiveblur(image, radius, sigma, threshold):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    elif not isinstance(sigma, numbers.Real):
+        raise TypeError('sigma has to be a numbers.Real, not ' +
+                        repr(sigma))
+    elif not isinstance(threshold, numbers.Real):
+        raise TypeError('threshold has to be a numbers.Real, not ' +
+                        repr(threshold))
+    r = library.MagickSelectiveBlurImage(image.wand, radius, sigma, threshold)
+    if not r:
+        image.raise_exception()
+
+
+def separate_channel(image, channel):
+    if channel not in CHANNELS:
+        raise ValueError('channel value from CHANNELS, not ' +
+                         repr(channel))
+    r = library.MagickSeparateImageChannel(image.wand, CHANNELS[channel])
+    if not r:
+        image.raise_exception()
+
+
+def sepiatone(image, threshold):
+    if not isinstance(threshold, numbers.Real):
+        raise TypeError('threshold has to be a numbers.Real, not ' +
+                        repr(threshold))
+    r = library.MagickSepiaToneImage(image.wand, threshold)
     if not r:
         image.raise_exception()
 
