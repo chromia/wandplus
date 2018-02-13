@@ -568,10 +568,10 @@ def shear(image, background, x, y):
         raise TypeError('background must be a wand.color.Color instance, '
                         'not ' + repr(background))
     elif not isinstance(x, numbers.Real):
-        raise TypeError('x_shear has to be a numbers.Real, not ' +
+        raise TypeError('x has to be a numbers.Real, not ' +
                         repr(x))
     elif not isinstance(y, numbers.Real):
-        raise TypeError('y_shear has to be a numbers.Real, not ' +
+        raise TypeError('y has to be a numbers.Real, not ' +
                         repr(y))
     with background:
         r = library.MagickShearImage(image.wand, background.resource, x, y)
