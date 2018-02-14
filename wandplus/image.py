@@ -277,6 +277,12 @@ library.MagickShadowImage.argtypes = [
     ctypes.c_ssize_t,
     ctypes.c_ssize_t
 ]
+library.MagickSharpenImage.restype = ctypes.c_bool
+library.MagickSharpenImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double
+]
 library.MagickShaveImage.restype = ctypes.c_bool
 library.MagickShaveImage.argtypes = [
     ctypes.c_void_p,
@@ -290,6 +296,25 @@ library.MagickShearImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickSigmoidalContrastImage.restype = ctypes.c_bool
+library.MagickSigmoidalContrastImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_bool,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickSketchImage.restype = ctypes.c_bool
+library.MagickSketchImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickSolarizeImage.restype = ctypes.c_bool
+library.MagickSolarizeImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
+]
 library.MagickSparseColorImage.restype = ctypes.c_bool
 library.MagickSparseColorImage.argtypes = [
     ctypes.c_void_p,
@@ -298,11 +323,26 @@ library.MagickSparseColorImage.argtypes = [
     ctypes.c_size_t,
     ctypes.POINTER(ctypes.c_double)
 ]
+library.MagickSpliceImage.restype = ctypes.c_bool
+library.MagickSpliceImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t
+]
 library.MagickSpreadImage.restype = ctypes.c_bool
 library.MagickSpreadImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int,
     ctypes.c_double
+]
+library.MagickStatisticImage.restype = ctypes.c_bool
+library.MagickStatisticImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_size_t,
+    ctypes.c_size_t
 ]
 library.MagickWaveImage.restype = ctypes.c_bool
 library.MagickWaveImage.argtypes = [
@@ -341,6 +381,10 @@ SPARSE_METHODS = dict(undefined=0,  # DISTORTION_METHODS['undefined'],
                       voronoi=18,  # DISTORTION_METHODS['sentinel'],
                       inverse=19,
                       manhattan=20)
+
+STATISTIC_TYPES = ('undefined', 'gradient', 'maximum', 'mean', 'median',
+                   'minimum', 'mode', 'nonpeak', 'standarddeviation',
+                   'rootmeansquare')
 
 
 def adaptiveblur(image, radius, sigma):
@@ -867,6 +911,18 @@ def shadow(image, opacity, sigma, x, y):
         image.raise_exception()
 
 
+def sharpen(image, radius, sigma):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    elif not isinstance(sigma, numbers.Real):
+        raise TypeError('sigma has to be a numbers.Real, not ' +
+                        repr(sigma))
+    r = library.MagickSharpenImage(image.wand, radius, sigma)
+    if not r:
+        image.raise_exception()
+
+
 def shave(image, columns, rows):
     if not isinstance(columns, numbers.Integral):
         raise TypeError('columns has be a numbers.Integral, not ' +
@@ -895,6 +951,45 @@ def shear(image, background, x, y):
             image.raise_exception()
 
 
+def sigmoidalcontrast(image, sharpen, alpha, beta):
+    if not isinstance(sharpen, bool):
+        raise TypeError('sharpen must be a bool, not ' +
+                        repr(sharpen))
+    elif not isinstance(alpha, numbers.Real):
+        raise TypeError('alpha has to be a numbers.Real, not ' +
+                        repr(alpha))
+    elif not isinstance(beta, numbers.Real):
+        raise TypeError('beta has to be a numbers.Real, not ' +
+                        repr(beta))
+    r = library.MagickSigmoidalContrastImage(image.wand, sharpen, alpha, beta)
+    if not r:
+        image.raise_exception()
+
+
+def sketch(image, radius, sigma, angle):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    elif not isinstance(sigma, numbers.Real):
+        raise TypeError('sigma has to be a numbers.Real, not ' +
+                        repr(sigma))
+    elif not isinstance(angle, numbers.Real):
+        raise TypeError('angle has to be a numbers.Real, not ' +
+                        repr(angle))
+    r = library.MagickSketchImage(image.wand, radius, sigma, angle)
+    if not r:
+        image.raise_exception()
+
+
+def solarize(image, threshold):
+    if not isinstance(threshold, numbers.Real):
+        raise TypeError('threshold has to be a numbers.Real, not ' +
+                        repr(threshold))
+    r = library.MagickSolarizeImage(image.wand, threshold)
+    if not r:
+        image.raise_exception()
+
+
 def sparsecolor(image, channel, method, arguments):
     if channel not in CHANNELS:
         raise ValueError('expected value from CHANNELS, not ' +
@@ -914,6 +1009,24 @@ def sparsecolor(image, channel, method, arguments):
         image.raise_exception()
 
 
+def splice(image, x, y, width, height):
+    if not isinstance(x, numbers.Integral):
+        raise TypeError('x has to be a numbers.Real, not ' +
+                        repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise TypeError('y has to be a numbers.Real, not ' +
+                        repr(y))
+    elif not isinstance(width, numbers.Integral):
+        raise TypeError('width has to be a numbers.Real, not ' +
+                        repr(width))
+    elif not isinstance(height, numbers.Integral):
+        raise TypeError('height has to be a numbers.Real, not ' +
+                        repr(height))
+    r = library.MagickSpliceImage(image.wand, width, height, x, y)
+    if not r:
+        image.raise_exception()
+
+
 def spread(image, method, amount):
     if method not in INTERPOLATEPIXEL_METHODS:
         raise ValueError('expected string from INTERPOLATEPIXEL_METHODS, ' +
@@ -923,6 +1036,22 @@ def spread(image, method, amount):
                         repr(amount))
     index = INTERPOLATEPIXEL_METHODS.index(method)
     r = library.MagickSpreadImage(image.wand, index, amount)
+    if not r:
+        image.raise_exception()
+
+
+def statistic(image, statistic_type, width, height):
+    if statistic_type not in STATISTIC_TYPES:
+        raise ValueError('expected string from STATISTIC_TYPES, ' +
+                         'not ' + repr(statistic_type))
+    elif not isinstance(width, numbers.Integral):
+        raise TypeError('width has to be a numbers.Integral, not ' +
+                        repr(width))
+    elif not isinstance(height, numbers.Integral):
+        raise TypeError('height has to be a numbers.Integral, not ' +
+                        repr(height))
+    index = STATISTIC_TYPES.index(statistic_type)
+    r = library.MagickStatisticImage(image.wand, index, width, height)
     if not r:
         image.raise_exception()
 

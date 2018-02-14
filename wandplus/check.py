@@ -273,6 +273,32 @@ with text.clone() as t:
         t.composite_channel('default_channels', p, 'overlay')
         save(t, f)
 
+with rose.clone() as t:
+    f = sharpen
+    f(t, 3, 3)
+    save(t, f)
+
+with rose.clone() as t:
+    f = sigmoidalcontrast
+    f(t, True, 3, 3)
+    save(t, f)
+
+with logo.clone() as t:
+    f = sketch
+    f(t, 10, 10, 45)
+    save(t, f)
+
+with rose.clone() as t:
+    f = solarize
+    f(t, 0.4*t.quantum_range)
+    save(t, f)
+
+with rose.clone() as t:
+    f = splice
+    t.gravity = 'center'
+    f(t, t.width//2, t.height//2, 20, 20)
+    save(t, f)
+
 with logo.clone() as t:
     f = shave
     f(t, 100, 100)
@@ -293,6 +319,11 @@ with Image(width=100, height=100, background=Color('black')) as t:
 with logo.clone() as t:
     f = spread
     f(t, 'bilinear', 20)
+    save(t, f)
+
+with rose.clone() as t:
+    f = statistic
+    f(t, 'gradient', 4, 4)
     save(t, f)
 
 with grad.clone() as t:
