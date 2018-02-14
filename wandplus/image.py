@@ -469,16 +469,16 @@ def charcoal(image, radius, sigma):
 
 def chop(image, x, y, width, height):
     if not isinstance(x, numbers.Integral):
-        raise TypeError('x has to be a numbers.Real, not ' +
+        raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
     elif not isinstance(y, numbers.Integral):
-        raise TypeError('y has to be a numbers.Real, not ' +
+        raise TypeError('y has to be a numbers.Integral, not ' +
                         repr(y))
     elif not isinstance(width, numbers.Integral):
-        raise TypeError('width has to be a numbers.Real, not ' +
+        raise TypeError('width has to be a numbers.Integral, not ' +
                         repr(width))
     elif not isinstance(height, numbers.Integral):
-        raise TypeError('height has to be a numbers.Real, not ' +
+        raise TypeError('height has to be a numbers.Integral, not ' +
                         repr(height))
     r = library.MagickChopImage(image.wand, width, height, x, y)
     if not r:
@@ -582,16 +582,16 @@ def enhance(image):
 
 def extent(image, x, y, width, height):
     if not isinstance(x, numbers.Integral):
-        raise TypeError('x has to be a numbers.Real, not ' +
+        raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
     elif not isinstance(y, numbers.Integral):
-        raise TypeError('y has to be a numbers.Real, not ' +
+        raise TypeError('y has to be a numbers.Integral, not ' +
                         repr(y))
     elif not isinstance(width, numbers.Integral):
-        raise TypeError('width has to be a numbers.Real, not ' +
+        raise TypeError('width has to be a numbers.Integral, not ' +
                         repr(width))
     elif not isinstance(height, numbers.Integral):
-        raise TypeError('height has to be a numbers.Real, not ' +
+        raise TypeError('height has to be a numbers.Integral, not ' +
                         repr(height))
     r = library.MagickExtentImage(image.wand, width, height, x, y)
     if not r:
@@ -731,16 +731,16 @@ def posterize(image, levels, dither):
 
 def raiseimage(image, x, y, width, height, raiseeffect):  # raise is keyword
     if not isinstance(x, numbers.Integral):
-        raise TypeError('x has to be a numbers.Real, not ' +
+        raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
     elif not isinstance(y, numbers.Integral):
-        raise TypeError('y has to be a numbers.Real, not ' +
+        raise TypeError('y has to be a numbers.Integral, not ' +
                         repr(y))
     elif not isinstance(width, numbers.Integral):
-        raise TypeError('width has to be a numbers.Real, not ' +
+        raise TypeError('width has to be a numbers.Integral, not ' +
                         repr(width))
     elif not isinstance(height, numbers.Integral):
-        raise TypeError('height has to be a numbers.Real, not ' +
+        raise TypeError('height has to be a numbers.Integral, not ' +
                         repr(height))
     elif not isinstance(raiseeffect, bool):
         raise TypeError('raiseeffect must be a bool, not ' +
@@ -774,10 +774,10 @@ def remap(image, mapimage, method):
 
 def resample(image, x_resolution, y_resolution, filtertype, blur):
     if not isinstance(x_resolution, numbers.Integral):
-        raise TypeError('x_resolution has to be a numbers.Real, not ' +
+        raise TypeError('x_resolution has to be a numbers.Integral, not ' +
                         repr(x_resolution))
     elif not isinstance(y_resolution, numbers.Integral):
-        raise TypeError('y_resolution has to be a numbers.Real, not ' +
+        raise TypeError('y_resolution has to be a numbers.Integral, not ' +
                         repr(y_resolution))
     elif filtertype not in FILTER_TYPES:
         raise ValueError('expected value from FILTER_TYPES, not ' +
@@ -1011,16 +1011,16 @@ def sparsecolor(image, channel, method, arguments):
 
 def splice(image, x, y, width, height):
     if not isinstance(x, numbers.Integral):
-        raise TypeError('x has to be a numbers.Real, not ' +
+        raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
     elif not isinstance(y, numbers.Integral):
-        raise TypeError('y has to be a numbers.Real, not ' +
+        raise TypeError('y has to be a numbers.Integral, not ' +
                         repr(y))
     elif not isinstance(width, numbers.Integral):
-        raise TypeError('width has to be a numbers.Real, not ' +
+        raise TypeError('width has to be a numbers.Integral, not ' +
                         repr(width))
     elif not isinstance(height, numbers.Integral):
-        raise TypeError('height has to be a numbers.Real, not ' +
+        raise TypeError('height has to be a numbers.Integral, not ' +
                         repr(height))
     r = library.MagickSpliceImage(image.wand, width, height, x, y)
     if not r:
