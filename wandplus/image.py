@@ -994,7 +994,7 @@ def sparsecolor(image, channel, method, arguments):
     if channel not in CHANNELS:
         raise ValueError('expected value from CHANNELS, not ' +
                          repr(channel))
-    if method not in SPARSE_METHODS:
+    elif method not in SPARSE_METHODS:
         raise ValueError('expected value from SPARSE_METHODS, not ' +
                          repr(method))
     elif not isinstance(arguments, collections.Sequence):
@@ -1031,7 +1031,7 @@ def spread(image, method, amount):
     if method not in INTERPOLATEPIXEL_METHODS:
         raise ValueError('expected string from INTERPOLATEPIXEL_METHODS, ' +
                          'not ' + repr(method))
-    if not isinstance(amount, numbers.Real):
+    elif not isinstance(amount, numbers.Real):
         raise TypeError('amount has to be a numbers.Real, not ' +
                         repr(amount))
     index = INTERPOLATEPIXEL_METHODS.index(method)
