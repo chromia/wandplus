@@ -3,6 +3,7 @@ from wand.drawing import Drawing
 from wand.color import Color
 from image import *
 from textutil import calcSuitableFontsize, calcSuitableImagesize
+import os
 
 
 def save(img, function):
@@ -324,6 +325,66 @@ with logo.clone() as t:
 with rose.clone() as t:
     f = statistic
     f(t, 'gradient', 4, 4)
+    save(t, f)
+
+with rose.clone() as t:
+    f = stegano
+    w = 50
+    h = 40
+    offset = 15
+    tmpfile = 'tmp.png'
+    with Image(width=w, height=h, background=Color('white')) as p:
+        with Drawing() as d:
+            d.gravity = 'center'
+            d.fill_color = Color('black')
+            d.text(0, 0, 'Watch\nthe\nPidgeon')
+            d(p)
+        with f(t, p, offset) as q:
+            q.save(filename=tmpfile)
+        try:
+            with Image() as q:
+                setsizeoffset(q, w, h, offset)
+                q.read(filename='stegano:' + tmpfile)
+                save(q, f)
+        except Exception:
+            raise
+        finally:
+            os.remove(tmpfile)
+
+with rose.clone() as t:
+    f = stereo
+    with rose.clone() as p:
+        p.negate()
+        with f(t, p) as q:
+            save(q, f)
+
+with rose.clone() as t:
+    f = swirl
+    f(t, 180)
+    save(t, f)
+
+with Image(width=300, height=200) as t:
+    f = texture
+    with rose.clone() as p:
+        with f(t, p) as q:
+            save(q, f)
+
+with logo.clone() as t:
+    f = thumbnail
+    f(t, 100, 100)
+    save(t, f)
+
+with rose.clone() as t:
+    f = tint
+    f(t, Color('rgb'), Color('gray(25%)'))
+    save(t, f)
+
+with logo.clone() as t:
+    f = vignette
+    r = t.quantum_range
+    minify(t)
+    t.background_color = Color('black')
+    f(t, 0, 10, 20, 20)
     save(t, f)
 
 with grad.clone() as t:

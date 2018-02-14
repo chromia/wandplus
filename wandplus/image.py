@@ -1,3 +1,4 @@
+from wand.image import Image, BaseImage
 from wand.image import CHANNELS, FILTER_TYPES, COLORSPACE_TYPES
 from wand.api import library, libmagick
 from wand.drawing import Drawing
@@ -262,6 +263,13 @@ library.MagickSepiaToneImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double
 ]
+library.MagickSetSizeOffset.restype = ctypes.c_bool
+library.MagickSetSizeOffset.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_ssize_t
+]
 library.MagickShadeImage.restype = ctypes.c_bool
 library.MagickShadeImage.argtypes = [
     ctypes.c_void_p,
@@ -343,6 +351,47 @@ library.MagickStatisticImage.argtypes = [
     ctypes.c_int,
     ctypes.c_size_t,
     ctypes.c_size_t
+]
+library.MagickSteganoImage.restype = ctypes.c_void_p
+library.MagickSteganoImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_ssize_t
+]
+library.MagickStereoImage.restype = ctypes.c_void_p
+library.MagickStereoImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+library.MagickSwirlImage.restype = ctypes.c_bool
+library.MagickSwirlImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
+]
+library.MagickTextureImage.restype = ctypes.c_void_p
+library.MagickTextureImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+library.MagickThumbnailImage.restype = ctypes.c_bool
+library.MagickThumbnailImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t
+]
+library.MagickTintImage.restype = ctypes.c_bool
+library.MagickTintImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+library.MagickVignetteImage.restype = ctypes.c_bool
+library.MagickVignetteImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t
 ]
 library.MagickWaveImage.restype = ctypes.c_bool
 library.MagickWaveImage.argtypes = [
@@ -878,6 +927,21 @@ def sepiatone(image, threshold):
         image.raise_exception()
 
 
+def setsizeoffset(image, columns, rows, offset):
+    if not isinstance(columns, numbers.Integral):
+        raise TypeError('columns has be a numbers.Integral, not ' +
+                        repr(columns))
+    elif not isinstance(rows, numbers.Integral):
+        raise TypeError('rows has to be a numbers.Integral, not ' +
+                        repr(rows))
+    elif not isinstance(offset, numbers.Integral):
+        raise TypeError('offset has to be a numbers.Integral, not ' +
+                        repr(offset))
+    r = library.MagickSetSizeOffset(image.wand, columns, rows, offset)
+    if not r:
+        image.raise_exception()
+
+
 def shade(image, gray, azimuth, elevation):
     if not isinstance(gray, bool):
         raise TypeError('gray must be a bool, not ' +
@@ -1052,6 +1116,84 @@ def statistic(image, statistic_type, width, height):
                         repr(height))
     index = STATISTIC_TYPES.index(statistic_type)
     r = library.MagickStatisticImage(image.wand, index, width, height)
+    if not r:
+        image.raise_exception()
+
+
+def stegano(image, watermark, offset):
+    if not isinstance(offset, numbers.Integral):
+        raise TypeError('offset has to be a numbers.Integral, not ' +
+                        repr(offset))
+    new_wand = library.MagickSteganoImage(image.wand, watermark.wand, offset)
+    if new_wand:
+        return Image(image=BaseImage(new_wand))
+    image.raise_exception()
+
+
+def stereo(image, offsetimage):
+    new_wand = library.MagickStereoImage(image.wand, offsetimage.wand)
+    if new_wand:
+        return Image(image=BaseImage(new_wand))
+    image.raise_exception()
+
+
+def swirl(image, degrees):
+    if not isinstance(degrees, numbers.Real):
+        raise TypeError('degrees has to be a numbers.Real, not ' +
+                        repr(degrees))
+    r = library.MagickSwirlImage(image.wand, degrees)
+    if not r:
+        image.raise_exception()
+
+
+def texture(image, textureimage):
+    new_wand = library.MagickTextureImage(image.wand, textureimage.wand)
+    if new_wand:
+        return Image(image=BaseImage(new_wand))
+    image.raise_exception()
+
+
+def thumbnail(image, columns, rows):
+    if not isinstance(columns, numbers.Integral):
+        raise TypeError('columns has to be a numbers.Integral, not ' +
+                        repr(columns))
+    elif not isinstance(rows, numbers.Integral):
+        raise TypeError('rows has to be a numbers.Integral, not ' +
+                        repr(rows))
+    r = library.MagickThumbnailImage(image.wand, columns, rows)
+    if not r:
+        image.raise_exception()
+
+
+def tint(image, tint, opacity):
+    if not isinstance(tint, Color):
+        raise TypeError('tint must be a wand.color.Color instance, '
+                        'not ' + repr(tint))
+    elif not isinstance(opacity, Color):
+        raise TypeError('opacity must be a wand.color.Color instance, '
+                        'not ' + repr(opacity))
+    with tint:
+        with opacity:
+            r = library.MagickTintImage(image.wand, tint.resource,
+                                        opacity.resource)
+            if not r:
+                image.raise_exception()
+
+
+def vignette(image, black, white, x, y):
+    if not isinstance(black, numbers.Real):
+        raise TypeError('black has to be a numbers.Real, not ' +
+                        repr(black))
+    elif not isinstance(white, numbers.Real):
+        raise TypeError('white has to be a numbers.Real, not ' +
+                        repr(white))
+    elif not isinstance(x, numbers.Integral):
+        raise TypeError('x has to be a numbers.Integral, not ' +
+                        repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise TypeError('y has to be a numbers.Integral, not ' +
+                        repr(y))
+    r = library.MagickVignetteImage(image.wand, black, white, x, y)
     if not r:
         image.raise_exception()
 
