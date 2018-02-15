@@ -37,10 +37,32 @@ with rose.clone() as t:
     f(t, 5.0, 3.0)
     save(t, f)
 
+with rose.clone() as t:
+    f = adaptiveresize
+    f(t, int(t.width*1.5), int(t.height*2.0))
+    save(t, f)
+
+with rose.clone() as t:
+    f = adaptivesharpen
+    f(t, 5, 5)
+    save(t, f)
+
+with logo.clone() as t:
+    f = adaptivethreshold
+    f(t, 20, 20, int(0.1*t.quantum_range))
+    save(t, f)
+
 with grad.clone() as t:
     f = addnoise
     f(t, 'gaussian')
     save(t, f)
+
+with rose.clone() as t:
+    f = affinetransform
+    with Drawing() as d:
+        d.affine([2.0, 0.0, 0.0, 2.0, 0.0, 0.0])
+        f(t, d)  # not work correctly
+        save(t, f)
 
 with rose.clone() as t:
     f = autogamma

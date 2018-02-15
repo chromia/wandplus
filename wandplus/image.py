@@ -22,10 +22,34 @@ library.MagickAdaptiveBlurImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickAdaptiveResizeImage.restype = ctypes.c_bool
+library.MagickAdaptiveResizeImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t
+]
+library.MagickAdaptiveSharpenImage.restype = ctypes.c_bool
+library.MagickAdaptiveSharpenImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickAdaptiveThresholdImage.restype = ctypes.c_bool
+library.MagickAdaptiveThresholdImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_ssize_t
+]
 library.MagickAddNoiseImage.restype = ctypes.c_bool
 library.MagickAddNoiseImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int
+]
+library.MagickAffineTransformImage.restype = ctypes.c_bool
+library.MagickAffineTransformImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
 ]
 library.MagickAutoGammaImage.restype = ctypes.c_bool
 library.MagickAutoGammaImage.argtypes = [
@@ -448,12 +472,60 @@ def adaptiveblur(image, radius, sigma):
         image.raise_exception()
 
 
+def adaptiveresize(image, columns, rows):
+    if not isinstance(columns, numbers.Integral):
+        raise TypeError('columns has to be a numbers.Integral, not ' +
+                        repr(columns))
+    elif not isinstance(rows, numbers.Integral):
+        raise TypeError('rows has to be a numbers.Integral, not ' +
+                        repr(rows))
+    r = library.MagickAdaptiveResizeImage(image.wand, columns, rows)
+    if not r:
+        image.raise_exception()
+
+
+def adaptivesharpen(image, radius, sigma):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    elif not isinstance(sigma, numbers.Real):
+        raise TypeError('sigma has to be a numbers.Real, not ' +
+                        repr(sigma))
+    r = library.MagickAdaptiveSharpenImage(image.wand, radius, sigma)
+    if not r:
+        image.raise_exception()
+
+
+def adaptivethreshold(image, width, height, offset):
+    if not isinstance(width, numbers.Integral):
+        raise TypeError('width has to be a numbers.Integral, not ' +
+                        repr(width))
+    elif not isinstance(height, numbers.Integral):
+        raise TypeError('height has to be a numbers.Integral, not ' +
+                        repr(height))
+    elif not isinstance(offset, numbers.Integral):
+        raise TypeError('offset has to be a numbers.Integral, not ' +
+                        repr(offset))
+    r = library.MagickAdaptiveThresholdImage(image.wand, width, height, offset)
+    if not r:
+        image.raise_exception()
+
+
 def addnoise(image, type):
     if type not in NOISE_TYPES:
         raise ValueError('expected string from NOISE_TYPES, not ' +
                          repr(type))
     index = NOISE_TYPES.index(type)
     r = library.MagickAddNoiseImage(image.wand, index)
+    if not r:
+        image.raise_exception()
+
+
+def affinetransform(image, drawing):
+    if not isinstance(drawing, Drawing):
+        raise TypeError('drawing must be a wand.drawing.Drawing instance, '
+                        'not ' + repr(drawing))
+    r = library.MagickAffineTransformImage(image.wand, drawing.resource)
     if not r:
         image.raise_exception()
 
