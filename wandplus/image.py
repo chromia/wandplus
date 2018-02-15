@@ -8,6 +8,7 @@ import numbers
 import ctypes
 import collections
 
+# %Start Definition%  -- do not remove this comment!
 libmagick.AcquireKernelInfo.restype = ctypes.c_void_p
 libmagick.AcquireKernelInfo.argtypes = [
     ctypes.c_char_p
@@ -428,6 +429,7 @@ library.MagickWhiteThresholdImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p
 ]
+# %End Definition%  -- do not remove this comment!
 
 DITHER_METHODS = ('undefined', 'nodither', 'riemersma', 'floydsteinberg')
 
