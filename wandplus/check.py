@@ -100,6 +100,17 @@ with grad.clone() as t:
     f(t, 0, 00, 200, 200)
     save(t, f)
 
+with rose.clone() as t:
+    f = clamp
+    f(t)
+    save(t, f)
+
+# with rose.clone() as t:
+#     f = clip
+#     f(t)
+#     save(t, f)
+
+
 with grad.clone() as t:
     f = clut
     with Image(filename='gradient:red-blue', width=1, height=100) as p:
@@ -107,9 +118,40 @@ with grad.clone() as t:
         f(t, p)
         save(t, f)
 
+xml = """
+<ColorCorrectionCollection xmlns="urn:ASC:CDL:v1.2">
+    <ColorCorrection id="cc03345">
+        <SOPNode>
+            <Slope> 0.9 1.2 0.5 </Slope>
+            <Offset> 0.4 -0.5 0.6 </Offset>
+            <Power> 1.0 0.8 1.5 </Power>
+        </SOPNode>
+        <SATNode>
+            <Saturation> 0.85 </Saturation>
+        </SATNode>
+    </ColorCorrection>
+</ColorCorrectionCollection>
+"""
+with rose.clone() as t:
+    f = colordecisionlist
+    f(t, xml)
+    save(t, f)
+
 with grad.clone() as t:
     f = colorize
     f(t, Color('red'), Color('gray(25%)'))
+    save(t, f)
+
+with logo.clone() as t:
+    f = colormatrix
+    kernel = [
+        0.5, 0.0, 0.0, 0.0, 0.0,
+        0.0, 1.5, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.5, 0.0, 0.0,
+        0.0, 0.0, 0.0, 1.0, 0.0,
+        0.0, 0.0, 0.0, 0.0, 1.0
+    ]
+    f(t, 5, 5, kernel)
     save(t, f)
 
 with grad.clone() as t:

@@ -91,14 +91,32 @@ library.MagickChopImage.argtypes = [
     ctypes.c_ssize_t,
     ctypes.c_ssize_t
 ]
+library.MagickClampImage.restype = ctypes.c_bool
+library.MagickClampImage.argtypes = [
+    ctypes.c_void_p
+]
+library.MagickClipImage.restype = ctypes.c_bool
+library.MagickClipImage.argtypes = [
+    ctypes.c_void_p
+]
 library.MagickClutImage.restype = ctypes.c_bool
 library.MagickClutImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p
 ]
+library.MagickColorDecisionListImage.restype = ctypes.c_bool
+library.MagickColorDecisionListImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p
+]
 library.MagickColorizeImage.restype = ctypes.c_bool
 library.MagickColorizeImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+library.MagickColorMatrixImage.restype = ctypes.c_bool
+library.MagickColorMatrixImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p
 ]
@@ -462,6 +480,33 @@ STATISTIC_TYPES = ('undefined', 'gradient', 'maximum', 'mean', 'median',
                    'rootmeansquare')
 
 
+class KernelInfo(ctypes.Structure):
+    _fields_ = [
+        ('type', ctypes.c_int),
+        ('width', ctypes.c_size_t),
+        ('height', ctypes.c_size_t),
+        ('x', ctypes.c_ssize_t),
+        ('y', ctypes.c_ssize_t),
+        ('value', ctypes.POINTER(ctypes.c_double)),
+        ('minimum', ctypes.c_double),
+        ('negative_range', ctypes.c_double),
+        ('positive_range', ctypes.c_double),
+        ('angle', ctypes.c_double),
+        ('next', ctypes.c_void_p),
+        ('signature', ctypes.c_size_t)
+    ]
+
+    def __init__(self, width, height, kernel):
+        if not isinstance(kernel, collections.Sequence):
+            raise TypeError('expecting sequence of arguments, not ' +
+                            repr(kernel))
+        length = len(kernel)
+        assert(width * height == length)
+        self.width = width
+        self.height = height
+        self.value = (ctypes.c_double * length)(*kernel)
+
+
 def adaptiveblur(image, radius, sigma):
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
@@ -608,10 +653,40 @@ def chop(image, x, y, width, height):
         image.raise_exception()
 
 
+def clamp(image):
+    r = library.MagickClampImage(image.wand)
+    if not r:
+        image.raise_exception()
+
+
+def clip(image):
+    r = library.MagickClipImage(image.wand)
+    if not r:
+        image.raise_exception()
+
+
 def clut(image, clutimage):
     r = library.MagickClutImage(image.wand, clutimage.wand)
     if not r:
         image.raise_exception()
+
+
+def colordecisionlist(image, ccc_text):
+    if not isinstance(ccc_text, string_type):
+        raise TypeError('expected a string, not ' + repr(ccc_text))
+    buffer = ctypes.create_string_buffer(ccc_text.encode())
+    r = library.MagickColorDecisionListImage(image.wand, buffer)
+    if not r:
+        image.raise_exception()
+
+
+def colormatrix(image, width, height, color_matrix):
+    kernelinfo = KernelInfo(width, height, color_matrix)
+    if kernelinfo:
+        r = library.MagickColorMatrixImage(image.wand,
+                                           ctypes.byref(kernelinfo))
+        if not r:
+            image.raise_exception()
 
 
 def colorize(image, color, opacity):
