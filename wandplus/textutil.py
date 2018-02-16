@@ -1,7 +1,7 @@
 from wand.image import Image
 
 
-def calcSuitableFontsize_sub(size, f, f_low, f_high):
+def _calcSuitableFontsize_sub(size, f, f_low, f_high):
     f_mid = f_low + (f_high - f_low) // 2
     szL = f(f_low)
     szH = f(f_high)
@@ -12,15 +12,15 @@ def calcSuitableFontsize_sub(size, f, f_low, f_high):
             return f_low
 
     if(szL > size):
-        return calcSuitableFontsize_sub(size, f, f_low//2, f_low)
+        return _calcSuitableFontsize_sub(size, f, f_low//2, f_low)
     elif(szH < size):
-        return calcSuitableFontsize_sub(size, f, f_high, f_high*2)
+        return _calcSuitableFontsize_sub(size, f, f_high, f_high*2)
     else:
         szM = f(f_mid)
         if szM < size:
-            return calcSuitableFontsize_sub(size, f, f_mid, f_high)
+            return _calcSuitableFontsize_sub(size, f, f_mid, f_high)
         else:
-            return calcSuitableFontsize_sub(size, f, f_low, f_mid)
+            return _calcSuitableFontsize_sub(size, f, f_low, f_mid)
 
 
 def calcSuitableFontsize(draw, text, multiline=False, width=None, height=None):
@@ -46,13 +46,13 @@ def calcSuitableFontsize(draw, text, multiline=False, width=None, height=None):
             size = 0
             size_backup = draw.font_size
             if width and height:
-                sizex = calcSuitableFontsize_sub(w, f_x, default_lower, default_upper)
-                sizey = calcSuitableFontsize_sub(h, f_y, default_lower, default_upper)
+                sizex = _calcSuitableFontsize_sub(w, f_x, default_lower, default_upper)
+                sizey = _calcSuitableFontsize_sub(h, f_y, default_lower, default_upper)
                 size = min(sizex, sizey)
             else:
                 p = (w, f_x) if width else (h, f_y)
                 size_backup = draw.font_size
-                size = calcSuitableFontsize_sub(p[0], p[1], default_lower, default_upper)
+                size = _calcSuitableFontsize_sub(p[0], p[1], default_lower, default_upper)
 
             draw.font_size = size_backup
             return size
