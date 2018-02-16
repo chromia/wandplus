@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from wand.image import Image, BaseImage
 from wand.image import CHANNELS, FILTER_TYPES, COLORSPACE_TYPES
 from wand.api import library, libmagick
