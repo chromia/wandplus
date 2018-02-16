@@ -65,6 +65,11 @@ library.MagickBlackThresholdImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p
 ]
+library.MagickBlueShiftImage.restype = ctypes.c_bool
+library.MagickBlueShiftImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
+]
 library.MagickBlurImage.restype = ctypes.c_bool
 library.MagickBlurImage.argtypes = [
     ctypes.c_void_p,
@@ -141,6 +146,16 @@ library.MagickCycleColormapImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_ssize_t
 ]
+library.MagickDecipherImage.restype = ctypes.c_bool
+library.MagickDecipherImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p
+]
+library.MagickDeskewImage.restype = ctypes.c_bool
+library.MagickDeskewImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
+]
 library.MagickDespeckleImage.restype = ctypes.c_bool
 library.MagickDespeckleImage.argtypes = [
     ctypes.c_void_p
@@ -156,6 +171,11 @@ library.MagickEmbossImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickEncipherImage.restype = ctypes.c_bool
+library.MagickEncipherImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p
+]
 library.MagickEnhanceImage.restype = ctypes.c_bool
 library.MagickEnhanceImage.argtypes = [
     ctypes.c_void_p
@@ -167,6 +187,11 @@ library.MagickExtentImage.argtypes = [
     ctypes.c_size_t,
     ctypes.c_ssize_t,
     ctypes.c_ssize_t
+]
+library.MagickFilterImage.restype = ctypes.c_bool
+library.MagickFilterImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
 ]
 library.MagickHaldClutImage.restype = ctypes.c_bool
 library.MagickHaldClutImage.argtypes = [
@@ -599,6 +624,15 @@ def blackthreshold(image, threshold):
             image.raise_exception()
 
 
+def blueshift(image, factor):
+    if not isinstance(factor, numbers.Real):
+        raise TypeError('factor has to be a numbers.Real, not ' +
+                        repr(factor))
+    r = library.MagickBlueShiftImage(image.wand, factor)
+    if not r:
+        image.raise_exception()
+
+
 def brightnesscontrast(image, brightness, contrast):
     if not isinstance(brightness, numbers.Real):
         raise TypeError('brightness has to be a numbers.Real, not ' +
@@ -745,6 +779,24 @@ def cycle(image, displace):
         image.raise_exception()
 
 
+def decipher(image, passphrase):
+    if not isinstance(passphrase, string_type):
+        raise TypeError('expected a string, not ' + repr(passphrase))
+    buffer = ctypes.create_string_buffer(passphrase.encode())
+    r = library.MagickDecipherImage(image.wand, buffer)
+    if not r:
+        image.raise_exception()
+
+
+def deskew(image, threshold):
+    if not isinstance(threshold, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(threshold))
+    r = library.MagickDeskewImage(image.wand, threshold)
+    if not r:
+        image.raise_exception()
+
+
 def despeckle(image):
     r = library.MagickDespeckleImage(image.wand)
     if not r:
@@ -772,6 +824,15 @@ def emboss(image, radius, sigma):
         image.raise_exception()
 
 
+def encipher(image, passphrase):
+    if not isinstance(passphrase, string_type):
+        raise TypeError('expected a string, not ' + repr(passphrase))
+    buffer = ctypes.create_string_buffer(passphrase.encode())
+    r = library.MagickEncipherImage(image.wand, buffer)
+    if not r:
+        image.raise_exception()
+
+
 def enhance(image):
     r = library.MagickEnhanceImage(image.wand)
     if not r:
@@ -792,6 +853,23 @@ def extent(image, x, y, width, height):
         raise TypeError('height has to be a numbers.Integral, not ' +
                         repr(height))
     r = library.MagickExtentImage(image.wand, width, height, x, y)
+    if not r:
+        image.raise_exception()
+
+
+def filterimage(image, columns, rows, kernel):
+    if not isinstance(columns, numbers.Integral):
+        raise TypeError('columns has to be a numbers.Integral, not ' +
+                        repr(columns))
+    elif not isinstance(rows, numbers.Integral):
+        raise TypeError('rows has to be a numbers.Integral, not ' +
+                        repr(rows))
+    elif not isinstance(kernel, collections.Sequence):
+        raise TypeError('expecting sequence of arguments, not ' +
+                        repr(kernel))
+    assert(columns * rows == len(kernel))
+    kernelinfo = KernelInfo(columns, rows, kernel)
+    r = library.MagickFilterImage(image.wand, ctypes.byref(kernelinfo))
     if not r:
         image.raise_exception()
 

@@ -79,6 +79,11 @@ with grad.clone() as t:
     f(t, Color('gray(50%)'))
     save(t, f)
 
+with logo.clone() as t:
+    f = blueshift
+    f(t, 0.5)
+    save(t, f)
+
 with rose.clone() as t:
     f = brightnesscontrast
     f(t, -30, 0)
@@ -178,6 +183,16 @@ with logo.clone() as t:
     save(t, f)
 
 with rose.clone() as t:
+    encipher(t, 'password')
+    decipher(t, 'password')
+    save(t, decipher)
+
+with Image(width=80, height=40, background=Color('black')) as t:
+    f = deskew
+    f(t, 0.5*t.quantum_range)  # TODO: find an skewed image as sample
+    save(t, f)
+
+with rose.clone() as t:
     f = despeckle
     # TODO: add speckle noise
     f(t)
@@ -204,6 +219,19 @@ with rose.clone() as t:
     t.background_color = Color('blue')
     f(t, -10, -10, rose.width+20, rose.height+20)
     save(t, f)
+
+with rose.clone() as t:
+    f = filterimage
+    kernel = [
+        -1.0, 0.0, 1.0,
+        -2.0, 0.0, 2.0,
+        -1.0, 0.0, 1.0,
+    ]
+    f(t, 3, 3, kernel)
+    save(t, f)
+
+    import sys
+    sys.exit(-1)
 
 with rose.clone() as t:
     f = haldclut
