@@ -4,6 +4,11 @@ from wand.color import Color
 from image import *
 from textutil import calcSuitableFontsize, calcSuitableImagesize
 import os
+import sys
+
+
+if __name__ != '__main__':
+    sys.exit(0)
 
 
 def save(img, function):
