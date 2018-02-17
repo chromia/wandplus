@@ -132,6 +132,15 @@ library.MagickCommentImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p
 ]
+library.MagickConstituteImage.restype = ctypes.c_bool
+library.MagickConstituteImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_char_p,
+    ctypes.c_int,
+    ctypes.c_void_p
+]
 library.MagickContrastImage.restype = ctypes.c_bool
 library.MagickContrastImage.argtypes = [
     ctypes.c_void_p,
@@ -209,6 +218,12 @@ library.MagickLabelImage.restype = ctypes.c_bool
 library.MagickLabelImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p
+]
+library.MagickLocalContrastImage.restype = ctypes.c_bool
+library.MagickLocalContrastImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double
 ]
 library.MagickMagnifyImage.restype = ctypes.c_bool
 library.MagickMagnifyImage.argtypes = [
@@ -506,6 +521,9 @@ STATISTIC_TYPES = ('undefined', 'gradient', 'maximum', 'mean', 'median',
                    'minimum', 'mode', 'nonpeak', 'standarddeviation',
                    'rootmeansquare')
 
+STORAGE_TYPES = ('undefined', 'char', 'double', 'float', 'integer',
+                 'long', 'quantum', 'short')
+
 
 class KernelInfo(ctypes.Structure):
     _fields_ = [
@@ -749,6 +767,50 @@ def comment(image, text):
         image.raise_exception()
 
 
+def constitute(image, columns, rows, map, storage, pixels):
+    if not isinstance(columns, numbers.Integral):
+        raise ValueError('columns has to be a numbers.Integral, not ' +
+                         repr(columns))
+    elif not isinstance(rows, numbers.Integral):
+        raise ValueError('rows has to be a numbers.Integral, not ' +
+                         repr(rows))
+    elif not isinstance(map, string_type):
+        raise TypeError('expected a string, not ' + repr(map))
+    elif storage not in STORAGE_TYPES:
+        raise ValueError('expected string from MORPHOLOGY_METHODS, not ' +
+                         repr(storage))
+    elif not isinstance(pixels, collections.Sequence):
+        raise TypeError('expecting sequence of arguments, not ' +
+                        repr(pixels))
+
+    map_buffer = ctypes.create_string_buffer(map.encode())
+    storage_index = STORAGE_TYPES.index(storage)
+    pixels_buffer = None
+    length = len(pixels)
+
+    if image.quantum_range > 256:
+        qtype = ctypes.c_short
+    else:
+        qtype = ctypes.c_char
+
+    storage_dic = {
+        'char': ctypes.c_char,
+        'double': ctypes.c_double,
+        'float': ctypes.c_float,
+        'integer': ctypes.c_int,
+        'long': ctypes.c_long,
+        'quantum': qtype,
+        'short': ctypes.c_short
+    }
+    stype = storage_dic[storage]
+    pixels_buffer = (stype * length)(*pixels)
+
+    r = library.MagickConstituteImage(image.wand, columns, rows, map_buffer,
+                                      storage_index, pixels_buffer)
+    if not r:
+        image.raise_exception()
+
+
 def contrast(image, sharpen):
     if not isinstance(sharpen, bool):
         raise TypeError('sharpen must be a bool, not ' +
@@ -896,6 +958,18 @@ def label(image, text):
         raise TypeError('expected a string, not ' + repr(text))
     buffer = ctypes.create_string_buffer(text.encode())
     r = library.MagickLabelImage(image.wand, buffer)
+    if not r:
+        image.raise_exception()
+
+
+def localcontrast(image, radius, strength):
+    if not isinstance(radius, numbers.Real):
+        raise TypeError('radius has to be a numbers.Real, not ' +
+                        repr(radius))
+    elif not isinstance(strength, numbers.Real):
+        raise TypeError('strength has to be a numbers.Real, not ' +
+                        repr(strength))
+    r = library.MagickLocalContrastImage(image.wand, radius, strength)
     if not r:
         image.raise_exception()
 

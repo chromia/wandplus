@@ -170,6 +170,14 @@ with grad.clone() as t:
     f(t, 'hello')
     save(t, f)
 
+with Image() as t:
+    f = constitute
+    w = 2
+    h = 2
+    b = b'\x00\x00\x00\xFF\xFF\xFF\xFF\x00\x00\x00\xFF\x00'
+    f(t, w, h, 'RGB', 'char', b)
+    save(t, f)
+
 with rose.clone() as t:
     f = contrast
     f(t, False)
@@ -250,6 +258,11 @@ with rose.clone() as t:
 with rose.clone() as t:
     f = label
     f(t, 'hello')
+    save(t, f)
+
+with logo.clone() as t:
+    f = localcontrast
+    f(t, 5, 30)
     save(t, f)
 
 with rose.clone() as t:
