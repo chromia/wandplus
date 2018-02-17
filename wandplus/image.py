@@ -233,6 +233,15 @@ library.MagickMinifyImage.restype = ctypes.c_bool
 library.MagickMinifyImage.argtypes = [
     ctypes.c_void_p
 ]
+library.MagickMontageImage.restype = ctypes.c_void_p
+library.MagickMontageImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_char_p,
+    ctypes.c_int,
+    ctypes.c_char_p
+]
 library.MagickMorphologyImage.restype = ctypes.c_bool
 library.MagickMorphologyImage.argtypes = [
     ctypes.c_void_p,
@@ -493,6 +502,8 @@ library.MagickWhiteThresholdImage.argtypes = [
 
 DITHER_METHODS = ('undefined', 'nodither', 'riemersma', 'floydsteinberg')
 
+MONTAGE_MODES = ('undefined', 'frame', 'unframe', 'concatenate')
+
 MORPHOLOGY_METHODS = ('undefined', 'convolve', 'correlate', 'erode', 'dilate',
                       'erodeintensity', 'dilateintensity', 'distance',
                       'open', 'close', 'openintensity', 'closeintensity',
@@ -601,6 +612,17 @@ def adaptivethreshold(image, width, height, offset):
     r = library.MagickAdaptiveThresholdImage(image.wand, width, height, offset)
     if not r:
         image.raise_exception()
+
+
+def add(dstimage, srcimage):
+    """append source image(s) to sequence of destination.
+
+    This function conflicts with wand.image.Image.sequence.
+    Do NOT use together
+    """
+    r = library.MagickAddImage(dstimage.wand, srcimage.wand)
+    if not r:
+        dstimage.raise_exception()
 
 
 def addnoise(image, type):
@@ -984,6 +1006,32 @@ def minify(image):
     r = library.MagickMinifyImage(image.wand)
     if not r:
         image.raise_exception()
+
+
+def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
+    if not isinstance(drawing, Drawing):
+        raise TypeError('drawing must be a wand.drawing.Drawing instance, '
+                        'not ' + repr(drawing))
+    elif not isinstance(tile_geometry, string_type):
+        raise TypeError('expected a string, not ' + repr(tile_geometry))
+    elif not isinstance(thumbnail_geometry, string_type):
+        raise TypeError('expected a string, not ' + repr(thumbnail_geometry))
+    elif mode not in MONTAGE_MODES:
+        raise ValueError('expected string from MONTAGE_MODES, not ' +
+                         repr(mode))
+    elif not isinstance(frame, string_type):
+        raise TypeError('expected a string, not ' + repr(frame))
+    tile_buffer = ctypes.create_string_buffer(tile_geometry.encode())
+    thumb_buffer = ctypes.create_string_buffer(thumbnail_geometry.encode())
+    frame_buffer = ctypes.create_string_buffer(frame.encode())
+    mode_index = MONTAGE_MODES.index(mode)
+    new_wand = library.MagickMontageImage(image.wand, drawing.resource,
+                                          tile_buffer, thumb_buffer,
+                                          mode_index, frame_buffer)
+    image.raise_exception()
+    if new_wand:
+        return Image(image=BaseImage(new_wand))
+    image.raise_exception()
 
 
 def morphology(image, method, iterations, kernelinfo):

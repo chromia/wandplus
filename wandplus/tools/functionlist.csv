@@ -40,6 +40,7 @@ MagickLabelImage,library,b,v,image,S,label,,,,,,,,
 MagickLocalContrastImage,library,b,v,image,d,radius,d,strength,,,,,,
 MagickMagnifyImage,library,b,v,image,,,,,,,,,,
 MagickMinifyImage,library,b,v,image,,,,,,,,,,
+MagickMontageImage,library,v,v,image,Drawing,drawing,S,tile_geometry,S,thumbnail_geometry,i,mode,S,frame
 MagickMorphologyImage,library,b,v,image,i,method,ss,iterations,v,kernelinfo,,,,
 MagickMotionBlurImage,library,b,v,image,d,radius,d,sigma,d,angle,,,,
 MagickOilPaintImage,library,b,v,image,d,radius,,,,,,,,

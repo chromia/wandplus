@@ -276,6 +276,22 @@ with rose.clone() as t:
     f(t)
     save(t, f)
 
+with rose.clone() as base:
+    f = montage
+    with Image() as dst:
+        rows = 2
+        columns = 3
+        for i in range(rows * columns):
+            add(dst, base)
+
+        tile = "{0}x{1}+0+0".format(columns, rows)
+        thumb = "80x50+4+3"
+        frame = "15x15+3+3"
+        mode = "frame"
+        with Drawing() as d:
+            with f(dst, d, tile, thumb, mode, frame) as result:
+                save(result, f)
+
 with logo.clone() as t:
     f = morphology
     f(t, 'dilate', 1, 'Diamond')
