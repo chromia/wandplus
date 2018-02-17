@@ -9,6 +9,7 @@ import os
 
 
 if __name__ != '__main__':
+    import sys
     sys.exit(0)
 
 
