@@ -6,7 +6,6 @@ from wand.color import Color
 from image import *
 from textutil import calcSuitableFontsize, calcSuitableImagesize
 import os
-import sys
 
 
 if __name__ != '__main__':
@@ -236,9 +235,6 @@ with rose.clone() as t:
     ]
     f(t, 3, 3, kernel)
     save(t, f)
-
-    import sys
-    sys.exit(-1)
 
 with rose.clone() as t:
     f = haldclut
