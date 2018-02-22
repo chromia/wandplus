@@ -108,9 +108,23 @@ library.MagickBlurImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickBlurImageChannel.restype = ctypes.c_bool
+library.MagickBlurImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_double,
+    ctypes.c_double
+]
 library.MagickBrightnessContrastImage.restype = ctypes.c_bool
 library.MagickBrightnessContrastImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickBrightnessContrastImageChannel.restype = ctypes.c_bool
+library.MagickBrightnessContrastImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
     ctypes.c_double,
     ctypes.c_double
 ]
@@ -132,6 +146,11 @@ library.MagickClampImage.restype = ctypes.c_bool
 library.MagickClampImage.argtypes = [
     ctypes.c_void_p
 ]
+library.MagickClampImageChannel.restype = ctypes.c_bool
+library.MagickClampImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int
+]
 library.MagickClipImage.restype = ctypes.c_bool
 library.MagickClipImage.argtypes = [
     ctypes.c_void_p
@@ -139,6 +158,12 @@ library.MagickClipImage.argtypes = [
 library.MagickClutImage.restype = ctypes.c_bool
 library.MagickClutImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_void_p
+]
+library.MagickClutImageChannel.restype = ctypes.c_bool
+library.MagickClutImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
     ctypes.c_void_p
 ]
 library.MagickColorDecisionListImage.restype = ctypes.c_bool
@@ -739,26 +764,43 @@ def blueshift(image, factor):
         image.raise_exception()
 
 
-def brightnesscontrast(image, brightness, contrast):
+def brightnesscontrast(image, brightness, contrast, channel=None):
     if not isinstance(brightness, numbers.Real):
         raise TypeError('brightness has to be a numbers.Real, not ' +
                         repr(brightness))
     elif not isinstance(contrast, numbers.Real):
         raise TypeError('contrast has to be a numbers.Real, not ' +
                         repr(contrast))
-    r = library.MagickBrightnessContrastImage(image.wand, brightness, contrast)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickBrightnessContrastImageChannel(image.wand,
+                                                         CHANNELS[channel],
+                                                         brightness,
+                                                         contrast)
+    else:
+        r = library.MagickBrightnessContrastImage(image.wand, brightness,
+                                                  contrast)
     if not r:
         image.raise_exception()
 
 
-def blur(image, radius, sigma):
+def blur(image, radius, sigma, channel=None):
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
     elif not isinstance(sigma, numbers.Real):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
-    r = library.MagickBlurImage(image.wand, radius, sigma)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickBlurImageChannel(image.wand, CHANNELS[channel],
+                                           radius, sigma)
+    else:
+        r = library.MagickBlurImage(image.wand, radius, sigma)
     if not r:
         image.raise_exception()
 
@@ -793,8 +835,14 @@ def chop(image, x, y, width, height):
         image.raise_exception()
 
 
-def clamp(image):
-    r = library.MagickClampImage(image.wand)
+def clamp(image, channel=None):
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickClampImageChannel(image.wand, CHANNELS[channel])
+    else:
+        r = library.MagickClampImage(image.wand)
     if not r:
         image.raise_exception()
 
@@ -805,8 +853,15 @@ def clip(image):
         image.raise_exception()
 
 
-def clut(image, clutimage):
-    r = library.MagickClutImage(image.wand, clutimage.wand)
+def clut(image, clutimage, channel=None):
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickClutImageChannel(image.wand, CHANNELS[channel],
+                                           clutimage.wand)
+    else:
+        r = library.MagickClutImage(image.wand, clutimage.wand)
     if not r:
         image.raise_exception()
 

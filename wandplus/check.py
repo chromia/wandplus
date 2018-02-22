@@ -113,11 +113,17 @@ f = brightnesscontrast
 with rose.clone() as t:
     f(t, -30, 0)
     save(t, f)
+with rose.clone() as t:
+    f(t, -30, 0, channel='red')
+    save(t, f, True)
 
 f = blur
 with rose.clone() as t:
     f(t, 0, 3)
     save(t, f)
+with rose.clone() as t:
+    f(t, 0, 3, channel='red')
+    save(t, f, True)
 
 f = charcoal
 with rose.clone() as t:
@@ -130,10 +136,13 @@ with grad.clone() as t:
     f(t, 0, 00, 200, 200)
     save(t, f)
 
-f = clamp
+f = clamp  # TODO: more useful code
 with rose.clone() as t:
     f(t)
     save(t, f)
+with rose.clone() as t:
+    f(t, channel='red')
+    save(t, f, True)
 
 # f = clip
 # with rose.clone() as t:
@@ -142,11 +151,14 @@ with rose.clone() as t:
 
 
 f = clut
-with grad.clone() as t:
-    with Image(filename='gradient:red-blue', width=1, height=100) as p:
-        p.rotate(90)
+with Image(filename='gradient:red-blue', width=1, height=100) as p:
+    p.rotate(90)
+    with grad.clone() as t:
         f(t, p)
         save(t, f)
+    with grad.clone() as t:
+        f(t, p, channel='green')
+        save(t, f, True)
 
 xml = """
 <ColorCorrectionCollection xmlns="urn:ASC:CDL:v1.2">
