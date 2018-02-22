@@ -25,6 +25,13 @@ library.MagickAdaptiveBlurImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickAdaptiveBlurImageChannel.restype = ctypes.c_bool
+library.MagickAdaptiveBlurImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_double,
+    ctypes.c_double
+]
 library.MagickAdaptiveResizeImage.restype = ctypes.c_bool
 library.MagickAdaptiveResizeImage.argtypes = [
     ctypes.c_void_p,
@@ -563,14 +570,22 @@ class KernelInfo(ctypes.Structure):
         self.value = (ctypes.c_double * length)(*kernel)
 
 
-def adaptiveblur(image, radius, sigma):
+def adaptiveblur(image, radius, sigma, channel=None):
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
     elif not isinstance(sigma, numbers.Real):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
-    r = library.MagickAdaptiveBlurImage(image.wand, radius, sigma)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickAdaptiveBlurImageChannel(image.wand,
+                                                   CHANNELS[channel],
+                                                   radius, sigma)
+    else:
+        r = library.MagickAdaptiveBlurImage(image.wand, radius, sigma)
     if not r:
         image.raise_exception()
 

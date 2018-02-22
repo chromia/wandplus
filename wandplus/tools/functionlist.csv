@@ -1,6 +1,7 @@
 AcquireKernelInfo,libmagick,v,S,kernel_string,,,,,,,,,,
 DestroyKernelInfo,libmagick,v,v,kernel,,,,,,,,,,
 MagickAdaptiveBlurImage,library,b,v,image,d,radius,d,sigma,,,,,,
+MagickAdaptiveBlurImageChannel,library,b,v,image,i,channel,d,radius,d,sigma,,,,
 MagickAdaptiveResizeImage,library,b,v,image,s,columns,s,rows,,,,,,
 MagickAdaptiveSharpenImage,library,b,v,image,d,radius,d,sigma,,,,,,
 MagickAdaptiveThresholdImage,library,b,v,image,s,width,s,height,ss,offset,,,,

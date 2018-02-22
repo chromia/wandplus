@@ -13,8 +13,11 @@ if __name__ != '__main__':
     sys.exit(0)
 
 
-def save(img, function):
-    path = 'image/' + function.__name__ + ".png"
+def save(img, function, channel=False):
+    if channel:
+        path = 'image/' + function.__name__ + "_ch.png"
+    else:
+        path = 'image/' + function.__name__ + ".png"
     print(path)
     img.save(filename=path)
 
@@ -43,6 +46,9 @@ with rose.clone() as t:
     f = adaptiveblur
     f(t, 5.0, 3.0)
     save(t, f)
+with rose.clone() as t:
+    f(t, 5.0, 3.0, channel='red')
+    save(t, f, True)
 
 with rose.clone() as t:
     f = adaptiveresize
