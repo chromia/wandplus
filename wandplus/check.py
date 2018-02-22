@@ -289,11 +289,14 @@ with rose.clone() as t:
     f(t, 3, 3, kernel, channel='red')
     save(t, f, True)
 
-f = haldclut
-with rose.clone() as t:
-    with Image(filename='hald:12') as p:
+f = haldclut  # TODO: more useful code
+with Image(filename='hald:12') as p:
+    with rose.clone() as t:
         f(t, p)
         save(t, f)
+    with rose.clone() as t:
+        f(t, p, channel='red')
+        save(t, f, True)
 
 f = implode
 with rose.clone() as t:
@@ -340,11 +343,17 @@ f = morphology
 with logo.clone() as t:
     f(t, 'dilate', 1, 'Diamond')
     save(t, f)
+with logo.clone() as t:
+    f(t, 'dilate', 1, 'Diamond', channel='red')
+    save(t, f, True)
 
 f = motionblur
 with logo.clone() as t:
     f(t, 30, 10, 45)
     save(t, f)
+with logo.clone() as t:
+    f(t, 30, 10, 45, channel='red')
+    save(t, f, True)
 
 f = oilpaint
 with rose.clone() as t:
@@ -355,11 +364,17 @@ f = opaquepaint
 with logo.clone() as t:
     f(t, Color('red'), Color('blue'), 1.0, False)
     save(t, f)
+with logo.clone() as t:
+    f(t, Color('red'), Color('blue'), 1.0, False, channel='blue')
+    save(t, f, True)
 
 f = orderedposterize
 with grad.clone() as t:
     f(t, 'o4x4,3,3')
     save(t, f)
+with grad.clone() as t:
+    f(t, 'o4x4,3,3', channel='red')
+    save(t, f, True)
 
 f = polaroid
 with logo.clone() as t:

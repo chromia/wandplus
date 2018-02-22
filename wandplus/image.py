@@ -286,6 +286,12 @@ library.MagickHaldClutImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p
 ]
+library.MagickHaldClutImageChannel.restype = ctypes.c_bool
+library.MagickHaldClutImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_void_p
+]
 library.MagickImplodeImage.restype = ctypes.c_bool
 library.MagickImplodeImage.argtypes = [
     ctypes.c_void_p,
@@ -326,9 +332,25 @@ library.MagickMorphologyImage.argtypes = [
     ctypes.c_ssize_t,
     ctypes.c_void_p
 ]
+library.MagickMorphologyImageChannel.restype = ctypes.c_bool
+library.MagickMorphologyImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_ssize_t,
+    ctypes.c_void_p
+]
 library.MagickMotionBlurImage.restype = ctypes.c_bool
 library.MagickMotionBlurImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickMotionBlurImageChannel.restype = ctypes.c_bool
+library.MagickMotionBlurImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
     ctypes.c_double,
     ctypes.c_double,
     ctypes.c_double
@@ -346,9 +368,24 @@ library.MagickOpaquePaintImage.argtypes = [
     ctypes.c_double,
     ctypes.c_bool
 ]
+library.MagickOpaquePaintImageChannel.restype = ctypes.c_bool
+library.MagickOpaquePaintImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_bool
+]
 library.MagickOrderedPosterizeImage.restype = ctypes.c_bool
 library.MagickOrderedPosterizeImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_char_p
+]
+library.MagickOrderedPosterizeImageChannel.restype = ctypes.c_bool
+library.MagickOrderedPosterizeImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
     ctypes.c_char_p
 ]
 library.MagickPolaroidImage.restype = ctypes.c_bool
@@ -1127,8 +1164,15 @@ def filterimage(image, columns, rows, kernel, channel=None):
         image.raise_exception()
 
 
-def haldclut(image, clutimage):
-    r = library.MagickHaldClutImage(image.wand, clutimage.wand)
+def haldclut(image, clutimage, channel=None):
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickHaldClutImageChannel(image.wand, CHANNELS[channel],
+                                               clutimage.wand)
+    else:
+        r = library.MagickHaldClutImage(image.wand, clutimage.wand)
     if not r:
         image.raise_exception()
 
@@ -1201,7 +1245,7 @@ def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
     image.raise_exception()
 
 
-def morphology(image, method, iterations, kernelinfo):
+def morphology(image, method, iterations, kernelinfo, channel=None):
     if method not in MORPHOLOGY_METHODS:
         raise ValueError('expected string from MORPHOLOGY_METHODS, not ' +
                          repr(method))
@@ -1211,14 +1255,22 @@ def morphology(image, method, iterations, kernelinfo):
     methodindex = MORPHOLOGY_METHODS.index(method)
     kinfo = ctypes.create_string_buffer(kernelinfo.encode())
     kernel = libmagick.AcquireKernelInfo(kinfo)
-    r = library.MagickMorphologyImage(image.wand, methodindex,
-                                      iterations, kernel)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickMorphologyImageChannel(image.wand, CHANNELS[channel],
+                                                 methodindex, iterations,
+                                                 kernel)
+    else:
+        r = library.MagickMorphologyImage(image.wand, methodindex,
+                                          iterations, kernel)
     kernel = libmagick.DestroyKernelInfo(kernel)
     if not r:
         image.raise_exception()
 
 
-def motionblur(image, radius, sigma, angle):
+def motionblur(image, radius, sigma, angle, channel=None):
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1228,7 +1280,14 @@ def motionblur(image, radius, sigma, angle):
     elif not isinstance(angle, numbers.Real):
         raise TypeError('angle has to be a numbers.Real, not ' +
                         repr(angle))
-    r = library.MagickMotionBlurImage(image.wand, radius, sigma, angle)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickMotionBlurImageChannel(image.wand, CHANNELS[channel],
+                                                 radius, sigma, angle)
+    else:
+        r = library.MagickMotionBlurImage(image.wand, radius, sigma, angle)
     if not r:
         image.raise_exception()
 
@@ -1242,7 +1301,7 @@ def oilpaint(image, radius):
         image.raise_exception()
 
 
-def opaquepaint(image, target, fill, fuzz, invert=False):
+def opaquepaint(image, target, fill, fuzz, invert=False, channel=None):
     if not isinstance(target, Color):
         raise TypeError('target must be a wand.color.Color instance, '
                         'not ' + repr(target))
@@ -1257,17 +1316,35 @@ def opaquepaint(image, target, fill, fuzz, invert=False):
                         repr(invert))
     with target:
         with fill:
-            r = library.MagickOpaquePaintImage(image.wand, target.resource,
-                                               fill.resource, fuzz, invert)
+            if channel:
+                if channel not in CHANNELS:
+                    raise ValueError('expected value from CHANNELS, not ' +
+                                     repr(channel))
+                r = library.MagickOpaquePaintImageChannel(image.wand,
+                                                          CHANNELS[channel],
+                                                          target.resource,
+                                                          fill.resource,
+                                                          fuzz, invert)
+            else:
+                r = library.MagickOpaquePaintImage(image.wand, target.resource,
+                                                   fill.resource, fuzz, invert)
             if not r:
                 image.raise_exception()
 
 
-def orderedposterize(image, threshold_map):
+def orderedposterize(image, threshold_map, channel=None):
     if not isinstance(threshold_map, string_type):
         raise TypeError('expected a string, not ' + repr(threshold_map))
     buffer = ctypes.create_string_buffer(threshold_map.encode())
-    r = library.MagickOrderedPosterizeImage(image.wand, buffer)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickOrderedPosterizeImageChannel(image.wand,
+                                                       CHANNELS[channel],
+                                                       buffer)
+    else:
+        r = library.MagickOrderedPosterizeImage(image.wand, buffer)
     if not r:
         image.raise_exception()
 
