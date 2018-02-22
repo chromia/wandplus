@@ -59,6 +59,9 @@ f = adaptivesharpen
 with rose.clone() as t:
     f(t, 5, 5)
     save(t, f)
+with rose.clone() as t:
+    f(t, 5, 5, channel='red')
+    save(t, f, True)
 
 f = adaptivethreshold
 with logo.clone() as t:
@@ -69,6 +72,9 @@ f = addnoise
 with grad.clone() as t:
     f(t, 'gaussian')
     save(t, f)
+with grad.clone() as t:
+    f(t, 'gaussian', channel='red')
+    save(t, f, True)
 
 f = affinetransform
 with rose.clone() as t:
@@ -81,11 +87,17 @@ f = autogamma
 with rose.clone() as t:
     f(t)
     save(t, f)
+with rose.clone() as t:
+    f(t, channel='red')
+    save(t, f, True)
 
 f = autolevel
 with rose.clone() as t:
     f(t)
     save(t, f)
+with rose.clone() as t:
+    f(t, channel='red')
+    save(t, f, True)
 
 f = blackthreshold
 with grad.clone() as t:

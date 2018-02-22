@@ -44,6 +44,13 @@ library.MagickAdaptiveSharpenImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickAdaptiveSharpenImageChannel.restype = ctypes.c_bool
+library.MagickAdaptiveSharpenImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_double,
+    ctypes.c_double
+]
 library.MagickAdaptiveThresholdImage.restype = ctypes.c_bool
 library.MagickAdaptiveThresholdImage.argtypes = [
     ctypes.c_void_p,
@@ -56,6 +63,12 @@ library.MagickAddNoiseImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int
 ]
+library.MagickAddNoiseImageChannel.restype = ctypes.c_bool
+library.MagickAddNoiseImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_int
+]
 library.MagickAffineTransformImage.restype = ctypes.c_bool
 library.MagickAffineTransformImage.argtypes = [
     ctypes.c_void_p,
@@ -65,9 +78,19 @@ library.MagickAutoGammaImage.restype = ctypes.c_bool
 library.MagickAutoGammaImage.argtypes = [
     ctypes.c_void_p
 ]
+library.MagickAutoGammaImageChannel.restype = ctypes.c_bool
+library.MagickAutoGammaImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int
+]
 library.MagickAutoLevelImage.restype = ctypes.c_bool
 library.MagickAutoLevelImage.argtypes = [
     ctypes.c_void_p
+]
+library.MagickAutoLevelImageChannel.restype = ctypes.c_bool
+library.MagickAutoLevelImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int
 ]
 library.MagickBlackThresholdImage.restype = ctypes.c_bool
 library.MagickBlackThresholdImage.argtypes = [
@@ -602,14 +625,21 @@ def adaptiveresize(image, columns, rows):
         image.raise_exception()
 
 
-def adaptivesharpen(image, radius, sigma):
+def adaptivesharpen(image, radius, sigma, channel=None):
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
     elif not isinstance(sigma, numbers.Real):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
-    r = library.MagickAdaptiveSharpenImage(image.wand, radius, sigma)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickAdaptiveSharpenImage(image.wand, CHANNELS[channel],
+                                               radius, sigma)
+    else:
+        r = library.MagickAdaptiveSharpenImage(image.wand, radius, sigma)
     if not r:
         image.raise_exception()
 
@@ -640,12 +670,19 @@ def add(dstimage, srcimage):
         dstimage.raise_exception()
 
 
-def addnoise(image, type):
+def addnoise(image, type, channel=None):
     if type not in NOISE_TYPES:
         raise ValueError('expected string from NOISE_TYPES, not ' +
                          repr(type))
     index = NOISE_TYPES.index(type)
-    r = library.MagickAddNoiseImage(image.wand, index)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickAddNoiseImageChannel(image.wand, CHANNELS[channel],
+                                               index)
+    else:
+        r = library.MagickAddNoiseImage(image.wand, index)
     if not r:
         image.raise_exception()
 
@@ -659,14 +696,26 @@ def affinetransform(image, drawing):
         image.raise_exception()
 
 
-def autogamma(image):
-    r = library.MagickAutoGammaImage(image.wand)
+def autogamma(image, channel=None):
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickAutoGammaImageChannel(image.wand, CHANNELS[channel])
+    else:
+        r = library.MagickAutoGammaImage(image.wand)
     if not r:
         image.raise_exception()
 
 
-def autolevel(image):
-    r = library.MagickAutoLevelImage(image.wand)
+def autolevel(image, channel=None):
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickAutoLevelImageChannel(image.wand, CHANNELS[channel])
+    else:
+        r = library.MagickAutoLevelImage(image.wand)
     if not r:
         image.raise_exception()
 
