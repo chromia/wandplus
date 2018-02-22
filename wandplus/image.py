@@ -207,6 +207,13 @@ library.MagickConvolveImage.argtypes = [
     ctypes.c_size_t,
     ctypes.POINTER(ctypes.c_double)
 ]
+library.MagickConvolveImageChannel.restype = ctypes.c_bool
+library.MagickConvolveImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_size_t,
+    ctypes.POINTER(ctypes.c_double)
+]
 library.MagickCycleColormapImage.restype = ctypes.c_bool
 library.MagickCycleColormapImage.argtypes = [
     ctypes.c_void_p,
@@ -246,6 +253,15 @@ library.MagickEnhanceImage.restype = ctypes.c_bool
 library.MagickEnhanceImage.argtypes = [
     ctypes.c_void_p
 ]
+library.MagickEqualizeImage.restype = ctypes.c_bool
+library.MagickEqualizeImage.argtypes = [
+    ctypes.c_void_p
+]
+library.MagickEqualizeImageChannel.restype = ctypes.c_bool
+library.MagickEqualizeImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int
+]
 library.MagickExtentImage.restype = ctypes.c_bool
 library.MagickExtentImage.argtypes = [
     ctypes.c_void_p,
@@ -257,6 +273,12 @@ library.MagickExtentImage.argtypes = [
 library.MagickFilterImage.restype = ctypes.c_bool
 library.MagickFilterImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_void_p
+]
+library.MagickFilterImageChannel.restype = ctypes.c_bool
+library.MagickFilterImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
     ctypes.c_void_p
 ]
 library.MagickHaldClutImage.restype = ctypes.c_bool
@@ -961,7 +983,7 @@ def contrast(image, sharpen):
         image.raise_exception()
 
 
-def convolve(image, order, kernel):
+def convolve(image, order, kernel, channel=None):
     if not isinstance(order, numbers.Integral):
         raise ValueError('order has to be a numbers.Integral, not ' +
                          repr(order))
@@ -970,7 +992,14 @@ def convolve(image, order, kernel):
                         repr(kernel))
     assert(len(kernel) == order * order)
     p_kernel = (ctypes.c_double * len(kernel))(*kernel)
-    r = library.MagickConvolveImage(image.wand, order, p_kernel)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickConvolveImageChannel(image.wand, CHANNELS[channel],
+                                               order, p_kernel)
+    else:
+        r = library.MagickConvolveImage(image.wand, order, p_kernel)
     if not r:
         image.raise_exception()
 
@@ -1044,6 +1073,18 @@ def enhance(image):
         image.raise_exception()
 
 
+def equalize(image, channel=None):
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickEqualizeImageChannel(image.wand, CHANNELS[channel])
+    else:
+        r = library.MagickEqualizeImage(image.wand)
+    if not r:
+        image.raise_exception()
+
+
 def extent(image, x, y, width, height):
     if not isinstance(x, numbers.Integral):
         raise TypeError('x has to be a numbers.Integral, not ' +
@@ -1062,7 +1103,7 @@ def extent(image, x, y, width, height):
         image.raise_exception()
 
 
-def filterimage(image, columns, rows, kernel):
+def filterimage(image, columns, rows, kernel, channel=None):
     if not isinstance(columns, numbers.Integral):
         raise TypeError('columns has to be a numbers.Integral, not ' +
                         repr(columns))
@@ -1074,7 +1115,14 @@ def filterimage(image, columns, rows, kernel):
                         repr(kernel))
     assert(columns * rows == len(kernel))
     kernelinfo = KernelInfo(columns, rows, kernel)
-    r = library.MagickFilterImage(image.wand, ctypes.byref(kernelinfo))
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickFilterImageChannel(image.wand, CHANNELS[channel],
+                                             ctypes.byref(kernelinfo))
+    else:
+        r = library.MagickFilterImage(image.wand, ctypes.byref(kernelinfo))
     if not r:
         image.raise_exception()
 

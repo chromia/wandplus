@@ -215,12 +215,15 @@ with rose.clone() as t:
     save(t, f)
 
 f = convolve
+kernel = [1/16, 2/16, 1/16,
+          2/16, 4/16, 2/16,
+          1/16, 2/16, 1/16]
 with rose.clone() as t:
-    k = [1/16, 2/16, 1/16,
-         2/16, 4/16, 2/16,
-         1/16, 2/16, 1/16]
-    f(t, 3, k)
+    f(t, 3, kernel)
     save(t, f)
+with rose.clone() as t:
+    f(t, 3, kernel, channel='red')
+    save(t, f, True)
 
 f = cycle
 with logo.clone() as t:
@@ -258,6 +261,14 @@ with Image(filename='plasma:', width=100, height=100) as t:
     f(t)
     save(t, f)
 
+f = equalize
+with rose.clone() as t:
+    f(t)
+    save(t, f)
+with rose.clone() as t:
+    f(t, channel='red')
+    save(t, f, True)
+
 f = extent
 with rose.clone() as t:
     t.gravity = 'center'
@@ -266,14 +277,17 @@ with rose.clone() as t:
     save(t, f)
 
 f = filterimage
+kernel = [  # Sobel filter
+    -1.0, 0.0, 1.0,
+    -2.0, 0.0, 2.0,
+    -1.0, 0.0, 1.0,
+]
 with rose.clone() as t:
-    kernel = [
-        -1.0, 0.0, 1.0,
-        -2.0, 0.0, 2.0,
-        -1.0, 0.0, 1.0,
-    ]
     f(t, 3, 3, kernel)
     save(t, f)
+with rose.clone() as t:
+    f(t, 3, 3, kernel, channel='red')
+    save(t, f, True)
 
 f = haldclut
 with rose.clone() as t:
