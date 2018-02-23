@@ -281,6 +281,17 @@ library.MagickFilterImageChannel.argtypes = [
     ctypes.c_int,
     ctypes.c_void_p
 ]
+library.MagickFloodfillPaintImage.restype = ctypes.c_bool
+library.MagickFloodfillPaintImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_void_p,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t,
+    ctypes.c_bool
+]
 library.MagickHaldClutImage.restype = ctypes.c_bool
 library.MagickHaldClutImage.argtypes = [
     ctypes.c_void_p,
@@ -1212,6 +1223,42 @@ def filterimage(image, columns, rows, kernel, channel=None):
         r = library.MagickFilterImage(image.wand, ctypes.byref(kernelinfo))
     if not r:
         image.raise_exception()
+
+
+def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
+                   invert=False, channel=None):
+    if not isinstance(fillcolor, Color):
+        raise TypeError('fillcolor must be a wand.color.Color, not ' +
+                        repr(fillcolor))
+    elif not isinstance(fuzz, numbers.Real):
+        raise TypeError('fuzz has to be a numbers.Real, not ' +
+                        repr(fuzz))
+    elif not isinstance(bordercolor, Color):
+        raise TypeError('bordercolor must be a wand.color.Color, not ' +
+                        repr(bordercolor))
+    elif not isinstance(x, numbers.Integral):
+        raise TypeError('x has to be a numbers.Integral, not ' +
+                        repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise TypeError('y has to be a numbers.Integral, not ' +
+                        repr(y))
+    elif not isinstance(invert, bool):
+        raise TypeError('invert must be a bool, not ' +
+                        repr(invert))
+    if not channel:
+        channel = 'default_channels'
+    if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+    with fillcolor:
+        with bordercolor:
+            r = library.MagickFloodfillPaintImage(image.wand,
+                                                  CHANNELS[channel],
+                                                  fillcolor.resource, fuzz,
+                                                  bordercolor.resource, x, y,
+                                                  invert)
+            if not r:
+                image.raise_exception()
 
 
 def haldclut(image, clutimage, channel=None):

@@ -289,6 +289,11 @@ with rose.clone() as t:
     f(t, 3, 3, kernel, channel='red')
     save(t, f, True)
 
+f = floodfillpaint
+with logo.clone() as t:
+    f(t, Color('green'), 0.10*t.quantum_range, Color('white'), 0, 0)
+    save(t, f)
+
 f = haldclut  # TODO: more useful code
 with Image(filename='hald:12') as p:
     with rose.clone() as t:
