@@ -292,6 +292,11 @@ library.MagickFloodfillPaintImage.argtypes = [
     ctypes.c_ssize_t,
     ctypes.c_bool
 ]
+library.MagickForwardFourierTransformImage.restype = ctypes.c_bool
+library.MagickForwardFourierTransformImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_bool
+]
 library.MagickHaldClutImage.restype = ctypes.c_bool
 library.MagickHaldClutImage.argtypes = [
     ctypes.c_void_p,
@@ -307,6 +312,12 @@ library.MagickImplodeImage.restype = ctypes.c_bool
 library.MagickImplodeImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double
+]
+library.MagickInverseFourierTransformImage.restype = ctypes.c_bool
+library.MagickInverseFourierTransformImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_bool
 ]
 library.MagickLabelImage.restype = ctypes.c_bool
 library.MagickLabelImage.argtypes = [
@@ -1261,6 +1272,15 @@ def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
                 image.raise_exception()
 
 
+def forwardfouriertransform(image, magnitude):
+    if not isinstance(magnitude, bool):
+        raise TypeError('magnitude must be a bool, not ' +
+                        repr(magnitude))
+    r = library.MagickForwardFourierTransformImage(image.wand, magnitude)
+    if not r:
+        image.raise_exception()
+
+
 def haldclut(image, clutimage, channel=None):
     if channel:
         if channel not in CHANNELS:
@@ -1281,6 +1301,25 @@ def implode(image, amount):
     r = library.MagickImplodeImage(image.wand, amount)
     if not r:
         image.raise_exception()
+
+
+def inversefouriertransform(image1, image2, magnitude):
+    """
+    :param image1: magnitude-image or real-image.
+                   as a result of the function,
+                   a pair of image are stored to image1
+    :param image2: phase-image or imaginary-image
+    :param magnitude: if true, return as magnitude / phase pair
+                      otherwise a real / imaginary image pair.
+    """
+    if not isinstance(magnitude, bool):
+        raise TypeError('magnitude must be a bool, not ' +
+                        repr(magnitude))
+    r = library.MagickInverseFourierTransformImage(image1.wand,
+                                                   image2.wand,
+                                                   magnitude)
+    if not r:
+        image1.raise_exception()
 
 
 def label(image, text):

@@ -294,6 +294,18 @@ with logo.clone() as t:
     f(t, Color('green'), 0.10*t.quantum_range, Color('white'), 0, 0)
     save(t, f)
 
+f = forwardfouriertransform  # require IM build option '--with-fftw'
+with logo.clone() as t:      # I couldn't build on Windows...
+    f(t, True)
+    save(t, f)  # includes two images(magnitude&phase)
+    with t.sequence[0].clone() as mag:
+        with t.sequence[1].clone() as phase:
+            f = inversefouriertransform
+            blur(mag, 0, 0.5)  # as degradation
+            t2 = mag
+            f(t2, phase, True)
+            save(t2, f)
+
 f = haldclut  # TODO: more useful code
 with Image(filename='hald:12') as p:
     with rose.clone() as t:
