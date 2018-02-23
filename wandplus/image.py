@@ -415,6 +415,13 @@ library.MagickRandomThresholdImage.argtypes = [
     ctypes.c_size_t,
     ctypes.c_size_t
 ]
+library.MagickRandomThresholdImageChannel.restype = ctypes.c_bool
+library.MagickRandomThresholdImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_size_t,
+    ctypes.c_size_t
+]
 library.MagickRemapImage.restype = ctypes.c_bool
 library.MagickRemapImage.argtypes = [
     ctypes.c_void_p,
@@ -440,6 +447,12 @@ library.MagickRotationalBlurImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double
 ]
+library.MagickRotationalBlurImageChannel.restype = ctypes.c_bool
+library.MagickRotationalBlurImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_double
+]
 library.MagickScaleImage.restype = ctypes.c_bool
 library.MagickScaleImage.argtypes = [
     ctypes.c_void_p,
@@ -457,6 +470,14 @@ library.MagickSegmentImage.argtypes = [
 library.MagickSelectiveBlurImage.restype = ctypes.c_bool
 library.MagickSelectiveBlurImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_double
+]
+library.MagickSelectiveBlurImageChannel.restype = ctypes.c_bool
+library.MagickSelectiveBlurImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
     ctypes.c_double,
     ctypes.c_double,
     ctypes.c_double
@@ -499,6 +520,13 @@ library.MagickSharpenImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickSharpenImageChannel.restype = ctypes.c_bool
+library.MagickSharpenImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_double,
+    ctypes.c_double
+]
 library.MagickShaveImage.restype = ctypes.c_bool
 library.MagickShaveImage.argtypes = [
     ctypes.c_void_p,
@@ -519,6 +547,14 @@ library.MagickSigmoidalContrastImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickSigmoidalContrastImageChannel.restype = ctypes.c_bool
+library.MagickSigmoidalContrastImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_bool,
+    ctypes.c_double,
+    ctypes.c_double
+]
 library.MagickSketchImage.restype = ctypes.c_bool
 library.MagickSketchImage.argtypes = [
     ctypes.c_void_p,
@@ -529,6 +565,12 @@ library.MagickSketchImage.argtypes = [
 library.MagickSolarizeImage.restype = ctypes.c_bool
 library.MagickSolarizeImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_double
+]
+library.MagickSolarizeImageChannel.restype = ctypes.c_bool
+library.MagickSolarizeImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
     ctypes.c_double
 ]
 library.MagickSparseColorImage.restype = ctypes.c_bool
@@ -556,6 +598,14 @@ library.MagickSpreadImage.argtypes = [
 library.MagickStatisticImage.restype = ctypes.c_bool
 library.MagickStatisticImage.argtypes = [
     ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_size_t,
+    ctypes.c_size_t
+]
+library.MagickStatisticImageChannel.restype = ctypes.c_bool
+library.MagickStatisticImageChannel.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
     ctypes.c_int,
     ctypes.c_size_t,
     ctypes.c_size_t
@@ -1394,14 +1444,22 @@ def raiseimage(image, x, y, width, height, raiseeffect):  # raise is keyword
         image.raise_exception()
 
 
-def randomthreshold(image, low, high):
+def randomthreshold(image, low, high, channel=None):
     if not isinstance(low, numbers.Integral):
         raise TypeError('low has to be a numbers.Integral, not ' +
                         repr(low))
     elif not isinstance(high, numbers.Integral):
         raise TypeError('high has to be a numbers.Integral, not ' +
                         repr(high))
-    r = library.MagickRandomThresholdImage(image.wand, low, high)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickRandomThresholdImageChannel(image.wand,
+                                                      CHANNELS[channel],
+                                                      low, high)
+    else:
+        r = library.MagickRandomThresholdImage(image.wand, low, high)
     if not r:
         image.raise_exception()
 
@@ -1448,11 +1506,19 @@ def roll(image, x, y):
         image.raise_exception()
 
 
-def rotationalblur(image, angle):
+def rotationalblur(image, angle, channel=None):
     if not isinstance(angle, numbers.Real):
         raise TypeError('angle has to be a numbers.Real, not ' +
                         repr(angle))
-    r = library.MagickRotationalBlurImage(image.wand, angle)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickRotationalBlurImageChannel(image.wand,
+                                                     CHANNELS[channel],
+                                                     angle)
+    else:
+        r = library.MagickRotationalBlurImage(image.wand, angle)
     if not r:
         image.raise_exception()
 
@@ -1489,7 +1555,7 @@ def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
         image.raise_exception()
 
 
-def selectiveblur(image, radius, sigma, threshold):
+def selectiveblur(image, radius, sigma, threshold, channel=None):
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1499,7 +1565,16 @@ def selectiveblur(image, radius, sigma, threshold):
     elif not isinstance(threshold, numbers.Real):
         raise TypeError('threshold has to be a numbers.Real, not ' +
                         repr(threshold))
-    r = library.MagickSelectiveBlurImage(image.wand, radius, sigma, threshold)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickSelectiveBlurImageChannel(image.wand,
+                                                    CHANNELS[channel],
+                                                    radius, sigma, threshold)
+    else:
+        r = library.MagickSelectiveBlurImage(image.wand,
+                                             radius, sigma, threshold)
     if not r:
         image.raise_exception()
 
@@ -1570,14 +1645,21 @@ def shadow(image, opacity, sigma, x, y):
         image.raise_exception()
 
 
-def sharpen(image, radius, sigma):
+def sharpen(image, radius, sigma, channel=None):
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
     elif not isinstance(sigma, numbers.Real):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
-    r = library.MagickSharpenImage(image.wand, radius, sigma)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickSharpenImageChannel(image.wand, CHANNELS[channel],
+                                              radius, sigma)
+    else:
+        r = library.MagickSharpenImage(image.wand, radius, sigma)
     if not r:
         image.raise_exception()
 
@@ -1610,7 +1692,7 @@ def shear(image, background, x, y):
             image.raise_exception()
 
 
-def sigmoidalcontrast(image, sharpen, alpha, beta):
+def sigmoidalcontrast(image, sharpen, alpha, beta, channel=None):
     if not isinstance(sharpen, bool):
         raise TypeError('sharpen must be a bool, not ' +
                         repr(sharpen))
@@ -1620,7 +1702,16 @@ def sigmoidalcontrast(image, sharpen, alpha, beta):
     elif not isinstance(beta, numbers.Real):
         raise TypeError('beta has to be a numbers.Real, not ' +
                         repr(beta))
-    r = library.MagickSigmoidalContrastImage(image.wand, sharpen, alpha, beta)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickSigmoidalContrastImageChannel(image.wand,
+                                                        CHANNELS[channel],
+                                                        sharpen, alpha, beta)
+    else:
+        r = library.MagickSigmoidalContrastImage(image.wand,
+                                                 sharpen, alpha, beta)
     if not r:
         image.raise_exception()
 
@@ -1640,11 +1731,18 @@ def sketch(image, radius, sigma, angle):
         image.raise_exception()
 
 
-def solarize(image, threshold):
+def solarize(image, threshold, channel=None):
     if not isinstance(threshold, numbers.Real):
         raise TypeError('threshold has to be a numbers.Real, not ' +
                         repr(threshold))
-    r = library.MagickSolarizeImage(image.wand, threshold)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickSolarizeImageChannel(image.wand, CHANNELS[channel],
+                                               threshold)
+    else:
+        r = library.MagickSolarizeImage(image.wand, threshold)
     if not r:
         image.raise_exception()
 
@@ -1699,7 +1797,7 @@ def spread(image, method, amount):
         image.raise_exception()
 
 
-def statistic(image, statistic_type, width, height):
+def statistic(image, statistic_type, width, height, channel=None):
     if statistic_type not in STATISTIC_TYPES:
         raise ValueError('expected string from STATISTIC_TYPES, ' +
                          'not ' + repr(statistic_type))
@@ -1710,7 +1808,14 @@ def statistic(image, statistic_type, width, height):
         raise TypeError('height has to be a numbers.Integral, not ' +
                         repr(height))
     index = STATISTIC_TYPES.index(statistic_type)
-    r = library.MagickStatisticImage(image.wand, index, width, height)
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickStatisticImageChannel(image.wand, CHANNELS[channel],
+                                                index, width, height)
+    else:
+        r = library.MagickStatisticImage(image.wand, index, width, height)
     if not r:
         image.raise_exception()
 

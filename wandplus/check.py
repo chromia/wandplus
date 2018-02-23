@@ -393,10 +393,13 @@ with rose.clone() as t:
     save(t, f)
 
 f = randomthreshold
+rng = t.quantum_range
 with text_a.clone() as t:
-    rng = t.quantum_range
     f(t, int(rng * 0.05), int(rng * 0.95))
     save(t, f)
+with text_a.clone() as t:
+    f(t, int(rng * 0.05), int(rng * 0.95), channel='red')
+    save(t, f, True)
 
 f = remap
 with logo.clone() as t:
@@ -419,6 +422,9 @@ f = rotationalblur
 with rose.clone() as t:
     f(t, 45)
     save(t, f)
+with rose.clone() as t:
+    f(t, 45, channel='red')
+    save(t, f, True)
 
 f = scale
 with rose.clone() as t:
@@ -434,6 +440,9 @@ f = selectiveblur
 with logo.clone() as t:
     f(t, 20, 20, 0.5*t.quantum_range)
     save(t, f)
+with logo.clone() as t:
+    f(t, 20, 20, 0.5*t.quantum_range, channel='red')
+    save(t, f, True)
 
 f = separate_channel
 with rose.clone() as t:
@@ -462,11 +471,17 @@ f = sharpen
 with rose.clone() as t:
     f(t, 3, 3)
     save(t, f)
+with rose.clone() as t:
+    f(t, 3, 3, channel='red')
+    save(t, f, True)
 
 f = sigmoidalcontrast
 with rose.clone() as t:
     f(t, True, 3, 3)
     save(t, f)
+with rose.clone() as t:
+    f(t, True, 3, 3, channel='red')
+    save(t, f, True)
 
 f = sketch
 with logo.clone() as t:
@@ -477,6 +492,9 @@ f = solarize
 with rose.clone() as t:
     f(t, 0.4*t.quantum_range)
     save(t, f)
+with rose.clone() as t:
+    f(t, 0.4*t.quantum_range, channel='red')
+    save(t, f, True)
 
 f = splice
 with rose.clone() as t:
@@ -510,6 +528,9 @@ f = statistic
 with rose.clone() as t:
     f(t, 'gradient', 4, 4)
     save(t, f)
+with rose.clone() as t:
+    f(t, 'gradient', 4, 4, channel='red')
+    save(t, f, True)
 
 f = stegano
 with rose.clone() as t:
