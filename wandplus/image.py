@@ -58,6 +58,11 @@ library.MagickAdaptiveThresholdImage.argtypes = [
     ctypes.c_size_t,
     ctypes.c_ssize_t
 ]
+library.MagickAddImage.restype = ctypes.c_bool
+library.MagickAddImage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
 library.MagickAddNoiseImage.restype = ctypes.c_bool
 library.MagickAddNoiseImage.argtypes = [
     ctypes.c_void_p,
