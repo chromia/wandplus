@@ -224,7 +224,7 @@ with rose.clone() as t:
     f(t, 3, kernel, channel='red')
     save(t, f, True)
 
-f = wpi.cycle
+f = wpi.cyclecolormap
 with logo.clone() as t:
     f(t, 5)
     save(t, f)

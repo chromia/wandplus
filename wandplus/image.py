@@ -1118,7 +1118,7 @@ def convolve(image, order, kernel, channel=None):
         image.raise_exception()
 
 
-def cycle(image, displace):
+def cyclecolormap(image, displace):
     if not isinstance(displace, numbers.Integral):
         raise ValueError('displace has to be a numbers.Integral, not ' +
                          repr(displace))
