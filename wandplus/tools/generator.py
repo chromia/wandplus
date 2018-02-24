@@ -22,6 +22,7 @@ typedic = {'v': 'ctypes.c_void_p',
            'pB': 'ctypes.POINTER(ctypes.c_ubyte)',
            'ps': 'ctypes.POINTER(ctypes.c_size_t)',
            'pss': 'ctypes.POINTER(ctypes.c_ssize_t)',
+           'Image': 'ctypes.c_void_p',
            'Color': 'ctypes.c_void_p',
            'Drawing': 'ctypes.c_void_p'}
 
