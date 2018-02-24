@@ -3,7 +3,7 @@
 from wand.image import Image
 from wand.drawing import Drawing
 from wand.color import Color
-from image import *
+import image as wpi
 from textutil import calcSuitableFontsize, calcSuitableImagesize
 import os
 
@@ -42,7 +42,7 @@ logo.save(filename='image/logo.png')
 text.save(filename='image/text.png')
 text_a.save(filename='image/a.png')
 
-f = adaptiveblur
+f = wpi.adaptiveblur
 with rose.clone() as t:
     f(t, 5.0, 3.0)
     save(t, f)
@@ -50,12 +50,12 @@ with rose.clone() as t:
     f(t, 5.0, 3.0, channel='red')
     save(t, f, True)
 
-f = adaptiveresize
+f = wpi.adaptiveresize
 with rose.clone() as t:
     f(t, int(t.width*1.5), int(t.height*2.0))
     save(t, f)
 
-f = adaptivesharpen
+f = wpi.adaptivesharpen
 with rose.clone() as t:
     f(t, 5, 5)
     save(t, f)
@@ -63,12 +63,12 @@ with rose.clone() as t:
     f(t, 5, 5, channel='red')
     save(t, f, True)
 
-f = adaptivethreshold
+f = wpi.adaptivethreshold
 with logo.clone() as t:
     f(t, 20, 20, int(0.1*t.quantum_range))
     save(t, f)
 
-f = addnoise
+f = wpi.addnoise
 with grad.clone() as t:
     f(t, 'gaussian')
     save(t, f)
@@ -76,14 +76,14 @@ with grad.clone() as t:
     f(t, 'gaussian', channel='red')
     save(t, f, True)
 
-f = affinetransform
+f = wpi.affinetransform
 with rose.clone() as t:
     with Drawing() as d:
         d.affine([2.0, 0.0, 0.0, 2.0, 0.0, 0.0])
         f(t, d)  # not work correctly
         save(t, f)
 
-f = autogamma
+f = wpi.autogamma
 with rose.clone() as t:
     f(t)
     save(t, f)
@@ -91,7 +91,7 @@ with rose.clone() as t:
     f(t, channel='red')
     save(t, f, True)
 
-f = autolevel
+f = wpi.autolevel
 with rose.clone() as t:
     f(t)
     save(t, f)
@@ -99,17 +99,17 @@ with rose.clone() as t:
     f(t, channel='red')
     save(t, f, True)
 
-f = blackthreshold
+f = wpi.blackthreshold
 with grad.clone() as t:
     f(t, Color('gray(50%)'))
     save(t, f)
 
-f = blueshift
+f = wpi.blueshift
 with logo.clone() as t:
     f(t, 0.5)
     save(t, f)
 
-f = brightnesscontrast
+f = wpi.brightnesscontrast
 with rose.clone() as t:
     f(t, -30, 0)
     save(t, f)
@@ -117,7 +117,7 @@ with rose.clone() as t:
     f(t, -30, 0, channel='red')
     save(t, f, True)
 
-f = blur
+f = wpi.blur
 with rose.clone() as t:
     f(t, 0, 3)
     save(t, f)
@@ -125,18 +125,18 @@ with rose.clone() as t:
     f(t, 0, 3, channel='red')
     save(t, f, True)
 
-f = charcoal
+f = wpi.charcoal
 with rose.clone() as t:
     f(t, 5, 1)
     save(t, f)
 
-f = chop
+f = wpi.chop
 with grad.clone() as t:
     t.gravity = 'north_west'
     f(t, 0, 00, 200, 200)
     save(t, f)
 
-f = clamp  # TODO: more useful code
+f = wpi.clamp  # TODO: more useful code
 with rose.clone() as t:
     f(t)
     save(t, f)
@@ -144,13 +144,12 @@ with rose.clone() as t:
     f(t, channel='red')
     save(t, f, True)
 
-# f = clip
+# f = wpi.clip
 # with rose.clone() as t:
 #     f(t)
 #     save(t, f)
 
-
-f = clut
+f = wpi.clut
 with Image(filename='gradient:red-blue', width=1, height=100) as p:
     p.rotate(90)
     with grad.clone() as t:
@@ -174,17 +173,17 @@ xml = """
     </ColorCorrection>
 </ColorCorrectionCollection>
 """
-f = colordecisionlist
+f = wpi.colordecisionlist
 with rose.clone() as t:
     f(t, xml)
     save(t, f)
 
-f = colorize
+f = wpi.colorize
 with grad.clone() as t:
     f(t, Color('red'), Color('gray(25%)'))
     save(t, f)
 
-f = colormatrix
+f = wpi.colormatrix
 with logo.clone() as t:
     kernel = [
         0.5, 0.0, 0.0, 0.0, 0.0,
@@ -196,12 +195,12 @@ with logo.clone() as t:
     f(t, 5, 5, kernel)
     save(t, f)
 
-f = comment
+f = wpi.comment
 with grad.clone() as t:
     f(t, 'hello')
     save(t, f)
 
-f = constitute
+f = wpi.constitute
 with Image() as t:
     w = 2
     h = 2
@@ -209,12 +208,12 @@ with Image() as t:
     f(t, w, h, 'RGB', 'char', b)
     save(t, f)
 
-f = contrast
+f = wpi.contrast
 with rose.clone() as t:
     f(t, False)
     save(t, f)
 
-f = convolve
+f = wpi.convolve
 kernel = [1/16, 2/16, 1/16,
           2/16, 4/16, 2/16,
           1/16, 2/16, 1/16]
@@ -225,43 +224,46 @@ with rose.clone() as t:
     f(t, 3, kernel, channel='red')
     save(t, f, True)
 
-f = cycle
+f = wpi.cycle
 with logo.clone() as t:
     f(t, 5)
     save(t, f)
 
+f = wpi.encipher
 with rose.clone() as t:
-    encipher(t, 'password')
-    decipher(t, 'password')
-    save(t, decipher)
+    f(t, 'password')
+    save(t, f)
+    f = wpi.decipher
+    f(t, 'password')
+    save(t, f)
 
-f = deskew
+f = wpi.deskew
 with Image(width=80, height=40, background=Color('black')) as t:
     f(t, 0.5*t.quantum_range)  # TODO: find an skewed image as sample
     save(t, f)
 
-f = despeckle
+f = wpi.despeckle
 with rose.clone() as t:
     # TODO: add speckle noise
     f(t)
     save(t, f)
 
-f = edge
+f = wpi.edge
 with logo.clone() as t:
     f(t, 3)
     save(t, f)
 
-f = emboss
+f = wpi.emboss
 with logo.clone() as t:
     f(t, 0, 3)
     save(t, f)
 
-f = enhance
+f = wpi.enhance
 with Image(filename='plasma:', width=100, height=100) as t:
     f(t)
     save(t, f)
 
-f = equalize
+f = wpi.equalize
 with rose.clone() as t:
     f(t)
     save(t, f)
@@ -269,14 +271,14 @@ with rose.clone() as t:
     f(t, channel='red')
     save(t, f, True)
 
-f = extent
+f = wpi.extent
 with rose.clone() as t:
     t.gravity = 'center'
     t.background_color = Color('blue')
     f(t, -10, -10, rose.width+20, rose.height+20)
     save(t, f)
 
-f = filterimage
+f = wpi.filterimage
 kernel = [  # Sobel filter
     -1.0, 0.0, 1.0,
     -2.0, 0.0, 2.0,
@@ -289,24 +291,24 @@ with rose.clone() as t:
     f(t, 3, 3, kernel, channel='red')
     save(t, f, True)
 
-f = floodfillpaint
+f = wpi.floodfillpaint
 with logo.clone() as t:
     f(t, Color('green'), 0.10*t.quantum_range, Color('white'), 0, 0)
     save(t, f)
 
-f = forwardfouriertransform  # require IM build option '--with-fftw'
+f = wpi.forwardfouriertransform  # require IM build option '--with-fftw'
 with logo.clone() as t:      # I couldn't build on Windows...
     f(t, True)
     save(t, f)  # includes two images(magnitude&phase)
+    f = wpi.inversefouriertransform
     with t.sequence[0].clone() as mag:
         with t.sequence[1].clone() as phase:
-            f = inversefouriertransform
-            blur(mag, 0, 0.5)  # as degradation
+            wpi.blur(mag, 0, 0.5)  # as degradation
             t2 = mag
             f(t2, phase, True)
             save(t2, f)
 
-f = haldclut  # TODO: more useful code
+f = wpi.haldclut  # TODO: more useful code
 with Image(filename='hald:12') as p:
     with rose.clone() as t:
         f(t, p)
@@ -315,38 +317,38 @@ with Image(filename='hald:12') as p:
         f(t, p, channel='red')
         save(t, f, True)
 
-f = implode
+f = wpi.implode
 with rose.clone() as t:
     f(t, 1.0)
     save(t, f)
 
-f = label
+f = wpi.label
 with rose.clone() as t:
     f(t, 'hello')
     save(t, f)
 
-f = localcontrast
+f = wpi.localcontrast
 with logo.clone() as t:
     f(t, 5, 30)
     save(t, f)
 
-f = magnify
+f = wpi.magnify
 with rose.clone() as t:
     f(t)
     save(t, f)
 
-f = minify
+f = wpi.minify
 with rose.clone() as t:
     f(t)
     save(t, f)
 
-f = montage
+f = wpi.montage
 with rose.clone() as base:
     with Image() as dst:
         rows = 2
         columns = 3
         for i in range(rows * columns):
-            add(dst, base)
+            wpi.add(dst, base)
 
         tile = "{0}x{1}+0+0".format(columns, rows)
         thumb = "80x50+4+3"
@@ -356,7 +358,7 @@ with rose.clone() as base:
             with f(dst, d, tile, thumb, mode, frame) as result:
                 save(result, f)
 
-f = morphology
+f = wpi.morphology
 with logo.clone() as t:
     f(t, 'dilate', 1, 'Diamond')
     save(t, f)
@@ -364,7 +366,7 @@ with logo.clone() as t:
     f(t, 'dilate', 1, 'Diamond', channel='red')
     save(t, f, True)
 
-f = motionblur
+f = wpi.motionblur
 with logo.clone() as t:
     f(t, 30, 10, 45)
     save(t, f)
@@ -372,12 +374,12 @@ with logo.clone() as t:
     f(t, 30, 10, 45, channel='red')
     save(t, f, True)
 
-f = oilpaint
+f = wpi.oilpaint
 with rose.clone() as t:
     f(t, 2.0)
     save(t, f)
 
-f = opaquepaint
+f = wpi.opaquepaint
 with logo.clone() as t:
     f(t, Color('red'), Color('blue'), 1.0, False)
     save(t, f)
@@ -385,7 +387,7 @@ with logo.clone() as t:
     f(t, Color('red'), Color('blue'), 1.0, False, channel='blue')
     save(t, f, True)
 
-f = orderedposterize
+f = wpi.orderedposterize
 with grad.clone() as t:
     f(t, 'o4x4,3,3')
     save(t, f)
@@ -393,23 +395,23 @@ with grad.clone() as t:
     f(t, 'o4x4,3,3', channel='red')
     save(t, f, True)
 
-f = polaroid
+f = wpi.polaroid
 with logo.clone() as t:
     with Drawing() as d:
         f(t, d, 1.0)
         save(t, f)
 
-f = posterize
+f = wpi.posterize
 with rose.clone() as t:
     f(t, 3, True)
     save(t, f)
 
-f = raiseimage
+f = wpi.raiseimage
 with rose.clone() as t:
     f(t, 10, 10, 10, 10, True)
     save(t, f)
 
-f = randomthreshold
+f = wpi.randomthreshold
 rng = t.quantum_range
 with text_a.clone() as t:
     f(t, int(rng * 0.05), int(rng * 0.95))
@@ -418,24 +420,24 @@ with text_a.clone() as t:
     f(t, int(rng * 0.05), int(rng * 0.95), channel='red')
     save(t, f, True)
 
-f = remap
+f = wpi.remap
 with logo.clone() as t:
     with rose.clone() as p:
         f(t, p, 'nodither')
         save(t, f)
 
-f = resample
+f = wpi.resample
 with rose.clone() as t:
     dpi = 72 * 2
     f(t, dpi, dpi, 'lanczos', 1.0)
     save(t, f)
 
-f = roll
+f = wpi.roll
 with rose.clone() as t:
     f(t, 10, 10)
     save(t, f)
 
-f = rotationalblur
+f = wpi.rotationalblur
 with rose.clone() as t:
     f(t, 45)
     save(t, f)
@@ -443,17 +445,17 @@ with rose.clone() as t:
     f(t, 45, channel='red')
     save(t, f, True)
 
-f = scale
+f = wpi.scale
 with rose.clone() as t:
     f(t, t.width*2, t.height*2)
     save(t, f)
 
-f = segment
+f = wpi.segment
 with logo.clone() as t:
     f(t, 'rgb', False, 5, 20)
     save(t, f)
 
-f = selectiveblur
+f = wpi.selectiveblur
 with logo.clone() as t:
     f(t, 20, 20, 0.5*t.quantum_range)
     save(t, f)
@@ -461,22 +463,22 @@ with logo.clone() as t:
     f(t, 20, 20, 0.5*t.quantum_range, channel='red')
     save(t, f, True)
 
-f = separate_channel
+f = wpi.separate_channel
 with rose.clone() as t:
     f(t, 'red')
     save(t, f)
 
-f = sepiatone
+f = wpi.sepiatone
 with rose.clone() as t:
     f(t, 0.5*t.quantum_range)
     save(t, f)
 
-f = shade
+f = wpi.shade
 with logo.clone() as t:
     f(t, True, 45, 135)
     save(t, f)
 
-f = shadow
+f = wpi.shadow
 with text.clone() as t:
     with text.clone() as p:
         p.negate()
@@ -484,7 +486,7 @@ with text.clone() as t:
         t.composite_channel('default_channels', p, 'overlay')
         save(t, f)
 
-f = sharpen
+f = wpi.sharpen
 with rose.clone() as t:
     f(t, 3, 3)
     save(t, f)
@@ -492,7 +494,7 @@ with rose.clone() as t:
     f(t, 3, 3, channel='red')
     save(t, f, True)
 
-f = sigmoidalcontrast
+f = wpi.sigmoidalcontrast
 with rose.clone() as t:
     f(t, True, 3, 3)
     save(t, f)
@@ -500,12 +502,12 @@ with rose.clone() as t:
     f(t, True, 3, 3, channel='red')
     save(t, f, True)
 
-f = sketch
+f = wpi.sketch
 with logo.clone() as t:
     f(t, 10, 10, 45)
     save(t, f)
 
-f = solarize
+f = wpi.solarize
 with rose.clone() as t:
     f(t, 0.4*t.quantum_range)
     save(t, f)
@@ -513,35 +515,35 @@ with rose.clone() as t:
     f(t, 0.4*t.quantum_range, channel='red')
     save(t, f, True)
 
-f = splice
+f = wpi.splice
 with rose.clone() as t:
     t.gravity = 'center'
     f(t, t.width//2, t.height//2, 20, 20)
     save(t, f)
 
-f = shave
+f = wpi.shave
 with logo.clone() as t:
     f(t, 100, 100)
     save(t, f)
 
-f = shear
+f = wpi.shear
 with grad.clone() as t:
     f(t, Color('red'), 0, 10)
     save(t, f)
 
-f = sparsecolor
+f = wpi.sparsecolor
 with Image(width=100, height=100, background=Color('black')) as t:
     f(t, 'default_channels', 'bilinear',
       [0, 0,     1.0, 0.0, 0.0, 1.0,
        100, 100, 0.0, 1.0, 1.0, 1.0])
     save(t, f)
 
-f = spread
+f = wpi.spread
 with logo.clone() as t:
     f(t, 'bilinear', 20)
     save(t, f)
 
-f = statistic
+f = wpi.statistic
 with rose.clone() as t:
     f(t, 'gradient', 4, 4)
     save(t, f)
@@ -549,7 +551,7 @@ with rose.clone() as t:
     f(t, 'gradient', 4, 4, channel='red')
     save(t, f, True)
 
-f = stegano
+f = wpi.stegano
 with rose.clone() as t:
     w = 50
     h = 40
@@ -565,7 +567,7 @@ with rose.clone() as t:
             q.save(filename=tmpfile)
         try:
             with Image() as q:
-                setsizeoffset(q, w, h, offset)
+                wpi.setsizeoffset(q, w, h, offset)
                 q.read(filename='stegano:' + tmpfile)
                 save(q, f)
         except Exception:
@@ -573,48 +575,48 @@ with rose.clone() as t:
         finally:
             os.remove(tmpfile)
 
-f = stereo
+f = wpi.stereo
 with rose.clone() as t:
     with rose.clone() as p:
         p.negate()
         with f(t, p) as q:
             save(q, f)
 
-f = swirl
+f = wpi.swirl
 with rose.clone() as t:
     f(t, 180)
     save(t, f)
 
-f = texture
+f = wpi.texture
 with Image(width=300, height=200) as t:
     with rose.clone() as p:
         with f(t, p) as q:
             save(q, f)
 
-f = thumbnail
+f = wpi.thumbnail
 with logo.clone() as t:
     f(t, 100, 100)
     save(t, f)
 
-f = tint
+f = wpi.tint
 with rose.clone() as t:
     f(t, Color('rgb'), Color('gray(25%)'))
     save(t, f)
 
-f = vignette
+f = wpi.vignette
 with logo.clone() as t:
     r = t.quantum_range
-    minify(t)
+    wpi.minify(t)
     t.background_color = Color('black')
     f(t, 0, 10, 20, 20)
     save(t, f)
 
-f = wave
+f = wpi.wave
 with grad.clone() as t:
     f(t, 40, 200)
     save(t, f)
 
-f = whitethreshold
+f = wpi.whitethreshold
 with grad.clone() as t:
     f(t, Color('gray(50%)'))
     save(t, f)
