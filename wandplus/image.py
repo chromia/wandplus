@@ -1012,6 +1012,12 @@ def colordecisionlist(image, ccc_text):
 
 
 def colormatrix(image, width, height, color_matrix):
+    if not isinstance(width, numbers.Integral):
+        raise ValueError('width has to be a numbers.Integral, not ' +
+                         repr(width))
+    elif not isinstance(height, numbers.Integral):
+        raise ValueError('height has to be a numbers.Integral, not ' +
+                         repr(height))
     kernelinfo = KernelInfo(width, height, color_matrix)
     if kernelinfo:
         r = library.MagickColorMatrixImage(image.wand,
