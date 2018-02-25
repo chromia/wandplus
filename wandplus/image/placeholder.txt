@@ -1,0 +1,1 @@
+Test images are created here by ../check.py
