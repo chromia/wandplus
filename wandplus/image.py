@@ -1572,11 +1572,11 @@ def remap(image, mapimage, method):
 
 
 def resample(image, x_resolution, y_resolution, filtertype, blur):
-    if not isinstance(x_resolution, numbers.Integral):
-        raise TypeError('x_resolution has to be a numbers.Integral, not ' +
+    if not isinstance(x_resolution, numbers.Real):
+        raise TypeError('x_resolution has to be a numbers.Real, not ' +
                         repr(x_resolution))
-    elif not isinstance(y_resolution, numbers.Integral):
-        raise TypeError('y_resolution has to be a numbers.Integral, not ' +
+    elif not isinstance(y_resolution, numbers.Real):
+        raise TypeError('y_resolution has to be a numbers.Real, not ' +
                         repr(y_resolution))
     elif filtertype not in FILTER_TYPES:
         raise ValueError('expected value from FILTER_TYPES, not ' +
