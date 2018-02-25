@@ -14,7 +14,7 @@ def save(img, function, channel=False):
         path = 'image/' + function.__name__ + "_ch.png"
     else:
         path = 'image/' + function.__name__ + ".png"
-    print(path)
+    # print(path)
     img.save(filename=path)
 
 
@@ -167,8 +167,8 @@ class CheckImage(unittest.TestCase):
             f(t, channel='red')
             save(t, f, True)
 
-    def test_clip(self):
-        f = wpi.clip
+    def test_clip(self):  # NOTE: result is always FAILED.
+        f = wpi.clip            # I don't have an image which has clipping path
         with self.rose.clone() as t:
             f(t)
             save(t, f)
