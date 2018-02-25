@@ -755,6 +755,22 @@ class KernelInfo(ctypes.Structure):
 
 
 def adaptiveblur(image, radius, sigma, channel=None):
+    """adaptively blurs the image by blurring less intensely
+    near image edges and more intensely far from edges.
+
+    :param image: target image.
+    :type image: :class:`wand.image.Image`
+    :param radius: the radius of the Gaussian, in pixels,
+                   not counting the center pixel.
+                   if 0, suitable radius is selected.
+    :type radius: :class:`numbers.Real`
+    :param sigma: the standard deviation of the Gaussian, in pixels.
+    :type sigma: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -775,6 +791,14 @@ def adaptiveblur(image, radius, sigma, channel=None):
 
 
 def adaptiveresize(image, columns, rows):
+    """
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param columns:
+    :type columns: :class:`numbers.Integral`
+    :param rows:
+    :type rows: :class:`numbers.Integral`
+    """
     if not isinstance(columns, numbers.Integral):
         raise TypeError('columns has to be a numbers.Integral, not ' +
                         repr(columns))
@@ -787,6 +811,19 @@ def adaptiveresize(image, columns, rows):
 
 
 def adaptivesharpen(image, radius, sigma, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -806,6 +843,17 @@ def adaptivesharpen(image, radius, sigma, channel=None):
 
 
 def adaptivethreshold(image, width, height, offset):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param width:
+    :type width: :class:`numbers.Integral`
+    :param height:
+    :type height: :class:`numbers.Integral`
+    :param offset:
+    :type offset: :class:`numbers.Integral`
+    """
     if not isinstance(width, numbers.Integral):
         raise TypeError('width has to be a numbers.Integral, not ' +
                         repr(width))
@@ -825,6 +873,11 @@ def add(dstimage, srcimage):
 
     This function conflicts with wand.image.Image.sequence.
     Do NOT use together
+
+    :param dstimage:
+    :type dstimage: :class:`wand.image.Image`
+    :param srcimage:
+    :type srcimage: :class:`wand.image.Image`
     """
     r = library.MagickAddImage(dstimage.wand, srcimage.wand)
     if not r:
@@ -832,6 +885,17 @@ def add(dstimage, srcimage):
 
 
 def addnoise(image, type, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param type:
+    :type type: :class:`str`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if type not in NOISE_TYPES:
         raise ValueError('expected string from NOISE_TYPES, not ' +
                          repr(type))
@@ -849,6 +913,13 @@ def addnoise(image, type, channel=None):
 
 
 def affinetransform(image, drawing):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param drawing:
+    :type drawing: :class:`wand.drawing.Drawing`
+    """
     if not isinstance(drawing, Drawing):
         raise TypeError('drawing must be a wand.drawing.Drawing instance, '
                         'not ' + repr(drawing))
@@ -858,6 +929,15 @@ def affinetransform(image, drawing):
 
 
 def autogamma(image, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if channel:
         if channel not in CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
@@ -870,6 +950,15 @@ def autogamma(image, channel=None):
 
 
 def autolevel(image, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if channel:
         if channel not in CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
@@ -882,6 +971,13 @@ def autolevel(image, channel=None):
 
 
 def blackthreshold(image, threshold):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param threshold:
+    :type threshold: :class:`wand.color.Color`
+    """
     if not isinstance(threshold, Color):
         raise TypeError('threshold must be a wand.color.Color, not ' +
                         repr(threshold))
@@ -892,6 +988,13 @@ def blackthreshold(image, threshold):
 
 
 def blueshift(image, factor):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param factor:
+    :type factor: :class:`numbers.Real`
+    """
     if not isinstance(factor, numbers.Real):
         raise TypeError('factor has to be a numbers.Real, not ' +
                         repr(factor))
@@ -901,6 +1004,19 @@ def blueshift(image, factor):
 
 
 def brightnesscontrast(image, brightness, contrast, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param brightness:
+    :type brightness: :class:`numbers.Real`
+    :param contrast:
+    :type contrast: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(brightness, numbers.Real):
         raise TypeError('brightness has to be a numbers.Real, not ' +
                         repr(brightness))
@@ -923,6 +1039,19 @@ def brightnesscontrast(image, brightness, contrast, channel=None):
 
 
 def blur(image, radius, sigma, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -942,6 +1071,15 @@ def blur(image, radius, sigma, channel=None):
 
 
 def charcoal(image, radius, sigma):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -954,6 +1092,19 @@ def charcoal(image, radius, sigma):
 
 
 def chop(image, x, y, width, height):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param x:
+    :type x: :class:`numbers.Integral`
+    :param y:
+    :type y: :class:`numbers.Integral`
+    :param width:
+    :type width: :class:`numbers.Integral`
+    :param height:
+    :type height: :class:`numbers.Integral`
+    """
     if not isinstance(x, numbers.Integral):
         raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
@@ -972,6 +1123,15 @@ def chop(image, x, y, width, height):
 
 
 def clamp(image, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if channel:
         if channel not in CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
@@ -984,12 +1144,28 @@ def clamp(image, channel=None):
 
 
 def clip(image):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    """
     r = library.MagickClipImage(image.wand)
     if not r:
         image.raise_exception()
 
 
 def clut(image, clutimage, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param clutimage:
+    :type clutimage: :class:`wand.image.Image`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if channel:
         if channel not in CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
@@ -1003,6 +1179,13 @@ def clut(image, clutimage, channel=None):
 
 
 def colordecisionlist(image, ccc_text):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param ccc_text:
+    :type ccc_text: :class:`str`
+    """
     if not isinstance(ccc_text, string_type):
         raise TypeError('expected a string, not ' + repr(ccc_text))
     buffer = ctypes.create_string_buffer(ccc_text.encode())
@@ -1012,6 +1195,18 @@ def colordecisionlist(image, ccc_text):
 
 
 def colormatrix(image, width, height, color_matrix):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param width:
+    :type width: :class:`numbers.Integral`
+    :param height:
+    :type height: :class:`numbers.Integral`
+    :param color_matrix:
+    :type color_matrix: :class:`collections.Sequence`,
+                        :class:`numbers.Real`
+    """
     if not isinstance(width, numbers.Integral):
         raise ValueError('width has to be a numbers.Integral, not ' +
                          repr(width))
@@ -1027,6 +1222,15 @@ def colormatrix(image, width, height, color_matrix):
 
 
 def colorize(image, color, opacity):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param color:
+    :type color: :class:`wand.color.Color`
+    :param opacity:
+    :type opacity: :class:`wand.color.Color`
+    """
     if not isinstance(color, Color):
         raise TypeError('color must be a wand.color.Color, not ' +
                         repr(color))
@@ -1042,6 +1246,13 @@ def colorize(image, color, opacity):
 
 
 def comment(image, text):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param text:
+    :type text: :class:`str`
+    """
     if not isinstance(text, string_type):
         raise TypeError('expected a string, not ' + repr(text))
     buffer = ctypes.create_string_buffer(text.encode())
@@ -1051,6 +1262,22 @@ def comment(image, text):
 
 
 def constitute(image, columns, rows, map, storage, pixels):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param columns:
+    :type columns: :class:`numbers.Integral`
+    :param rows:
+    :type rows: :class:`numbers.Integral`
+    :param map:
+    :type map: :class:`str`
+    :param storage:
+    :type storage: :class:`str`
+    :param pixels:
+    :type pixels: :class:`collections.Sequence`,
+                  :class:type of `storage`
+    """
     if not isinstance(columns, numbers.Integral):
         raise ValueError('columns has to be a numbers.Integral, not ' +
                          repr(columns))
@@ -1095,6 +1322,13 @@ def constitute(image, columns, rows, map, storage, pixels):
 
 
 def contrast(image, sharpen):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param sharpen:
+    :type sharpen: :class:`bool`
+    """
     if not isinstance(sharpen, bool):
         raise TypeError('sharpen must be a bool, not ' +
                         repr(sharpen))
@@ -1104,6 +1338,20 @@ def contrast(image, sharpen):
 
 
 def convolve(image, order, kernel, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param order:
+    :type order: :class:`numbers.Integral`
+    :param kernel:
+    :type kernel: :class:`collections.Sequence`,
+                  :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(order, numbers.Integral):
         raise ValueError('order has to be a numbers.Integral, not ' +
                          repr(order))
@@ -1125,6 +1373,13 @@ def convolve(image, order, kernel, channel=None):
 
 
 def cyclecolormap(image, displace):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param displace:
+    :type displace: :class:`numbers.Integral`
+    """
     if not isinstance(displace, numbers.Integral):
         raise ValueError('displace has to be a numbers.Integral, not ' +
                          repr(displace))
@@ -1134,6 +1389,13 @@ def cyclecolormap(image, displace):
 
 
 def decipher(image, passphrase):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param passphrase:
+    :type passphrase: :class:`str`
+    """
     if not isinstance(passphrase, string_type):
         raise TypeError('expected a string, not ' + repr(passphrase))
     buffer = ctypes.create_string_buffer(passphrase.encode())
@@ -1143,6 +1405,13 @@ def decipher(image, passphrase):
 
 
 def deskew(image, threshold):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param threshold:
+    :type threshold: :class:`numbers.Real`
+    """
     if not isinstance(threshold, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(threshold))
@@ -1152,12 +1421,24 @@ def deskew(image, threshold):
 
 
 def despeckle(image):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    """
     r = library.MagickDespeckleImage(image.wand)
     if not r:
         image.raise_exception()
 
 
 def edge(image, radius):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1167,6 +1448,15 @@ def edge(image, radius):
 
 
 def emboss(image, radius, sigma):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1179,6 +1469,13 @@ def emboss(image, radius, sigma):
 
 
 def encipher(image, passphrase):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param passphrase:
+    :type passphrase: :class:`str`
+    """
     if not isinstance(passphrase, string_type):
         raise TypeError('expected a string, not ' + repr(passphrase))
     buffer = ctypes.create_string_buffer(passphrase.encode())
@@ -1188,12 +1485,26 @@ def encipher(image, passphrase):
 
 
 def enhance(image):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    """
     r = library.MagickEnhanceImage(image.wand)
     if not r:
         image.raise_exception()
 
 
 def equalize(image, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if channel:
         if channel not in CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
@@ -1206,6 +1517,19 @@ def equalize(image, channel=None):
 
 
 def extent(image, x, y, width, height):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param x:
+    :type x: :class:`numbers.Integral`
+    :param y:
+    :type y: :class:`numbers.Integral`
+    :param width:
+    :type width: :class:`numbers.Integral`
+    :param height:
+    :type height: :class:`numbers.Integral`
+    """
     if not isinstance(x, numbers.Integral):
         raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
@@ -1224,6 +1548,22 @@ def extent(image, x, y, width, height):
 
 
 def filterimage(image, columns, rows, kernel, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param columns:
+    :type columns: :class:`numbers.Integral`
+    :param rows:
+    :type rows: :class:`numbers.Integral`
+    :param kernel:
+    :type kernel: :class:`collections.Sequence`,
+                  :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(columns, numbers.Integral):
         raise TypeError('columns has to be a numbers.Integral, not ' +
                         repr(columns))
@@ -1249,6 +1589,27 @@ def filterimage(image, columns, rows, kernel, channel=None):
 
 def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
                    invert=False, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param fillcolor:
+    :type fillcolor: :class:`wand.color.Color`
+    :param fuzz:
+    :type fuzz: :class:`numbers.Real`
+    :param bordercolor:
+    :type bordercolor: :class:`wand.color.Color`
+    :param x:
+    :type x: :class:`numbers.Integral`
+    :param y:
+    :type y: :class:`numbers.Integral`
+    :param invert:
+    :type invert: :class:`bool`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(fillcolor, Color):
         raise TypeError('fillcolor must be a wand.color.Color, not ' +
                         repr(fillcolor))
@@ -1284,6 +1645,13 @@ def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
 
 
 def forwardfouriertransform(image, magnitude):
+    """
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param magnitude: if true, return as magnitude / phase pair
+                      otherwise a real / imaginary image pair.
+    :type magnitude: :class:`bool`
+    """
     if not isinstance(magnitude, bool):
         raise TypeError('magnitude must be a bool, not ' +
                         repr(magnitude))
@@ -1293,6 +1661,17 @@ def forwardfouriertransform(image, magnitude):
 
 
 def haldclut(image, clutimage, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param clutimage:
+    :type clutimage: :class:`wand.image.Image`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if channel:
         if channel not in CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
@@ -1306,6 +1685,13 @@ def haldclut(image, clutimage, channel=None):
 
 
 def implode(image, amount):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param amount:
+    :type amount: :class:`numbers.Real`
+    """
     if not isinstance(amount, numbers.Real):
         raise TypeError('amount has to be a numbers.Real, not ' +
                         repr(amount))
@@ -1316,12 +1702,15 @@ def implode(image, amount):
 
 def inversefouriertransform(image1, image2, magnitude):
     """
+
     :param image1: magnitude-image or real-image.
-                   as a result of the function,
-                   a pair of image are stored to image1
+                   furthermore, converted image is stored to image1
+    :type image1: :class:`wand.image.Image`
     :param image2: phase-image or imaginary-image
-    :param magnitude: if true, return as magnitude / phase pair
+    :type image2: :class:`wand.image.Image`
+    :param magnitude: if True, images are used as a magnitude / phase pair
                       otherwise a real / imaginary image pair.
+    :type magnitude: :class:`bool`
     """
     if not isinstance(magnitude, bool):
         raise TypeError('magnitude must be a bool, not ' +
@@ -1334,6 +1723,13 @@ def inversefouriertransform(image1, image2, magnitude):
 
 
 def label(image, text):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param text:
+    :type text: :class:`str`
+    """
     if not isinstance(text, string_type):
         raise TypeError('expected a string, not ' + repr(text))
     buffer = ctypes.create_string_buffer(text.encode())
@@ -1343,6 +1739,15 @@ def label(image, text):
 
 
 def localcontrast(image, radius, strength):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param strength:
+    :type strength: :class:`numbers.Real`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1355,18 +1760,43 @@ def localcontrast(image, radius, strength):
 
 
 def magnify(image):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    """
     r = library.MagickMagnifyImage(image.wand)
     if not r:
         image.raise_exception()
 
 
 def minify(image):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    """
     r = library.MagickMinifyImage(image.wand)
     if not r:
         image.raise_exception()
 
 
 def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param drawing:
+    :type drawing: :class:`wand.drawing.Drawing`
+    :param tile_geometry:
+    :type tile_geometry: :class:`str`
+    :param thumbnail_geometry:
+    :type thumbnail_geometry: :class:`str`
+    :param mode:
+    :type mode: :class:`str`
+    :param frame:
+    :type frame: :class:`str`
+    """
     if not isinstance(drawing, Drawing):
         raise TypeError('drawing must be a wand.drawing.Drawing instance, '
                         'not ' + repr(drawing))
@@ -1393,6 +1823,22 @@ def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
 
 
 def morphology(image, method, iterations, kernelinfo, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param method:
+    :type method: :class:`str`
+    :param iterations:
+    :type iterations: :class:`numbers.Integral`
+    :param kernelinfo:
+    :type kernelinfo: :class:`collections.Sequence`,
+                      :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if method not in MORPHOLOGY_METHODS:
         raise ValueError('expected string from MORPHOLOGY_METHODS, not ' +
                          repr(method))
@@ -1418,6 +1864,21 @@ def morphology(image, method, iterations, kernelinfo, channel=None):
 
 
 def motionblur(image, radius, sigma, angle, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    :param angle:
+    :type angle: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1440,6 +1901,13 @@ def motionblur(image, radius, sigma, angle, channel=None):
 
 
 def oilpaint(image, radius):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1449,6 +1917,23 @@ def oilpaint(image, radius):
 
 
 def opaquepaint(image, target, fill, fuzz, invert=False, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param target:
+    :type target: :class:`wand.color.Color`
+    :param fill:
+    :type fill: :class:`wand.color.Color`
+    :param fuzz:
+    :type fuzz: :class:`numbers.Real`
+    :param invert:
+    :type invert: :class:`bool`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(target, Color):
         raise TypeError('target must be a wand.color.Color instance, '
                         'not ' + repr(target))
@@ -1480,6 +1965,17 @@ def opaquepaint(image, target, fill, fuzz, invert=False, channel=None):
 
 
 def orderedposterize(image, threshold_map, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param threshold_map:
+    :type threshold_map: :class:`str`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(threshold_map, string_type):
         raise TypeError('expected a string, not ' + repr(threshold_map))
     buffer = ctypes.create_string_buffer(threshold_map.encode())
@@ -1497,6 +1993,15 @@ def orderedposterize(image, threshold_map, channel=None):
 
 
 def polaroid(image, drawing, angle):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param drawing:
+    :type drawing: :class:`wand.drawing.Drawing`
+    :param angle:
+    :type angle: :class:`numbers.Real`
+    """
     if not isinstance(drawing, Drawing):
         raise TypeError('drawing must be a wand.drawing.Drawing instance, '
                         'not ' + repr(drawing))
@@ -1509,6 +2014,15 @@ def polaroid(image, drawing, angle):
 
 
 def posterize(image, levels, dither):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param levels:
+    :type levels: :class:`numbers.Integral`
+    :param dither:
+    :type dither: :class:`bool`
+    """
     if not isinstance(levels, numbers.Integral):
         raise TypeError('levels has to be a numbers.Integral, not ' +
                         repr(levels))
@@ -1521,6 +2035,21 @@ def posterize(image, levels, dither):
 
 
 def raiseimage(image, x, y, width, height, raiseeffect):  # raise is keyword
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param x:
+    :type x: :class:`numbers.Integral`
+    :param y:
+    :type y: :class:`numbers.Integral`
+    :param width:
+    :type width: :class:`numbers.Integral`
+    :param height:
+    :type height: :class:`numbers.Integral`
+    :param raiseeffect:
+    :type raiseeffect: :class:`bool`
+    """
     if not isinstance(x, numbers.Integral):
         raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
@@ -1542,6 +2071,19 @@ def raiseimage(image, x, y, width, height, raiseeffect):  # raise is keyword
 
 
 def randomthreshold(image, low, high, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param low:
+    :type low: :class:`numbers.Integral`
+    :param high:
+    :type high: :class:`numbers.Integral`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(low, numbers.Integral):
         raise TypeError('low has to be a numbers.Integral, not ' +
                         repr(low))
@@ -1562,6 +2104,15 @@ def randomthreshold(image, low, high, channel=None):
 
 
 def remap(image, mapimage, method):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param mapimage:
+    :type mapimage: :class:`wand.image.Image`
+    :param method:
+    :type method: :class:`str`
+    """
     if method not in DITHER_METHODS:
         raise ValueError('expected value from DITHER_METHODS, not ' +
                          repr(method))
@@ -1572,6 +2123,19 @@ def remap(image, mapimage, method):
 
 
 def resample(image, x_resolution, y_resolution, filtertype, blur):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param x_resolution:
+    :type x_resolution: :class:`numbers.Real`
+    :param y_resolution:
+    :type y_resolution: :class:`numbers.Real`
+    :param filter:
+    :type filter: :class:`numbers.Integral`
+    :param blur:
+    :type blur: :class:`numbers.Real`
+    """
     if not isinstance(x_resolution, numbers.Real):
         raise TypeError('x_resolution has to be a numbers.Real, not ' +
                         repr(x_resolution))
@@ -1592,6 +2156,15 @@ def resample(image, x_resolution, y_resolution, filtertype, blur):
 
 
 def roll(image, x, y):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param x:
+    :type x: :class:`numbers.Integral`
+    :param y:
+    :type y: :class:`numbers.Integral`
+    """
     if not isinstance(x, numbers.Integral):
         raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
@@ -1604,6 +2177,17 @@ def roll(image, x, y):
 
 
 def rotationalblur(image, angle, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param angle:
+    :type angle: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(angle, numbers.Real):
         raise TypeError('angle has to be a numbers.Real, not ' +
                         repr(angle))
@@ -1621,6 +2205,15 @@ def rotationalblur(image, angle, channel=None):
 
 
 def scale(image, columns, rows):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param columns:
+    :type columns: :class:`numbers.Integral`
+    :param rows:
+    :type rows: :class:`numbers.Integral`
+    """
     if not isinstance(columns, numbers.Integral):
         raise TypeError('columns has to be a numbers.Integral, not ' +
                         repr(columns))
@@ -1633,6 +2226,19 @@ def scale(image, columns, rows):
 
 
 def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param colorspace:
+    :type colorspace: :class:`str`
+    :param verbose:
+    :type verbose: :class:`bool`
+    :param cluster_threshold:
+    :type cluster_threshold: :class:`numbers.Real`
+    :param smooth_threshold:
+    :type smooth_threshold: :class:`numbers.Real`
+    """
     if colorspace not in COLORSPACE_TYPES:
         raise ValueError('colorspace value from COLORSPACE_TYPES, not ' +
                          repr(colorspace))
@@ -1653,6 +2259,21 @@ def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
 
 
 def selectiveblur(image, radius, sigma, threshold, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    :param threshold:
+    :type threshold: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1677,6 +2298,14 @@ def selectiveblur(image, radius, sigma, threshold, channel=None):
 
 
 def separate_channel(image, channel):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+    :type channel: :class:`str`
+    """
     if channel not in CHANNELS:
         raise ValueError('channel value from CHANNELS, not ' +
                          repr(channel))
@@ -1686,6 +2315,13 @@ def separate_channel(image, channel):
 
 
 def sepiatone(image, threshold):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param threshold:
+    :type threshold: :class:`numbers.Real`
+    """
     if not isinstance(threshold, numbers.Real):
         raise TypeError('threshold has to be a numbers.Real, not ' +
                         repr(threshold))
@@ -1695,6 +2331,17 @@ def sepiatone(image, threshold):
 
 
 def setsizeoffset(image, columns, rows, offset):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param columns:
+    :type columns: :class:`numbers.Integral`
+    :param rows:
+    :type rows: :class:`numbers.Integral`
+    :param offset:
+    :type offset: :class:`numbers.Integral`
+    """
     if not isinstance(columns, numbers.Integral):
         raise TypeError('columns has be a numbers.Integral, not ' +
                         repr(columns))
@@ -1710,6 +2357,17 @@ def setsizeoffset(image, columns, rows, offset):
 
 
 def shade(image, gray, azimuth, elevation):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param gray:
+    :type gray: :class:`bool`
+    :param azimuth:
+    :type azimuth: :class:`numbers.Real`
+    :param elevation:
+    :type elevation: :class:`numbers.Real`
+    """
     if not isinstance(gray, bool):
         raise TypeError('gray must be a bool, not ' +
                         repr(gray))
@@ -1725,6 +2383,19 @@ def shade(image, gray, azimuth, elevation):
 
 
 def shadow(image, opacity, sigma, x, y):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param opacity:
+    :type opacity: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    :param x:
+    :type x: :class:`numbers.Integral`
+    :param y:
+    :type y: :class:`numbers.Integral`
+    """
     if not isinstance(opacity, numbers.Real):
         raise TypeError('opacity has to be a numbers.Real, not ' +
                         repr(opacity))
@@ -1743,6 +2414,19 @@ def shadow(image, opacity, sigma, x, y):
 
 
 def sharpen(image, radius, sigma, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1762,6 +2446,15 @@ def sharpen(image, radius, sigma, channel=None):
 
 
 def shave(image, columns, rows):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param columns:
+    :type columns: :class:`numbers.Integral`
+    :param rows:
+    :type rows: :class:`numbers.Integral`
+    """
     if not isinstance(columns, numbers.Integral):
         raise TypeError('columns has be a numbers.Integral, not ' +
                         repr(columns))
@@ -1774,6 +2467,17 @@ def shave(image, columns, rows):
 
 
 def shear(image, background, x, y):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param background:
+    :type background: :class:`wand.color.Color`
+    :param x:
+    :type x: :class:`numbers.Real`
+    :param y:
+    :type y: :class:`numbers.Real`
+    """
     if not isinstance(background, Color):
         raise TypeError('background must be a wand.color.Color instance, '
                         'not ' + repr(background))
@@ -1790,6 +2494,21 @@ def shear(image, background, x, y):
 
 
 def sigmoidalcontrast(image, sharpen, alpha, beta, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param sharpen:
+    :type sharpen: :class:`bool`
+    :param alpha:
+    :type alpha: :class:`numbers.Real`
+    :param beta:
+    :type beta: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(sharpen, bool):
         raise TypeError('sharpen must be a bool, not ' +
                         repr(sharpen))
@@ -1814,6 +2533,17 @@ def sigmoidalcontrast(image, sharpen, alpha, beta, channel=None):
 
 
 def sketch(image, radius, sigma, angle):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param radius:
+    :type radius: :class:`numbers.Real`
+    :param sigma:
+    :type sigma: :class:`numbers.Real`
+    :param angle:
+    :type angle: :class:`numbers.Real`
+    """
     if not isinstance(radius, numbers.Real):
         raise TypeError('radius has to be a numbers.Real, not ' +
                         repr(radius))
@@ -1829,6 +2559,17 @@ def sketch(image, radius, sigma, angle):
 
 
 def solarize(image, threshold, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param threshold:
+    :type threshold: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if not isinstance(threshold, numbers.Real):
         raise TypeError('threshold has to be a numbers.Real, not ' +
                         repr(threshold))
@@ -1845,6 +2586,18 @@ def solarize(image, threshold, channel=None):
 
 
 def sparsecolor(image, channel, method, arguments):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param channel:
+    :type channel: :class:`str`
+    :param method:
+    :type method: :class:`str`
+    :param arguments:
+    :type arguments: :class:`collections.Sequence`,
+                     :class:`numbers.Real`
+    """
     if channel not in CHANNELS:
         raise ValueError('expected value from CHANNELS, not ' +
                          repr(channel))
@@ -1864,6 +2617,19 @@ def sparsecolor(image, channel, method, arguments):
 
 
 def splice(image, x, y, width, height):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param x:
+    :type x: :class:`numbers.Integral`
+    :param y:
+    :type y: :class:`numbers.Integral`
+    :param width:
+    :type width: :class:`numbers.Integral`
+    :param height:
+    :type height: :class:`numbers.Integral`
+    """
     if not isinstance(x, numbers.Integral):
         raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
@@ -1882,6 +2648,15 @@ def splice(image, x, y, width, height):
 
 
 def spread(image, method, amount):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param method:
+    :type method: :class:`str`
+    :param amount:
+    :type amount: :class:`numbers.Real`
+    """
     if method not in INTERPOLATEPIXEL_METHODS:
         raise ValueError('expected string from INTERPOLATEPIXEL_METHODS, ' +
                          'not ' + repr(method))
@@ -1895,6 +2670,21 @@ def spread(image, method, amount):
 
 
 def statistic(image, statistic_type, width, height, channel=None):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param statistic_type:
+    :type statistic_type: :class:`str`
+    :param width:
+    :type width: :class:`numbers.Integral`
+    :param height:
+    :type height: :class:`numbers.Integral`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
     if statistic_type not in STATISTIC_TYPES:
         raise ValueError('expected string from STATISTIC_TYPES, ' +
                          'not ' + repr(statistic_type))
@@ -1918,6 +2708,15 @@ def statistic(image, statistic_type, width, height, channel=None):
 
 
 def stegano(image, watermark, offset):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param watermark:
+    :type watermark: :class:`wand.image.Image`
+    :param offset:
+    :type offset: :class:`numbers.Integral`
+    """
     if not isinstance(offset, numbers.Integral):
         raise TypeError('offset has to be a numbers.Integral, not ' +
                         repr(offset))
@@ -1928,6 +2727,13 @@ def stegano(image, watermark, offset):
 
 
 def stereo(image, offsetimage):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param offsetimage:
+    :type offsetimage: :class:`wand.image.Image`
+    """
     new_wand = library.MagickStereoImage(image.wand, offsetimage.wand)
     if new_wand:
         return Image(image=BaseImage(new_wand))
@@ -1935,6 +2741,13 @@ def stereo(image, offsetimage):
 
 
 def swirl(image, degrees):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param degrees:
+    :type degrees: :class:`numbers.Real`
+    """
     if not isinstance(degrees, numbers.Real):
         raise TypeError('degrees has to be a numbers.Real, not ' +
                         repr(degrees))
@@ -1944,6 +2757,13 @@ def swirl(image, degrees):
 
 
 def texture(image, textureimage):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param textureimage:
+    :type textureimage: :class:`wand.image.Image`
+    """
     new_wand = library.MagickTextureImage(image.wand, textureimage.wand)
     if new_wand:
         return Image(image=BaseImage(new_wand))
@@ -1951,6 +2771,15 @@ def texture(image, textureimage):
 
 
 def thumbnail(image, columns, rows):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param columns:
+    :type columns: :class:`numbers.Integral`
+    :param rows:
+    :type rows: :class:`numbers.Integral`
+    """
     if not isinstance(columns, numbers.Integral):
         raise TypeError('columns has to be a numbers.Integral, not ' +
                         repr(columns))
@@ -1963,6 +2792,15 @@ def thumbnail(image, columns, rows):
 
 
 def tint(image, tint, opacity):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param tint:
+    :type tint: :class:`wand.color.Color`
+    :param opacity:
+    :type opacity: :class:`wand.color.Color`
+    """
     if not isinstance(tint, Color):
         raise TypeError('tint must be a wand.color.Color instance, '
                         'not ' + repr(tint))
@@ -1978,6 +2816,19 @@ def tint(image, tint, opacity):
 
 
 def vignette(image, black, white, x, y):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param black:
+    :type black: :class:`numbers.Real`
+    :param white:
+    :type white: :class:`numbers.Real`
+    :param x:
+    :type x: :class:`numbers.Integral`
+    :param y:
+    :type y: :class:`numbers.Integral`
+    """
     if not isinstance(black, numbers.Real):
         raise TypeError('black has to be a numbers.Real, not ' +
                         repr(black))
@@ -1996,6 +2847,15 @@ def vignette(image, black, white, x, y):
 
 
 def wave(image, amplitude, wave_length):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param amplitude:
+    :type amplitude: :class:`numbers.Real`
+    :param wave_length:
+    :type wave_length: :class:`numbers.Real`
+    """
     if not isinstance(amplitude, numbers.Real):
         raise TypeError('amplitude has to be a numbers.Real, not ' +
                         repr(amplitude))
@@ -2008,6 +2868,13 @@ def wave(image, amplitude, wave_length):
 
 
 def whitethreshold(image, threshold):
+    """
+
+    :param image:
+    :type image: :class:`wand.image.Image`
+    :param threshold:
+    :type threshold: :class:`wand.color.Color`
+    """
     if not isinstance(threshold, Color):
         raise TypeError('threshold must be a wand.color.Color, not ' +
                         repr(threshold))
