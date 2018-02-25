@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from wand.api import libmagick
 from wand.compat import string_type
 import ctypes
@@ -130,3 +132,7 @@ def getlogname(encoding=None):
         return name.decode(encoding=encoding)
     else:
         return name.decode()
+
+
+if __name__ == '__main__':
+    pass
