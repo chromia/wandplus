@@ -791,12 +791,13 @@ def adaptiveblur(image, radius, sigma, channel=None):
 
 
 def adaptiveresize(image, columns, rows):
-    """
-    :param image:
+    """adaptively resize image with data dependent triangulation.
+
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param columns:
+    :param columns: the number of columns in the scaled image.
     :type columns: :class:`numbers.Integral`
-    :param rows:
+    :param rows: the number of rows in the scaled image.
     :type rows: :class:`numbers.Integral`
     """
     if not isinstance(columns, numbers.Integral):
@@ -811,13 +812,19 @@ def adaptiveresize(image, columns, rows):
 
 
 def adaptivesharpen(image, radius, sigma, channel=None):
-    """
+    """adaptively sharpens the image by sharpening
+    more intensely near image edges and less intensely far from edges. We
+    sharpen the image with a Gaussian operator of the given radius and standard
+    deviation (sigma).  For reasonable results, radius should be larger than
+    sigma.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the Gaussian, in pixels,
+                   not counting the center pixel.
+                   if 0, suitable radius is selected.
     :type radius: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -843,15 +850,18 @@ def adaptivesharpen(image, radius, sigma, channel=None):
 
 
 def adaptivethreshold(image, width, height, offset):
-    """
+    """selects an individual threshold for each pixel
+    based on the range of intensity values in its local neighborhood.  This
+    allows for thresholding of an image whose global intensity histogram
+    doesn't contain distinctive peaks.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param width:
+    :param width: the width of the local neighborhood.
     :type width: :class:`numbers.Integral`
-    :param height:
+    :param height: the height of the local neighborhood.
     :type height: :class:`numbers.Integral`
-    :param offset:
+    :param offset: the mean offset.
     :type offset: :class:`numbers.Integral`
     """
     if not isinstance(width, numbers.Integral):
@@ -874,9 +884,9 @@ def add(dstimage, srcimage):
     This function conflicts with wand.image.Image.sequence.
     Do NOT use together
 
-    :param dstimage:
+    :param dstimage: target image.
     :type dstimage: :class:`wand.image.Image`
-    :param srcimage:
+    :param srcimage: image(s) to be added.
     :type srcimage: :class:`wand.image.Image`
     """
     r = library.MagickAddImage(dstimage.wand, srcimage.wand)
@@ -885,11 +895,12 @@ def add(dstimage, srcimage):
 
 
 def addnoise(image, type, channel=None):
-    """
+    """adds random noise to the image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param type:
+    :param type: The type of noise included in :const:`NOISE_TYPES`.
+                 e.g. 'uniform', 'gaussian', 'random'
     :type type: :class:`str`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -913,11 +924,12 @@ def addnoise(image, type, channel=None):
 
 
 def affinetransform(image, drawing):
-    """
+    """transforms an image as dictated by the affine
+    matrix of the drawing context.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param drawing:
+    :param drawing: the drawing context called Drawing.affine function.
     :type drawing: :class:`wand.drawing.Drawing`
     """
     if not isinstance(drawing, Drawing):
@@ -929,9 +941,10 @@ def affinetransform(image, drawing):
 
 
 def autogamma(image, channel=None):
-    """
+    """extracts the 'mean' from the image and adjust the
+    image to try make set its gamma appropriatally.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -950,9 +963,10 @@ def autogamma(image, channel=None):
 
 
 def autolevel(image, channel=None):
-    """
+    """adjusts the levels of a particular image channel by
+    scaling the minimum and maximum values to the full quantum range.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
