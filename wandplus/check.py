@@ -94,7 +94,7 @@ class CheckImage(unittest.TestCase):
         with self.rose.clone() as t:
             with Drawing() as d:
                 d.affine([2.0, 0.0, 0.0, 2.0, 0.0, 0.0])
-                f(t, d)  # not work correctly
+                f(t, d)  # not work correctly (IM<6.9.9-36)
                 save(t, f)
 
     def test_autogamma(self):
