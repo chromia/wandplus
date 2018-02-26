@@ -985,11 +985,13 @@ def autolevel(image, channel=None):
 
 
 def blackthreshold(image, threshold):
-    """
+    """is like MagickThresholdImage() but  forces all
+    pixels below the threshold into black while leaving all pixels above the
+    threshold unchanged.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param threshold:
+    :param threshold: threshold color.
     :type threshold: :class:`wand.color.Color`
     """
     if not isinstance(threshold, Color):
@@ -1001,12 +1003,13 @@ def blackthreshold(image, threshold):
             image.raise_exception()
 
 
-def blueshift(image, factor):
-    """
+def blueshift(image, factor=1.5):
+    """mutes the colors of the image to simulate a scene at
+    nighttime in the moonlight.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param factor:
+    :param factor: the blue shift factor (default 1.5)
     :type factor: :class:`numbers.Real`
     """
     if not isinstance(factor, numbers.Real):
@@ -1018,7 +1021,9 @@ def blueshift(image, factor):
 
 
 def brightnesscontrast(image, brightness, contrast, channel=None):
-    """
+    """to change the brightness and/or contrast
+    of an image.  It converts the brightness and contrast parameters into slope
+    and intercept and calls a polynomical function to apply to the image.
 
     :param image:
     :type image: :class:`wand.image.Image`
@@ -1053,13 +1058,16 @@ def brightnesscontrast(image, brightness, contrast, channel=None):
 
 
 def blur(image, radius, sigma, channel=None):
-    """
+    """blurs an image.  We convolve the image with a gaussian
+    operator of the given radius and standard deviation (sigma).  For reasonable
+    results, the radius should be larger than sigma.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the , in pixels, not counting the center pixel.
+                   if 0, suitable radius is selected.
     :type radius: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the , in pixels.
     :type sigma: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
