@@ -1632,15 +1632,15 @@ def extent(image, x, y, width, height):
 
 
 def filterimage(image, columns, rows, kernel, channel=None):
-    """
+    """applies a custom convolution kernel to the image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param columns:
+    :param columns: the columns of kernel.
     :type columns: :class:`numbers.Integral`
-    :param rows:
+    :param rows: the rows of kernel.
     :type rows: :class:`numbers.Integral`
-    :param kernel:
+    :param kernel: An array of doubles representing the convolution kernel.
     :type kernel: :class:`collections.Sequence`,
                   :class:`numbers.Real`
     :param channel: the channel type. available values can be found
@@ -1673,21 +1673,30 @@ def filterimage(image, columns, rows, kernel, channel=None):
 
 def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
                    invert=False, channel=None):
-    """
+    """changes the color value of any pixel that matches
+    target and is an immediate neighbor.  If the method FillToBorderMethod is
+    specified, the color value is changed for any neighbor pixel that does not
+    match the bordercolor member of image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param fillcolor:
+    :param fillcolor: the floodfill color.
     :type fillcolor: :class:`wand.color.Color`
-    :param fuzz:
+    :param fuzz: By default target must match a particular pixel color exactly.
+                 However, in many cases two colors may differ
+                 by a small amount. The fuzz member of image defines how much
+                 tolerance is acceptable to consider two colors as the same.
+                 For example, set fuzz to 10 and the color red at intensities
+                 of 100 and 102 respectively are now interpreted
+                 as the same color for the purposes of the floodfill.
     :type fuzz: :class:`numbers.Real`
-    :param bordercolor:
+    :param bordercolor: the border color.
     :type bordercolor: :class:`wand.color.Color`
-    :param x:
+    :param x: x coord of the starting location.
     :type x: :class:`numbers.Integral`
-    :param y:
+    :param y: y coord of the starting location.
     :type y: :class:`numbers.Integral`
-    :param invert:
+    :param invert: paint any pixel that does not match the target color.
     :type invert: :class:`bool`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -1729,8 +1738,11 @@ def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
 
 
 def forwardfouriertransform(image, magnitude):
-    """
-    :param image:
+    """implements the discrete Fourier
+    transform (DFT) of the image either as a magnitude / phase or real /
+    imaginary image pair.
+
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     :param magnitude: if true, return as magnitude / phase pair
                       otherwise a real / imaginary image pair.
@@ -1745,11 +1757,15 @@ def forwardfouriertransform(image, magnitude):
 
 
 def haldclut(image, clutimage, channel=None):
-    """
+    """replaces colors in the image from a Hald color lookup table.
+    A Hald color lookup table is a 3-dimensional color cube mapped to 2
+    dimensions.  Create it with the HALD coder.  You can apply any color
+    transformation to the Hald image and then use this method to apply the
+    transform to the image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param clutimage:
+    :param clutimage: the hald CLUT image.
     :type clutimage: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -1769,11 +1785,14 @@ def haldclut(image, clutimage, channel=None):
 
 
 def implode(image, amount):
-    """
+    """creates a new image that is a copy of an existing
+    one with the image pixels "implode" by the specified percentage.  It
+    allocates the memory necessary for the new Image structure and returns a
+    pointer to the new image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param amount:
+    :param amount: Define the extent of the implosion.
     :type amount: :class:`numbers.Real`
     """
     if not isinstance(amount, numbers.Real):
@@ -1785,7 +1804,9 @@ def implode(image, amount):
 
 
 def inversefouriertransform(image1, image2, magnitude):
-    """
+    """implements the inverse discrete
+    Fourier transform (DFT) of the image either as a magnitude / phase
+    or real / imaginary image pair.
 
     :param image1: magnitude-image or real-image.
                    furthermore, converted image is stored to image1
