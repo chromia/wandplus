@@ -2354,13 +2354,13 @@ def rotationalblur(image, angle, channel=None):
 
 
 def scale(image, columns, rows):
-    """
+    """scales the size of an image to the given dimensions.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param columns:
+    :param columns: the number of columns in the scaled image.
     :type columns: :class:`numbers.Integral`
-    :param rows:
+    :param rows: the number of rows in the scaled image.
     :type rows: :class:`numbers.Integral`
     """
     if not isinstance(columns, numbers.Integral):
@@ -2375,17 +2375,25 @@ def scale(image, columns, rows):
 
 
 def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
-    """
+    """segments an image by analyzing the histograms of the
+    color components and identifying units that are homogeneous with the fuzzy
+    C-means technique.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param colorspace:
+    :param colorspace: the image colorspace in :const:`COLORSPACE_TYPES`.
     :type colorspace: :class:`str`
-    :param verbose:
+    :param verbose: Set to True to print detailed information
+                    about the identified classes.
     :type verbose: :class:`bool`
-    :param cluster_threshold:
+    :param cluster_threshold: This represents the minimum number of pixels
+                              contained in a hexahedra before it can be
+                              considered valid (expressed as a percentage).
     :type cluster_threshold: :class:`numbers.Real`
-    :param smooth_threshold:
+    :param smooth_threshold: the smoothing threshold eliminates noise
+                             in the second derivative of the histogram.
+                             As the value is increased, you can expect a
+                             smoother second derivative.
     :type smooth_threshold: :class:`numbers.Real`
     """
     if colorspace not in COLORSPACE_TYPES:
@@ -2408,15 +2416,19 @@ def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
 
 
 def selectiveblur(image, radius, sigma, threshold, channel=None):
-    """
+    """selectively blur an image within a contrast
+    threshold. It is similar to the unsharpen mask that sharpens everything
+    with contrast above a certain threshold.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the gaussian, in pixels,
+                   not counting the center pixel.
     :type radius: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
-    :param threshold:
+    :param threshold: only pixels within this contrast threshold are included
+                      in the blur operation.
     :type threshold: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2447,9 +2459,11 @@ def selectiveblur(image, radius, sigma, threshold, channel=None):
 
 
 def separate_channel(image, channel):
-    """
+    """separates a channel from the image and returns a
+    grayscale image.  A channel is a particular color component of each pixel
+    in the image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2464,11 +2478,14 @@ def separate_channel(image, channel):
 
 
 def sepiatone(image, threshold):
-    """
+    """applies a special effect to the image, similar to the
+    effect achieved in a photo darkroom by sepia toning.  Threshold ranges from
+    0 to QuantumRange and is a measure of the extent of the sepia toning.  A
+    threshold of 80% is a good starting point for a reasonable tone.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param threshold:
+    :param threshold: Define the extent of the sepia toning.
     :type threshold: :class:`numbers.Real`
     """
     if not isinstance(threshold, numbers.Real):
@@ -2480,15 +2497,16 @@ def sepiatone(image, threshold):
 
 
 def setsizeoffset(image, columns, rows, offset):
-    """
+    """sets the size and offset of the magick wand.  Set it
+    before you read a raw image format such as RGB, GRAY, or CMYK.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param columns:
+    :param columns: the image width in pixels.
     :type columns: :class:`numbers.Integral`
-    :param rows:
+    :param rows: the image rows in pixels.
     :type rows: :class:`numbers.Integral`
-    :param offset:
+    :param offset: the image offset.
     :type offset: :class:`numbers.Integral`
     """
     if not isinstance(columns, numbers.Integral):
@@ -2506,15 +2524,17 @@ def setsizeoffset(image, columns, rows, offset):
 
 
 def shade(image, gray, azimuth, elevation):
-    """
+    """shines a distant light on an image to create a
+    three-dimensional effect. You control the positioning of the light with
+    azimuth and elevation.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param gray:
+    :param gray: A value other than zero shades the intensity of each pixel.
     :type gray: :class:`bool`
-    :param azimuth:
+    :param azimuth: azimuth is measured in degrees off the x axis
     :type azimuth: :class:`numbers.Real`
-    :param elevation:
+    :param elevation: elevation is measured in pixels above the Z axis.
     :type elevation: :class:`numbers.Real`
     """
     if not isinstance(gray, bool):
@@ -2532,17 +2552,17 @@ def shade(image, gray, azimuth, elevation):
 
 
 def shadow(image, opacity, sigma, x, y):
-    """
+    """simulates an image shadow.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param opacity:
+    :param opacity: percentage transparency.
     :type opacity: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
-    :param x:
+    :param x: the shadow x-offset.
     :type x: :class:`numbers.Integral`
-    :param y:
+    :param y: the shadow y-offset.
     :type y: :class:`numbers.Integral`
     """
     if not isinstance(opacity, numbers.Real):
@@ -2563,13 +2583,17 @@ def shadow(image, opacity, sigma, x, y):
 
 
 def sharpen(image, radius, sigma, channel=None):
-    """
+    """sharpens an image.  We convolve the image with a
+    Gaussian operator of the given radius and standard deviation (sigma).
+    For reasonable results, the radius should be larger than sigma.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the Gaussian, in pixels,
+                   not counting the center pixel.
+                   if 0, suitable radius is selected.
     :type radius: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2595,13 +2619,15 @@ def sharpen(image, radius, sigma, channel=None):
 
 
 def shave(image, columns, rows):
-    """
+    """shaves pixels from the image edges.  It allocates the
+    memory necessary for the new Image structure and returns a pointer to the
+    new image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param columns:
+    :param columns: the number of columns in the scaled image.
     :type columns: :class:`numbers.Integral`
-    :param rows:
+    :param rows: the number of rows in the scaled image.
     :type rows: :class:`numbers.Integral`
     """
     if not isinstance(columns, numbers.Integral):
@@ -2616,15 +2642,22 @@ def shave(image, columns, rows):
 
 
 def shear(image, background, x, y):
-    """
+    """slides one edge of an image along the X or Y axis,
+    creating a parallelogram.  An X direction shear slides an edge along the X
+    axis, while a Y direction shear slides an edge along the Y axis.
+    The amount of the shear is controlled by a shear angle.
+    For X direction shears, x_shear is measured relative to the Y axis,
+    and similarly, for Y direction shears y_shear is measured relative
+    to the X axis.  Empty triangles left over from
+    shearing the image are filled with the background color.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param background:
+    :param background: the background color
     :type background: :class:`wand.color.Color`
-    :param x:
+    :param x: the number of degrees to shear the image.
     :type x: :class:`numbers.Real`
-    :param y:
+    :param y: the number of degrees to shear the image.
     :type y: :class:`numbers.Real`
     """
     if not isinstance(background, Color):
@@ -2643,15 +2676,22 @@ def shear(image, background, x, y):
 
 
 def sigmoidalcontrast(image, sharpen, alpha, beta, channel=None):
-    """
+    """adjusts the contrast of an image with a
+    non-linear sigmoidal contrast algorithm.  Increase the contrast of the
+    image using a sigmoidal transfer function without saturating highlights or
+    shadows.  Contrast indicates how much to increase the contrast (0 is none;
+    3 is typical; 20 is pushing it); mid-point indicates where midtones fall in
+    the resultant image (0 is white; 50% is middle-gray; 100% is black).
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param sharpen:
+    :param sharpen: Increase or decrease image contrast.
+                    Set to True to increase the image contrast.
     :type sharpen: :class:`bool`
-    :param alpha:
+    :param alpha: strength of the contrast, the larger the number the more
+                  'threshold-like' it becomes.
     :type alpha: :class:`numbers.Real`
-    :param beta:
+    :param beta: midpoint of the function as a color value 0 to QuantumRange.
     :type beta: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2682,15 +2722,19 @@ def sigmoidalcontrast(image, sharpen, alpha, beta, channel=None):
 
 
 def sketch(image, radius, sigma, angle):
-    """
+    """simulates a pencil sketch.  We convolve the image with
+    a Gaussian operator of the given radius and standard deviation (sigma).
+    For reasonable results, radius should be larger than sigma.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the Gaussian, in pixels,
+                   not counting the center pixel.
+                   if 0, suitable radius is selected.
     :type radius: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
-    :param angle:
+    :param angle: Apply the effect along this angle.
     :type angle: :class:`numbers.Real`
     """
     if not isinstance(radius, numbers.Real):
@@ -2708,11 +2752,14 @@ def sketch(image, radius, sigma, angle):
 
 
 def solarize(image, threshold, channel=None):
-    """
+    """applies a special effect to the image, similar to the
+    effect achieved in a photo darkroom by selectively exposing areas of photo
+    sensitive paper to light.  Threshold ranges from 0 to QuantumRange and is a
+    measure of the extent of the solarization.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param threshold:
+    :param threshold: Define the extent of the solarization.
     :type threshold: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2735,15 +2782,21 @@ def solarize(image, threshold, channel=None):
 
 
 def sparsecolor(image, channel, method, arguments):
-    """
+    """given a set of coordinates, interpolates the colors found
+    at those coordinates, across the whole image, using various methods.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param channel:
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
     :type channel: :class:`str`
-    :param method:
+    :param method: the method of image sparseion.
+                   available values can be found in :const:`SPARSE_METHODS`.
+
+                   TODO: more detailed information
+
     :type method: :class:`str`
-    :param arguments:
+    :param arguments: the arguments for this sparseion method.
     :type arguments: :class:`collections.Sequence`,
                      :class:`numbers.Real`
     """
@@ -2766,17 +2819,17 @@ def sparsecolor(image, channel, method, arguments):
 
 
 def splice(image, x, y, width, height):
-    """
+    """splices a solid color into the image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param x:
+    :param x: the region x offset.
     :type x: :class:`numbers.Integral`
-    :param y:
+    :param y: the region y offset.
     :type y: :class:`numbers.Integral`
-    :param width:
+    :param width: the region width.
     :type width: :class:`numbers.Integral`
-    :param height:
+    :param height: the region height.
     :type height: :class:`numbers.Integral`
     """
     if not isinstance(x, numbers.Integral):
@@ -2796,12 +2849,13 @@ def splice(image, x, y, width, height):
         image.raise_exception()
 
 
-    """
 def spread(image, amount):
+    """is a special effects method that randomly displaces each
+    pixel in a block defined by the radius parameter.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param amount:
+    :param amount: Choose a random pixel in a neighborhood of this extent.
     :type amount: :class:`numbers.Real`
     """
     if not isinstance(amount, numbers.Real):
@@ -2813,15 +2867,16 @@ def spread(image, amount):
 
 
 def statistic(image, statistic_type, width, height, channel=None):
-    """
+    """replace each pixel with corresponding statistic from
+    the neighborhood of the specified width and height.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param statistic_type:
+    :param statistic_type: the statistic type in :const:`STATISTIC_TYPES`.
     :type statistic_type: :class:`str`
-    :param width:
+    :param width: the width of the pixel neighborhood.
     :type width: :class:`numbers.Integral`
-    :param height:
+    :param height: the height of the pixel neighborhood.
     :type height: :class:`numbers.Integral`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2851,13 +2906,16 @@ def statistic(image, statistic_type, width, height, channel=None):
 
 
 def stegano(image, watermark, offset):
-    """
+    """hides a digital watermark within the image.
+    Recover the hidden watermark later to prove that the authenticity of
+    an image.  Offset defines the start position within the image to hide
+    the watermark.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param watermark:
+    :param watermark: the watermark image.
     :type watermark: :class:`wand.image.Image`
-    :param offset:
+    :param offset: Start hiding at this offset into the image.
     :type offset: :class:`numbers.Integral`
     """
     if not isinstance(offset, numbers.Integral):
@@ -2870,11 +2928,12 @@ def stegano(image, watermark, offset):
 
 
 def stereo(image, offsetimage):
-    """
+    """composites two images and produces a single image that
+    is the composite of a left and right image of a stereo pair.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param offsetimage:
+    :param offsetimage: Another image.
     :type offsetimage: :class:`wand.image.Image`
     """
     new_wand = library.MagickStereoImage(image.wand, offsetimage.wand)
@@ -2884,11 +2943,13 @@ def stereo(image, offsetimage):
 
 
 def swirl(image, degrees):
-    """
+    """swirls the pixels about the center of the image, where
+    degrees indicates the sweep of the arc through which each pixel is moved.
+    You get a more dramatic effect as the degrees move from 1 to 360.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param degrees:
+    :param degrees: Define the tightness of the swirling effect.
     :type degrees: :class:`numbers.Real`
     """
     if not isinstance(degrees, numbers.Real):
@@ -2900,11 +2961,11 @@ def swirl(image, degrees):
 
 
 def texture(image, textureimage):
-    """
+    """repeatedly tiles the texture image across and down the image canvas.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param textureimage:
+    :param textureimage: the texture image.
     :type textureimage: :class:`wand.image.Image`
     """
     new_wand = library.MagickTextureImage(image.wand, textureimage.wand)
@@ -2914,13 +2975,15 @@ def texture(image, textureimage):
 
 
 def thumbnail(image, columns, rows):
-    """
+    """changes the size of an image to the given dimensions
+    and removes any associated profiles.  The goal is to produce small low cost
+    thumbnail images suited for display on the Web.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param columns:
+    :param columns: the number of columns in the scaled image.
     :type columns: :class:`numbers.Integral`
-    :param rows:
+    :param rows: the number of rows in the scaled image.
     :type rows: :class:`numbers.Integral`
     """
     if not isinstance(columns, numbers.Integral):
@@ -2935,13 +2998,16 @@ def thumbnail(image, columns, rows):
 
 
 def tint(image, tint, opacity):
-    """
+    """applies a color vector to each pixel in the image.  The
+    length of the vector is 0 for black and white and at its maximum for the
+    midtones.  The vector weighting function is
+    f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param tint:
+    :param tint: the tint pixel wand.
     :type tint: :class:`wand.color.Color`
-    :param opacity:
+    :param opacity: the color representing the opacity.
     :type opacity: :class:`wand.color.Color`
     """
     if not isinstance(tint, Color):
