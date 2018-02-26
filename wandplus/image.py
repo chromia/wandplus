@@ -2029,11 +2029,13 @@ def motionblur(image, radius, sigma, angle, channel=None):
 
 
 def oilpaint(image, radius):
-    """
+    """applies a special effect filter that simulates an oil
+    painting.  Each pixel is replaced by the most frequent color occurring
+    in a circular region defined by radius.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the circular neighborhood.
     :type radius: :class:`numbers.Real`
     """
     if not isinstance(radius, numbers.Real):
@@ -2045,17 +2047,23 @@ def oilpaint(image, radius):
 
 
 def opaquepaint(image, target, fill, fuzz, invert=False, channel=None):
-    """
+    """changes any pixel that matches color with the color defined by fill.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param target:
+    :param target: Change this target color to the fill color within the image.
     :type target: :class:`wand.color.Color`
-    :param fill:
+    :param fill: the fill color.
     :type fill: :class:`wand.color.Color`
-    :param fuzz:
+    :param fuzz: By default target must match a particular pixel color exactly.
+                 However, in many cases two colors may differ
+                 by a small amount. The fuzz member of image defines how much
+                 tolerance is acceptable to consider two colors as the same.
+                 For example, set fuzz to 10 and the color red at intensities
+                 of 100 and 102 respectively are now interpreted
+                 as the same color for the purposes of the floodfill.
     :type fuzz: :class:`numbers.Real`
-    :param invert:
+    :param invert: paint any pixel that does not match the target color.
     :type invert: :class:`bool`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2093,11 +2101,17 @@ def opaquepaint(image, target, fill, fuzz, invert=False, channel=None):
 
 
 def orderedposterize(image, threshold_map, channel=None):
-    """
+    """performs an ordered dither based on a number
+    of pre-defined dithering threshold maps, but over multiple intensity levels,
+    which can be different for different channels, according to the input
+    arguments.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param threshold_map:
+    :param threshold_map: A string containing the name of the threshold dither
+                          map to use, followed by zero or more numbers
+                          representing the number of color levels
+                          tho dither between.
     :type threshold_map: :class:`str`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2121,13 +2135,13 @@ def orderedposterize(image, threshold_map, channel=None):
 
 
 def polaroid(image, drawing, angle):
-    """
+    """simulates a Polaroid picture.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param drawing:
+    :param drawing: the draw context.
     :type drawing: :class:`wand.drawing.Drawing`
-    :param angle:
+    :param angle: Apply the effect along this angle.
     :type angle: :class:`numbers.Real`
     """
     if not isinstance(drawing, Drawing):
@@ -2142,13 +2156,14 @@ def polaroid(image, drawing, angle):
 
 
 def posterize(image, levels, dither):
-    """
+    """reduces the image to a limited number of color level.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param levels:
+    :param levels: Number of color levels allowed in each channel.
+                   Very low values (2, 3, or 4) have the most visible effect.
     :type levels: :class:`numbers.Integral`
-    :param dither:
+    :param dither: if True, dither the mapped image.
     :type dither: :class:`bool`
     """
     if not isinstance(levels, numbers.Integral):
