@@ -1093,13 +1093,14 @@ def brightnesscontrast(image, brightness, contrast, channel=None):
 
 
 def charcoal(image, radius, sigma):
-    """
+    """simulates a charcoal drawing.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the Gaussian, in pixels,
+                   not counting the center pixel.
     :type radius: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
     """
     if not isinstance(radius, numbers.Real):
@@ -1114,17 +1115,18 @@ def charcoal(image, radius, sigma):
 
 
 def chop(image, x, y, width, height):
-    """
+    """removes a region of an image and collapses the image to
+    occupy the removed portion.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param x:
+    :param x: the region x offset.
     :type x: :class:`numbers.Integral`
-    :param y:
+    :param y: the region y offset.
     :type y: :class:`numbers.Integral`
-    :param width:
+    :param width: the region width
     :type width: :class:`numbers.Integral`
-    :param height:
+    :param height: the region height
     :type height: :class:`numbers.Integral`
     """
     if not isinstance(x, numbers.Integral):
@@ -1145,9 +1147,9 @@ def chop(image, x, y, width, height):
 
 
 def clamp(image, channel=None):
-    """
+    """restricts the color range from 0 to the quantum depth.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -1166,9 +1168,9 @@ def clamp(image, channel=None):
 
 
 def clip(image):
-    """
+    """clips along the first path from the 8BIM profile, if present.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickClipImage(image.wand)
@@ -1177,11 +1179,11 @@ def clip(image):
 
 
 def clut(image, clutimage, channel=None):
-    """
+    """replaces colors in the image from a color lookup table.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param clutimage:
+    :param clutimage: the clut image.
     :type clutimage: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -1201,11 +1203,29 @@ def clut(image, clutimage, channel=None):
 
 
 def colordecisionlist(image, ccc_text):
-    """
+    """accepts a lightweight Color Correction
+    Collection (CCC) file which solely contains one or more color corrections
+    and applies the color correction to the image.  Here is a sample CCC file:
 
-    :param image:
+    <ColorCorrectionCollection xmlns="urn:ASC:CDL:v1.2">
+        <ColorCorrection id="cc03345">
+            <SOPNode>
+                <Slope> 0.9 1.2 0.5 </Slope>
+                <Offset> 0.4 -0.5 0.6 </Offset>
+                <Power> 1.0 0.8 1.5 </Power>
+            </SOPNode>
+            <SATNode>
+                <Saturation> 0.85 </Saturation>
+            </SATNode>
+        </ColorCorrection>
+    </ColorCorrectionCollection>
+
+    which includes the offset, slope, and power for each of the RGB channels
+    as well as the saturation.
+
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param ccc_text:
+    :param ccc_text: the color correction collection in XML.
     :type ccc_text: :class:`str`
     """
     if not isinstance(ccc_text, string_type):
@@ -1217,15 +1237,21 @@ def colordecisionlist(image, ccc_text):
 
 
 def colormatrix(image, width, height, color_matrix):
-    """
+    """apply color transformation to an image. The method
+    permits saturation changes, hue rotation, luminance to alpha, and various
+    other effects.  Although variable-sized transformation matrices can be used,
+    typically one uses a 5x5 matrix for an RGBA image and a 6x6 for CMYKA
+    (or RGBA with offsets).  The matrix is similar to those used by Adobe Flash
+    except offsets are in column 6 rather than 5 (in support of CMYKA images)
+    and offsets are normalized (divide Flash offset by 255).
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param width:
+    :param width: the number of columns of ``color_matrix``.
     :type width: :class:`numbers.Integral`
-    :param height:
+    :param height: the number of rows of ``color_matrix``.
     :type height: :class:`numbers.Integral`
-    :param color_matrix:
+    :param color_matrix: the color matrix.
     :type color_matrix: :class:`collections.Sequence`,
                         :class:`numbers.Real`
     """
@@ -1244,13 +1270,13 @@ def colormatrix(image, width, height, color_matrix):
 
 
 def colorize(image, color, opacity):
-    """
+    """blends the fill color with each pixel in the image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param color:
+    :param color: the fill color.
     :type color: :class:`wand.color.Color`
-    :param opacity:
+    :param opacity: the color represents opacity.
     :type opacity: :class:`wand.color.Color`
     """
     if not isinstance(color, Color):
@@ -1268,11 +1294,11 @@ def colorize(image, color, opacity):
 
 
 def comment(image, text):
-    """
+    """adds a comment to your image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param text:
+    :param text: the image comment.
     :type text: :class:`str`
     """
     if not isinstance(text, string_type):
@@ -1284,19 +1310,39 @@ def comment(image, text):
 
 
 def constitute(image, columns, rows, map, storage, pixels):
-    """
+    """adds an image to the wand comprised of the pixel
+    data you supply.  The pixel data must be in scanline order top-to-bottom.
+    The data can be char, short int, int, float, or double(in C language).
+    Float and double require the pixels to be normalized [0..1],
+    otherwise [0..Max],  where Max is the maximum value
+    the type can accomodate (e.g. 255 for char).
 
-    :param image:
+    For example, to create a 640x480 image from
+    unsigned red-green-blue character data, use
+
+        constitute(image,640,480,"RGB",'char',pixels);
+
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param columns:
+    :param columns: width in pixels of the image.
     :type columns: :class:`numbers.Integral`
-    :param rows:
+    :param rows: height in pixels of the image.
     :type rows: :class:`numbers.Integral`
-    :param map:
+    :param map: This string reflects the expected ordering of the pixel array.
+                It can be any combination or order of R = red, G = green,
+                B = blue, A = alpha (0 is transparent),
+                O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta,
+                K = black, I = intensity (for grayscale), P = pad.
     :type map: :class:`str`
-    :param storage:
+    :param storage: Define the data type of the pixels.
+                    Float and double types are expected to be normalized [0..1]
+                    otherwise [0..QuantumRange].
+                    Choose from :const:`STORAGE_TYPES`.
     :type storage: :class:`str`
-    :param pixels:
+    :param pixels: This array of values contain the pixel components
+                   as defined by map and type. You must preallocate this array
+                   where the expected length varies depending on the values
+                   of width, height, map, and type.
     :type pixels: :class:`collections.Sequence`,
                   :class:type of `storage`
     """
@@ -1309,7 +1355,7 @@ def constitute(image, columns, rows, map, storage, pixels):
     elif not isinstance(map, string_type):
         raise TypeError('expected a string, not ' + repr(map))
     elif storage not in STORAGE_TYPES:
-        raise ValueError('expected string from MORPHOLOGY_METHODS, not ' +
+        raise ValueError('expected string from STORAGE_TYPES, not ' +
                          repr(storage))
     elif not isinstance(pixels, collections.Sequence):
         raise TypeError('expecting sequence of arguments, not ' +
@@ -1344,11 +1390,12 @@ def constitute(image, columns, rows, map, storage, pixels):
 
 
 def contrast(image, sharpen):
-    """
+    """enhances the intensity differences between the lighter
+    and darker elements of the image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param sharpen:
+    :param sharpen: Increase or decrease image contrast.
     :type sharpen: :class:`bool`
     """
     if not isinstance(sharpen, bool):
@@ -1360,13 +1407,13 @@ def contrast(image, sharpen):
 
 
 def convolve(image, order, kernel, channel=None):
-    """
+    """applies a custom convolution kernel to the image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param order:
+    :param order: the number of columns and rows in the filter kernel.
     :type order: :class:`numbers.Integral`
-    :param kernel:
+    :param kernel: An array of doubles representing the convolution kernel.
     :type kernel: :class:`collections.Sequence`,
                   :class:`numbers.Real`
     :param channel: the channel type. available values can be found
@@ -1395,11 +1442,13 @@ def convolve(image, order, kernel, channel=None):
 
 
 def cyclecolormap(image, displace):
-    """
+    """displaces an image's colormap by a given number
+    of positions.  If you cycle the colormap a number of times you can produce
+    a psychodelic effect.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param displace:
+    :param displace: displace the colormap this amount.
     :type displace: :class:`numbers.Integral`
     """
     if not isinstance(displace, numbers.Integral):
