@@ -1020,43 +1020,6 @@ def blueshift(image, factor=1.5):
         image.raise_exception()
 
 
-def brightnesscontrast(image, brightness, contrast, channel=None):
-    """to change the brightness and/or contrast
-    of an image.  It converts the brightness and contrast parameters into slope
-    and intercept and calls a polynomical function to apply to the image.
-
-    :param image:
-    :type image: :class:`wand.image.Image`
-    :param brightness:
-    :type brightness: :class:`numbers.Real`
-    :param contrast:
-    :type contrast: :class:`numbers.Real`
-    :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
-                    If ``None``, select all channels.
-    :type channel: :class:`str`
-    """
-    if not isinstance(brightness, numbers.Real):
-        raise TypeError('brightness has to be a numbers.Real, not ' +
-                        repr(brightness))
-    elif not isinstance(contrast, numbers.Real):
-        raise TypeError('contrast has to be a numbers.Real, not ' +
-                        repr(contrast))
-    if channel:
-        if channel not in CHANNELS:
-            raise ValueError('expected value from CHANNELS, not ' +
-                             repr(channel))
-        r = library.MagickBrightnessContrastImageChannel(image.wand,
-                                                         CHANNELS[channel],
-                                                         brightness,
-                                                         contrast)
-    else:
-        r = library.MagickBrightnessContrastImage(image.wand, brightness,
-                                                  contrast)
-    if not r:
-        image.raise_exception()
-
-
 def blur(image, radius, sigma, channel=None):
     """blurs an image.  We convolve the image with a gaussian
     operator of the given radius and standard deviation (sigma).  For reasonable
@@ -1088,6 +1051,43 @@ def blur(image, radius, sigma, channel=None):
                                            radius, sigma)
     else:
         r = library.MagickBlurImage(image.wand, radius, sigma)
+    if not r:
+        image.raise_exception()
+
+
+def brightnesscontrast(image, brightness, contrast, channel=None):
+    """to change the brightness and/or contrast
+    of an image.  It converts the brightness and contrast parameters into slope
+    and intercept and calls a polynomical function to apply to the image.
+
+    :param image: target image.
+    :type image: :class:`wand.image.Image`
+    :param brightness: the brightness percent (-100 .. 100).
+    :type brightness: :class:`numbers.Real`
+    :param contrast: the contrast percent (-100 .. 100).
+    :type contrast: :class:`numbers.Real`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    If ``None``, select all channels.
+    :type channel: :class:`str`
+    """
+    if not isinstance(brightness, numbers.Real):
+        raise TypeError('brightness has to be a numbers.Real, not ' +
+                        repr(brightness))
+    elif not isinstance(contrast, numbers.Real):
+        raise TypeError('contrast has to be a numbers.Real, not ' +
+                        repr(contrast))
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        r = library.MagickBrightnessContrastImageChannel(image.wand,
+                                                         CHANNELS[channel],
+                                                         brightness,
+                                                         contrast)
+    else:
+        r = library.MagickBrightnessContrastImage(image.wand, brightness,
+                                                  contrast)
     if not r:
         image.raise_exception()
 
