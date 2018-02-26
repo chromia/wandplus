@@ -1460,11 +1460,11 @@ def cyclecolormap(image, displace):
 
 
 def decipher(image, passphrase):
-    """
+    """converts cipher pixels to plain pixels.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param passphrase:
+    :param passphrase: the passphrase.
     :type passphrase: :class:`str`
     """
     if not isinstance(passphrase, string_type):
@@ -1476,11 +1476,14 @@ def decipher(image, passphrase):
 
 
 def deskew(image, threshold):
-    """
+    """removes skew from the image.  Skew is an artifact that
+    occurs in scanned images because of the camera being misaligned,
+    imperfections in the scanning or surface, or simply because the paper was
+    not placed completely flat when scanned.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param threshold:
+    :param threshold: separate background from foreground.
     :type threshold: :class:`numbers.Real`
     """
     if not isinstance(threshold, numbers.Real):
@@ -1492,9 +1495,10 @@ def deskew(image, threshold):
 
 
 def despeckle(image):
-    """
+    """reduces the speckle noise in an image while
+    perserving the edges of the original image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickDespeckleImage(image.wand)
@@ -1503,11 +1507,13 @@ def despeckle(image):
 
 
 def edge(image, radius):
-    """
+    """enhance edges within the image with a convolution filter
+    of the given radius.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the pixel neighborhood.
+                   if 0, suitable radius is selected.
     :type radius: :class:`numbers.Real`
     """
     if not isinstance(radius, numbers.Real):
@@ -1519,13 +1525,18 @@ def edge(image, radius):
 
 
 def emboss(image, radius, sigma):
-    """
+    """returns a grayscale image with a three-dimensional
+    effect.  We convolve the image with a Gaussian operator of the given radius
+    and standard deviation (sigma).  For reasonable results, radius should be
+    larger than sigma.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the Gaussian, in pixels,
+                   not counting the center pixel.
+                   if 0, suitable radius is selected.
     :type radius: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
     """
     if not isinstance(radius, numbers.Real):
@@ -1540,11 +1551,11 @@ def emboss(image, radius, sigma):
 
 
 def encipher(image, passphrase):
-    """
+    """converts plaint pixels to cipher pixels.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param passphrase:
+    :param passphrase: the passphrase.
     :type passphrase: :class:`str`
     """
     if not isinstance(passphrase, string_type):
@@ -1556,9 +1567,9 @@ def encipher(image, passphrase):
 
 
 def enhance(image):
-    """
+    """applies a digital filter that improves the quality of a noisy image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickEnhanceImage(image.wand)
@@ -1567,9 +1578,9 @@ def enhance(image):
 
 
 def equalize(image, channel=None):
-    """
+    """equalizes the image histogram.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -1588,17 +1599,19 @@ def equalize(image, channel=None):
 
 
 def extent(image, x, y, width, height):
-    """
+    """extends the image as defined by the geometry, gravity,
+    and background color.  Set the (x,y) offset of the geometry to move
+    the original image relative to the extended image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param x:
+    :param x: the region x offset.
     :type x: :class:`numbers.Integral`
-    :param y:
+    :param y: the region y offset.
     :type y: :class:`numbers.Integral`
-    :param width:
+    :param width: the region width.
     :type width: :class:`numbers.Integral`
-    :param height:
+    :param height: the region height.
     :type height: :class:`numbers.Integral`
     """
     if not isinstance(x, numbers.Integral):
