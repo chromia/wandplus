@@ -1828,11 +1828,11 @@ def inversefouriertransform(image1, image2, magnitude):
 
 
 def label(image, text):
-    """
+    """adds a label to your image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param text:
+    :param text: the image label text.
     :type text: :class:`str`
     """
     if not isinstance(text, string_type):
@@ -1844,13 +1844,17 @@ def label(image, text):
 
 
 def localcontrast(image, radius, strength):
-    """
+    """attempts to increase the appearance of
+    large-scale light-dark transitions. Local contrast enhancement works
+    similarly to sharpening with an unsharp mask, however the mask is instead
+    created using an image with a greater blur distance.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the Gaussian, in pixels,
+                   not counting the center pixel.
     :type radius: :class:`numbers.Real`
-    :param strength:
+    :param strength: the strength of the blur mask in percentage.
     :type strength: :class:`numbers.Real`
     """
     if not isinstance(radius, numbers.Real):
@@ -1865,9 +1869,10 @@ def localcontrast(image, radius, strength):
 
 
 def magnify(image):
-    """
+    """is a convenience method that scales an image
+    proportionally to twice its original size.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickMagnifyImage(image.wand)
@@ -1876,9 +1881,10 @@ def magnify(image):
 
 
 def minify(image):
-    """
+    """is a convenience method that scales an image
+    proportionally to one-half its original size
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickMinifyImage(image.wand)
@@ -1887,19 +1893,25 @@ def minify(image):
 
 
 def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
-    """
+    """creates a composite image by combining several
+    separate images. The images are tiled on the composite image with the name
+    of the image optionally appearing just below the individual tile.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param drawing:
+    :param drawing: the drawing context.
     :type drawing: :class:`wand.drawing.Drawing`
-    :param tile_geometry:
+    :param tile_geometry: the number of tiles per row and page
+                          (e.g. 6x4+0+0).
     :type tile_geometry: :class:`str`
-    :param thumbnail_geometry:
+    :param thumbnail_geometry: Preferred image size and border size of each
+                               thumbnail (e.g. 120x120+4+3>).
     :type thumbnail_geometry: :class:`str`
-    :param mode:
+    :param mode: Thumbnail framing mode included in :const:`MONTAGE_MODES`.
     :type mode: :class:`str`
-    :param frame:
+    :param frame: Surround the image with an ornamental border
+                  (e.g. 15x15+3+3).
+                  The frame color is that of the thumbnail's matte color.
     :type frame: :class:`str`
     """
     if not isinstance(drawing, Drawing):
@@ -1928,17 +1940,24 @@ def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
 
 
 def morphology(image, method, iterations, kernelinfo, channel=None):
-    """
+    """applies a user supplied kernel to the image
+    according to the given mophology method.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param method:
+    :param method: the morphology method included in
+                   :const:`MORPHOLOGY_METHODS`.
     :type method: :class:`str`
-    :param iterations:
+    :param iterations: apply the operation this many times (or no change).
+                       A value of -1 means loop until no change found.
+                       How this is applied may depend on the morphology method.
+                       Typically this is a value of 1.
     :type iterations: :class:`numbers.Integral`
-    :param kernelinfo:
-    :type kernelinfo: :class:`collections.Sequence`,
-                      :class:`numbers.Real`
+    :param kernelinfo: a string representing the kernel
+                       in format "\{kernel\}[:[k_args}]"
+                       e.g. Diamond:4
+                       see also http://www.imagemagick.org/Usage/morphology/
+    :type kernelinfo: :class:`str`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
                     If ``None``, select all channels.
@@ -1969,15 +1988,19 @@ def morphology(image, method, iterations, kernelinfo, channel=None):
 
 
 def motionblur(image, radius, sigma, angle, channel=None):
-    """
+    """simulates motion blur.  We convolve the image with a
+    Gaussian operator of the given radius and standard deviation (sigma).
+    For reasonable results, radius should be larger than sigma.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param radius:
+    :param radius: the radius of the Gaussian, in pixels,
+                   not counting the center pixel.
+                   if 0, suitable radius is selected.
     :type radius: :class:`numbers.Real`
-    :param sigma:
+    :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
-    :param angle:
+    :param angle: Apply the effect along this angle.
     :type angle: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
