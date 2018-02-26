@@ -2178,19 +2178,23 @@ def posterize(image, levels, dither):
 
 
 def raiseimage(image, x, y, width, height, raiseeffect):  # raise is keyword
-    """
+    """creates a simulated three-dimensional button-like effect
+    by lightening and darkening the edges of the image.  Members width and
+    height of raise_info define the width of the vertical and horizontal
+    edge of the effect.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param x:
+    :param x: x coord of the area
     :type x: :class:`numbers.Integral`
-    :param y:
+    :param y: y coord of the area
     :type y: :class:`numbers.Integral`
-    :param width:
+    :param width: width of the area, in pixels.
     :type width: :class:`numbers.Integral`
-    :param height:
+    :param height: height of the area, in pixels.
     :type height: :class:`numbers.Integral`
-    :param raiseeffect:
+    :param raiseeffect: if True, creates a 3-D raise effect.
+                        otherwise, a lowered effect.
     :type raiseeffect: :class:`bool`
     """
     if not isinstance(x, numbers.Integral):
@@ -2214,13 +2218,15 @@ def raiseimage(image, x, y, width, height, raiseeffect):  # raise is keyword
 
 
 def randomthreshold(image, low, high, channel=None):
-    """
+    """changes the value of individual pixels based on
+    the intensity of each pixel compared to threshold.  The result is a
+    high-contrast, two color image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param low:
+    :param low: low threshold in range 0..QuantumRange.
     :type low: :class:`numbers.Integral`
-    :param high:
+    :param high: high threshold in range 0..QuantumRange.
     :type high: :class:`numbers.Integral`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2247,13 +2253,14 @@ def randomthreshold(image, low, high, channel=None):
 
 
 def remap(image, mapimage, method):
-    """
+    """replaces the colors of an image with the closest color
+    from a reference image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param mapimage:
+    :param mapimage: the reference image.
     :type mapimage: :class:`wand.image.Image`
-    :param method:
+    :param method: dither method included in :const:`DITHER_METHODS`.
     :type method: :class:`str`
     """
     if method not in DITHER_METHODS:
@@ -2266,17 +2273,17 @@ def remap(image, mapimage, method):
 
 
 def resample(image, x_resolution, y_resolution, filtertype, blur):
-    """
+    """resample image to desired resolution.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param x_resolution:
+    :param x_resolution: the new image x resolution
     :type x_resolution: :class:`numbers.Real`
-    :param y_resolution:
+    :param y_resolution: the new image y resolution.
     :type y_resolution: :class:`numbers.Real`
-    :param filter:
+    :param filter: Image filter included in :const:`FILTER_TYPES`.
     :type filter: :class:`numbers.Integral`
-    :param blur:
+    :param blur: the blur factor where > 1 is blurry, < 1 is sharp.
     :type blur: :class:`numbers.Real`
     """
     if not isinstance(x_resolution, numbers.Real):
@@ -2299,13 +2306,13 @@ def resample(image, x_resolution, y_resolution, filtertype, blur):
 
 
 def roll(image, x, y):
-    """
+    """offsets an image as defined by x and y.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param x:
+    :param x: the x offset.
     :type x: :class:`numbers.Integral`
-    :param y:
+    :param y: the y offset.
     :type y: :class:`numbers.Integral`
     """
     if not isinstance(x, numbers.Integral):
@@ -2320,11 +2327,11 @@ def roll(image, x, y):
 
 
 def rotationalblur(image, angle, channel=None):
-    """
+    """rotational blurs an image.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param angle:
+    :param angle: the angle of the blur in degrees.
     :type angle: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
