@@ -621,7 +621,7 @@ class CheckImage(unittest.TestCase):
     def test_spread(self):
         f = wpi.spread
         with self.logo.clone() as t:
-            f(t, 'bilinear', 20)
+            f(t, 20)
             save(t, f)
 
     def test_statistic(self):

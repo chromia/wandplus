@@ -619,7 +619,6 @@ library.MagickSpliceImage.argtypes = [
 library.MagickSpreadImage.restype = ctypes.c_bool
 library.MagickSpreadImage.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_int,
     ctypes.c_double
 ]
 library.MagickStatisticImage.restype = ctypes.c_bool
@@ -2797,24 +2796,18 @@ def splice(image, x, y, width, height):
         image.raise_exception()
 
 
-def spread(image, method, amount):
     """
+def spread(image, amount):
 
     :param image:
     :type image: :class:`wand.image.Image`
-    :param method:
-    :type method: :class:`str`
     :param amount:
     :type amount: :class:`numbers.Real`
     """
-    if method not in INTERPOLATEPIXEL_METHODS:
-        raise ValueError('expected string from INTERPOLATEPIXEL_METHODS, ' +
-                         'not ' + repr(method))
-    elif not isinstance(amount, numbers.Real):
+    if not isinstance(amount, numbers.Real):
         raise TypeError('amount has to be a numbers.Real, not ' +
                         repr(amount))
-    index = INTERPOLATEPIXEL_METHODS.index(method)
-    r = library.MagickSpreadImage(image.wand, index, amount)
+    r = library.MagickSpreadImage(image.wand, amount)
     if not r:
         image.raise_exception()
 
