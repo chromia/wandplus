@@ -173,6 +173,12 @@ class CheckImage(unittest.TestCase):
             f(t)
             save(t, f)
 
+    def test_clippath(self):  # NOTE: result is always FAILED.
+        f = wpi.clippath
+        with self.rose.clone() as t:
+            f(t, '#1', True)
+            save(t, f)
+
     def test_clut(self):
         f = wpi.clut
         with Image(filename='gradient:red-blue', width=1, height=100) as p:

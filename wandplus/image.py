@@ -160,6 +160,12 @@ library.MagickClipImage.restype = ctypes.c_bool
 library.MagickClipImage.argtypes = [
     ctypes.c_void_p
 ]
+library.MagickClipImagePath.restype = ctypes.c_bool
+library.MagickClipImagePath.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_bool
+]
 library.MagickClutImage.restype = ctypes.c_bool
 library.MagickClutImage.argtypes = [
     ctypes.c_void_p,
@@ -1173,6 +1179,32 @@ def clip(image):
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickClipImage(image.wand)
+    if not r:
+        image.raise_exception()
+
+
+def clippath(image, pathname, inside):
+    """clips along the named paths from the 8BIM profile, if present.
+    Later operations take effect inside the path.  Id may be a number
+    if preceded with #, to work on a numbered path,
+    e.g., "#1" to use the first path.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param pathname: name of clipping path resource. If name is preceded by #,
+                     use clipping path numbered by name.
+    :type pathname: :class:`str`
+    :param inside: if non-zero, later operations take effect
+                   inside clipping path. Otherwise later operations take effect
+                   outside clipping path.
+    """
+    if not isinstance(pathname, string_type):
+        raise TypeError('expected a string, not ' + repr(pathname))
+    elif not isinstance(inside, bool):
+        raise TypeError('sharpen must be a bool, not ' +
+                        repr(sharpen))
+    buffer = ctypes.create_string_buffer(pathname.encode())
+    r = library.MagickClipImagePath(image.wand, buffer, inside)
     if not r:
         image.raise_exception()
 
