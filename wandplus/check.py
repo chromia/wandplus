@@ -190,6 +190,16 @@ class CheckImage(unittest.TestCase):
                 f(t, p, channel='green')
                 save(t, f, True)
 
+    def test_coalesce(self):  # TODO: input optimized .gif file.
+        f = wpi.coalesce
+        with Image() as t:
+            with self.rose.clone() as p:
+                for i in range(5):
+                    wpi.blur(p, 0, 1)
+                    wpi.add(t, p)
+            with f(t) as p:
+                save(p, f)
+
     def test_colordecisionlist(self):
         xml = """
         <ColorCorrectionCollection xmlns="urn:ASC:CDL:v1.2">

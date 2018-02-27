@@ -177,6 +177,10 @@ library.MagickClutImageChannel.argtypes = [
     ctypes.c_int,
     ctypes.c_void_p
 ]
+library.MagickCoalesceImages.restype = ctypes.c_void_p
+library.MagickCoalesceImages.argtypes = [
+    ctypes.c_void_p
+]
 library.MagickColorDecisionListImage.restype = ctypes.c_bool
 library.MagickColorDecisionListImage.argtypes = [
     ctypes.c_void_p,
@@ -1231,6 +1235,24 @@ def clut(image, clutimage, channel=None):
         r = library.MagickClutImage(image.wand, clutimage.wand)
     if not r:
         image.raise_exception()
+
+
+def coalesce(image):
+    """composites a set of images while respecting any page
+    offsets and disposal methods.  GIF, MIFF, and MNG animation sequences
+    typically start with an image background and each subsequent image
+    varies in size and offset.  MagickCoalesceImages() returns a new sequence
+    where each image in the sequence is the same size as the first and
+    composited with the next image in the sequence.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :rtype: :class:`wand.image.Image`
+    """
+    new_wand = library.MagickCoalesceImages(image.wand)
+    if new_wand:
+        return Image(image=BaseImage(new_wand))
+    image.raise_exception()
 
 
 def colordecisionlist(image, ccc_text):
