@@ -197,6 +197,11 @@ library.MagickColorMatrixImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p
 ]
+library.MagickCombineImages.restype = ctypes.c_void_p
+library.MagickCombineImages.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int
+]
 library.MagickCommentImage.restype = ctypes.c_bool
 library.MagickCommentImage.argtypes = [
     ctypes.c_void_p,
@@ -528,6 +533,19 @@ library.MagickSepiaToneImage.restype = ctypes.c_bool
 library.MagickSepiaToneImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double
+]
+library.MagickSetFirstIterator.restype = ctypes.c_bool
+library.MagickSetFirstIterator.argtypes = [
+    ctypes.c_void_p
+]
+library.MagickSetIteratorIndex.restype = ctypes.c_bool
+library.MagickSetIteratorIndex.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_ssize_t
+]
+library.MagickSetLastIterator.restype = ctypes.c_bool
+library.MagickSetLastIterator.argtypes = [
+    ctypes.c_void_p
 ]
 library.MagickSetSizeOffset.restype = ctypes.c_bool
 library.MagickSetSizeOffset.argtypes = [
@@ -1344,6 +1362,33 @@ def colorize(image, color, opacity):
                                             opacity.resource)
             if not r:
                 image.raise_exception()
+
+
+def combine(image, channel):
+    """combines one or more images into a single image.  The
+    grayscale value of the pixels of each image in the sequence is assigned in
+    order to the specified  hannels of the combined image.   The typical
+    ordering would be image 1 => Red, 2 => Green, 3 => Blue, etc.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param channel: the channel type. available values can be found
+                    in the :const:`CHANNELS` mapping.
+                    and integer value will be accepted.
+    :type channel: :class:`str` or :class:`numbers.Integral`
+    """
+    if channel not in CHANNELS:
+        if isinstance(channel, numbers.Integral):
+            index = channel
+        else:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+    else:
+        index = CHANNELS[channel]
+    new_wand = library.MagickCombineImages(image.wand, index)
+    if new_wand:
+        return Image(image=BaseImage(new_wand))
+    image.raise_exception()
 
 
 def comment(image, text):
@@ -2545,6 +2590,65 @@ def sepiatone(image, threshold):
         raise TypeError('threshold has to be a numbers.Real, not ' +
                         repr(threshold))
     r = library.MagickSepiaToneImage(image.wand, threshold)
+    if not r:
+        image.raise_exception()
+
+
+def setfirstiterator(image):
+    """sets the wand iterator to the first image.
+
+    This function conflicts with wand.image.Image.sequence.
+    Do NOT use together
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    """
+    r = library.MagickSetFirstIterator(image.wand)
+    if not r:
+        image.raise_exception()
+
+
+def setiteratorindex(image, index):
+    """set the iterator to the given position in the
+    image list specified with the index parameter.  A zero index will set
+    the first image as current, and so on.  Negative indexes can be used
+    to specify an image relative to the end of the images in the wand, with
+    -1 being the last image in the wand.
+
+    If the index is invalid (range too large for number of images in wand)
+    the function will return False, but no 'exception' will be raised,
+    as it is not actually an error.  In that case the current image will not
+    change.
+
+    After using any images added to the wand using wandplus.image.add() or
+    wand.image.Image.read() will be added after the image indexed, regardless
+    of if a zero (first image in list) or negative index (from end) is used.
+
+    This function conflicts with wand.image.Image.sequence.
+    Do NOT use together
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param index: the position in the image list.
+    """
+    if not isinstance(index, numbers.Integral):
+        raise TypeError('index has be a numbers.Integral, not ' +
+                        repr(index))
+    r = library.MagickSetIteratorIndex(image.wand, index)
+    if not r:
+        image.raise_exception()
+
+
+def setlastiterator(image):
+    """sets the wand iterator to the last image.
+
+    This function conflicts with wand.image.Image.sequence.
+    Do NOT use together
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    """
+    r = library.MagickSetLastIterator(image.wand)
     if not r:
         image.raise_exception()
 

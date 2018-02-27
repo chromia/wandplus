@@ -239,6 +239,23 @@ class CheckImage(unittest.TestCase):
             f(t, 5, 5, kernel)
             save(t, f)
 
+    def test_combine(self):
+        f = wpi.combine
+        with Image() as t:
+            w = 100
+            h = 100
+            black = Color('black')
+            white = Color('white')
+            with Image(width=w, height=w, background=black) as b:
+                with Image(width=h, height=h, background=white) as w:
+                    wpi.add(t, b)  # add image for red channel
+                    wpi.add(t, b)  # add image for green channel
+                    wpi.add(t, w)  # add image for blue channel
+                    wpi.setfirstiterator(t)  # rewind the index pointer
+                    channel = 1 + 2 + 4  # R + G + B
+                    with f(t, channel) as q:
+                        save(q, f)
+
     def test_comment(self):
         f = wpi.comment
         with self.grad.clone() as t:
