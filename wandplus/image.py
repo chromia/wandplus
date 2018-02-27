@@ -757,7 +757,7 @@ def adaptiveblur(image, radius, sigma, channel=None):
     """adaptively blurs the image by blurring less intensely
     near image edges and more intensely far from edges.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the Gaussian, in pixels,
                    not counting the center pixel.
@@ -792,7 +792,7 @@ def adaptiveblur(image, radius, sigma, channel=None):
 def adaptiveresize(image, columns, rows):
     """adaptively resize image with data dependent triangulation.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param columns: the number of columns in the scaled image.
     :type columns: :class:`numbers.Integral`
@@ -817,7 +817,7 @@ def adaptivesharpen(image, radius, sigma, channel=None):
     deviation (sigma).  For reasonable results, radius should be larger than
     sigma.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the Gaussian, in pixels,
                    not counting the center pixel.
@@ -854,7 +854,7 @@ def adaptivethreshold(image, width, height, offset):
     allows for thresholding of an image whose global intensity histogram
     doesn't contain distinctive peaks.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param width: the width of the local neighborhood.
     :type width: :class:`numbers.Integral`
@@ -883,7 +883,7 @@ def add(dstimage, srcimage):
     This function conflicts with wand.image.Image.sequence.
     Do NOT use together
 
-    :param dstimage: target image.
+    :param dstimage: the target image.
     :type dstimage: :class:`wand.image.Image`
     :param srcimage: image(s) to be added.
     :type srcimage: :class:`wand.image.Image`
@@ -896,9 +896,9 @@ def add(dstimage, srcimage):
 def addnoise(image, type, channel=None):
     """adds random noise to the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
-    :param type: The type of noise included in :const:`NOISE_TYPES`.
+    :param type: The type of noise in :const:`NOISE_TYPES`.
                  e.g. 'uniform', 'gaussian', 'random'
     :type type: :class:`str`
     :param channel: the channel type. available values can be found
@@ -926,7 +926,7 @@ def affinetransform(image, drawing):
     """transforms an image as dictated by the affine
     matrix of the drawing context.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param drawing: the drawing context called Drawing.affine function.
     :type drawing: :class:`wand.drawing.Drawing`
@@ -943,7 +943,7 @@ def autogamma(image, channel=None):
     """extracts the 'mean' from the image and adjust the
     image to try make set its gamma appropriatally.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -965,7 +965,7 @@ def autolevel(image, channel=None):
     """adjusts the levels of a particular image channel by
     scaling the minimum and maximum values to the full quantum range.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -988,7 +988,7 @@ def blackthreshold(image, threshold):
     pixels below the threshold into black while leaving all pixels above the
     threshold unchanged.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param threshold: threshold color.
     :type threshold: :class:`wand.color.Color`
@@ -1006,7 +1006,7 @@ def blueshift(image, factor=1.5):
     """mutes the colors of the image to simulate a scene at
     nighttime in the moonlight.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param factor: the blue shift factor (default 1.5)
     :type factor: :class:`numbers.Real`
@@ -1024,7 +1024,7 @@ def blur(image, radius, sigma, channel=None):
     operator of the given radius and standard deviation (sigma).  For reasonable
     results, the radius should be larger than sigma.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the , in pixels, not counting the center pixel.
                    if 0, suitable radius is selected.
@@ -1059,7 +1059,7 @@ def brightnesscontrast(image, brightness, contrast, channel=None):
     of an image.  It converts the brightness and contrast parameters into slope
     and intercept and calls a polynomical function to apply to the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param brightness: the brightness percent (-100 .. 100).
     :type brightness: :class:`numbers.Real`
@@ -1094,7 +1094,7 @@ def brightnesscontrast(image, brightness, contrast, channel=None):
 def charcoal(image, radius, sigma):
     """simulates a charcoal drawing.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the Gaussian, in pixels,
                    not counting the center pixel.
@@ -1117,7 +1117,7 @@ def chop(image, x, y, width, height):
     """removes a region of an image and collapses the image to
     occupy the removed portion.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param x: the region x offset.
     :type x: :class:`numbers.Integral`
@@ -1148,7 +1148,7 @@ def chop(image, x, y, width, height):
 def clamp(image, channel=None):
     """restricts the color range from 0 to the quantum depth.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -1169,7 +1169,7 @@ def clamp(image, channel=None):
 def clip(image):
     """clips along the first path from the 8BIM profile, if present.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickClipImage(image.wand)
@@ -1180,7 +1180,7 @@ def clip(image):
 def clut(image, clutimage, channel=None):
     """replaces colors in the image from a color lookup table.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param clutimage: the clut image.
     :type clutimage: :class:`wand.image.Image`
@@ -1222,7 +1222,7 @@ def colordecisionlist(image, ccc_text):
     which includes the offset, slope, and power for each of the RGB channels
     as well as the saturation.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param ccc_text: the color correction collection in XML.
     :type ccc_text: :class:`str`
@@ -1244,7 +1244,7 @@ def colormatrix(image, width, height, color_matrix):
     except offsets are in column 6 rather than 5 (in support of CMYKA images)
     and offsets are normalized (divide Flash offset by 255).
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param width: the number of columns of ``color_matrix``.
     :type width: :class:`numbers.Integral`
@@ -1271,7 +1271,7 @@ def colormatrix(image, width, height, color_matrix):
 def colorize(image, color, opacity):
     """blends the fill color with each pixel in the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param color: the fill color.
     :type color: :class:`wand.color.Color`
@@ -1295,7 +1295,7 @@ def colorize(image, color, opacity):
 def comment(image, text):
     """adds a comment to your image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param text: the image comment.
     :type text: :class:`str`
@@ -1321,7 +1321,7 @@ def constitute(image, columns, rows, map, storage, pixels):
 
         constitute(image,640,480,"RGB",'char',pixels);
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param columns: width in pixels of the image.
     :type columns: :class:`numbers.Integral`
@@ -1392,7 +1392,7 @@ def contrast(image, sharpen):
     """enhances the intensity differences between the lighter
     and darker elements of the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param sharpen: Increase or decrease image contrast.
     :type sharpen: :class:`bool`
@@ -1408,7 +1408,7 @@ def contrast(image, sharpen):
 def convolve(image, order, kernel, channel=None):
     """applies a custom convolution kernel to the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param order: the number of columns and rows in the filter kernel.
     :type order: :class:`numbers.Integral`
@@ -1445,7 +1445,7 @@ def cyclecolormap(image, displace):
     of positions.  If you cycle the colormap a number of times you can produce
     a psychodelic effect.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param displace: displace the colormap this amount.
     :type displace: :class:`numbers.Integral`
@@ -1461,7 +1461,7 @@ def cyclecolormap(image, displace):
 def decipher(image, passphrase):
     """converts cipher pixels to plain pixels.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param passphrase: the passphrase.
     :type passphrase: :class:`str`
@@ -1480,7 +1480,7 @@ def deskew(image, threshold):
     imperfections in the scanning or surface, or simply because the paper was
     not placed completely flat when scanned.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param threshold: separate background from foreground.
     :type threshold: :class:`numbers.Real`
@@ -1497,7 +1497,7 @@ def despeckle(image):
     """reduces the speckle noise in an image while
     perserving the edges of the original image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickDespeckleImage(image.wand)
@@ -1509,7 +1509,7 @@ def edge(image, radius):
     """enhance edges within the image with a convolution filter
     of the given radius.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the pixel neighborhood.
                    if 0, suitable radius is selected.
@@ -1529,7 +1529,7 @@ def emboss(image, radius, sigma):
     and standard deviation (sigma).  For reasonable results, radius should be
     larger than sigma.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the Gaussian, in pixels,
                    not counting the center pixel.
@@ -1552,7 +1552,7 @@ def emboss(image, radius, sigma):
 def encipher(image, passphrase):
     """converts plaint pixels to cipher pixels.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param passphrase: the passphrase.
     :type passphrase: :class:`str`
@@ -1568,7 +1568,7 @@ def encipher(image, passphrase):
 def enhance(image):
     """applies a digital filter that improves the quality of a noisy image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickEnhanceImage(image.wand)
@@ -1579,7 +1579,7 @@ def enhance(image):
 def equalize(image, channel=None):
     """equalizes the image histogram.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -1602,7 +1602,7 @@ def extent(image, x, y, width, height):
     and background color.  Set the (x,y) offset of the geometry to move
     the original image relative to the extended image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param x: the region x offset.
     :type x: :class:`numbers.Integral`
@@ -1633,7 +1633,7 @@ def extent(image, x, y, width, height):
 def filterimage(image, columns, rows, kernel, channel=None):
     """applies a custom convolution kernel to the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param columns: the columns of kernel.
     :type columns: :class:`numbers.Integral`
@@ -1677,7 +1677,7 @@ def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
     specified, the color value is changed for any neighbor pixel that does not
     match the bordercolor member of image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param fillcolor: the floodfill color.
     :type fillcolor: :class:`wand.color.Color`
@@ -1741,7 +1741,7 @@ def forwardfouriertransform(image, magnitude):
     transform (DFT) of the image either as a magnitude / phase or real /
     imaginary image pair.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param magnitude: if true, return as magnitude / phase pair
                       otherwise a real / imaginary image pair.
@@ -1762,7 +1762,7 @@ def haldclut(image, clutimage, channel=None):
     transformation to the Hald image and then use this method to apply the
     transform to the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param clutimage: the hald CLUT image.
     :type clutimage: :class:`wand.image.Image`
@@ -1789,7 +1789,7 @@ def implode(image, amount):
     allocates the memory necessary for the new Image structure and returns a
     pointer to the new image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param amount: Define the extent of the implosion.
     :type amount: :class:`numbers.Real`
@@ -1829,7 +1829,7 @@ def inversefouriertransform(image1, image2, magnitude):
 def label(image, text):
     """adds a label to your image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param text: the image label text.
     :type text: :class:`str`
@@ -1848,7 +1848,7 @@ def localcontrast(image, radius, strength):
     similarly to sharpening with an unsharp mask, however the mask is instead
     created using an image with a greater blur distance.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the Gaussian, in pixels,
                    not counting the center pixel.
@@ -1871,7 +1871,7 @@ def magnify(image):
     """is a convenience method that scales an image
     proportionally to twice its original size.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickMagnifyImage(image.wand)
@@ -1883,7 +1883,7 @@ def minify(image):
     """is a convenience method that scales an image
     proportionally to one-half its original size
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickMinifyImage(image.wand)
@@ -1896,7 +1896,7 @@ def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
     separate images. The images are tiled on the composite image with the name
     of the image optionally appearing just below the individual tile.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param drawing: the drawing context.
     :type drawing: :class:`wand.drawing.Drawing`
@@ -1906,7 +1906,7 @@ def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
     :param thumbnail_geometry: Preferred image size and border size of each
                                thumbnail (e.g. 120x120+4+3>).
     :type thumbnail_geometry: :class:`str`
-    :param mode: Thumbnail framing mode included in :const:`MONTAGE_MODES`.
+    :param mode: Thumbnail framing mode in :const:`MONTAGE_MODES`.
     :type mode: :class:`str`
     :param frame: Surround the image with an ornamental border
                   (e.g. 15x15+3+3).
@@ -1942,10 +1942,9 @@ def morphology(image, method, iterations, kernelinfo, channel=None):
     """applies a user supplied kernel to the image
     according to the given mophology method.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
-    :param method: the morphology method included in
-                   :const:`MORPHOLOGY_METHODS`.
+    :param method: the morphology method in :const:`MORPHOLOGY_METHODS`.
     :type method: :class:`str`
     :param iterations: apply the operation this many times (or no change).
                        A value of -1 means loop until no change found.
@@ -1991,7 +1990,7 @@ def motionblur(image, radius, sigma, angle, channel=None):
     Gaussian operator of the given radius and standard deviation (sigma).
     For reasonable results, radius should be larger than sigma.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the Gaussian, in pixels,
                    not counting the center pixel.
@@ -2032,7 +2031,7 @@ def oilpaint(image, radius):
     painting.  Each pixel is replaced by the most frequent color occurring
     in a circular region defined by radius.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the circular neighborhood.
     :type radius: :class:`numbers.Real`
@@ -2048,7 +2047,7 @@ def oilpaint(image, radius):
 def opaquepaint(image, target, fill, fuzz, invert=False, channel=None):
     """changes any pixel that matches color with the color defined by fill.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param target: Change this target color to the fill color within the image.
     :type target: :class:`wand.color.Color`
@@ -2105,7 +2104,7 @@ def orderedposterize(image, threshold_map, channel=None):
     which can be different for different channels, according to the input
     arguments.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param threshold_map: A string containing the name of the threshold dither
                           map to use, followed by zero or more numbers
@@ -2136,7 +2135,7 @@ def orderedposterize(image, threshold_map, channel=None):
 def polaroid(image, drawing, angle):
     """simulates a Polaroid picture.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param drawing: the draw context.
     :type drawing: :class:`wand.drawing.Drawing`
@@ -2157,7 +2156,7 @@ def polaroid(image, drawing, angle):
 def posterize(image, levels, dither):
     """reduces the image to a limited number of color level.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param levels: Number of color levels allowed in each channel.
                    Very low values (2, 3, or 4) have the most visible effect.
@@ -2182,7 +2181,7 @@ def raiseimage(image, x, y, width, height, raiseeffect):  # raise is keyword
     height of raise_info define the width of the vertical and horizontal
     edge of the effect.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param x: x coord of the area
     :type x: :class:`numbers.Integral`
@@ -2221,7 +2220,7 @@ def randomthreshold(image, low, high, channel=None):
     the intensity of each pixel compared to threshold.  The result is a
     high-contrast, two color image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param low: low threshold in range 0..QuantumRange.
     :type low: :class:`numbers.Integral`
@@ -2255,11 +2254,11 @@ def remap(image, mapimage, method):
     """replaces the colors of an image with the closest color
     from a reference image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param mapimage: the reference image.
     :type mapimage: :class:`wand.image.Image`
-    :param method: dither method included in :const:`DITHER_METHODS`.
+    :param method: dither method in :const:`DITHER_METHODS`.
     :type method: :class:`str`
     """
     if method not in DITHER_METHODS:
@@ -2274,13 +2273,13 @@ def remap(image, mapimage, method):
 def resample(image, x_resolution, y_resolution, filtertype, blur):
     """resample image to desired resolution.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param x_resolution: the new image x resolution
     :type x_resolution: :class:`numbers.Real`
     :param y_resolution: the new image y resolution.
     :type y_resolution: :class:`numbers.Real`
-    :param filter: Image filter included in :const:`FILTER_TYPES`.
+    :param filter: Image filter in :const:`FILTER_TYPES`.
     :type filter: :class:`numbers.Integral`
     :param blur: the blur factor where > 1 is blurry, < 1 is sharp.
     :type blur: :class:`numbers.Real`
@@ -2307,7 +2306,7 @@ def resample(image, x_resolution, y_resolution, filtertype, blur):
 def roll(image, x, y):
     """offsets an image as defined by x and y.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param x: the x offset.
     :type x: :class:`numbers.Integral`
@@ -2328,7 +2327,7 @@ def roll(image, x, y):
 def rotationalblur(image, angle, channel=None):
     """rotational blurs an image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param angle: the angle of the blur in degrees.
     :type angle: :class:`numbers.Real`
@@ -2356,7 +2355,7 @@ def rotationalblur(image, angle, channel=None):
 def scale(image, columns, rows):
     """scales the size of an image to the given dimensions.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param columns: the number of columns in the scaled image.
     :type columns: :class:`numbers.Integral`
@@ -2379,7 +2378,7 @@ def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
     color components and identifying units that are homogeneous with the fuzzy
     C-means technique.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param colorspace: the image colorspace in :const:`COLORSPACE_TYPES`.
     :type colorspace: :class:`str`
@@ -2420,7 +2419,7 @@ def selectiveblur(image, radius, sigma, threshold, channel=None):
     threshold. It is similar to the unsharpen mask that sharpens everything
     with contrast above a certain threshold.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the gaussian, in pixels,
                    not counting the center pixel.
@@ -2463,7 +2462,7 @@ def separate_channel(image, channel):
     grayscale image.  A channel is a particular color component of each pixel
     in the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2483,7 +2482,7 @@ def sepiatone(image, threshold):
     0 to QuantumRange and is a measure of the extent of the sepia toning.  A
     threshold of 80% is a good starting point for a reasonable tone.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param threshold: Define the extent of the sepia toning.
     :type threshold: :class:`numbers.Real`
@@ -2500,7 +2499,7 @@ def setsizeoffset(image, columns, rows, offset):
     """sets the size and offset of the magick wand.  Set it
     before you read a raw image format such as RGB, GRAY, or CMYK.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param columns: the image width in pixels.
     :type columns: :class:`numbers.Integral`
@@ -2528,7 +2527,7 @@ def shade(image, gray, azimuth, elevation):
     three-dimensional effect. You control the positioning of the light with
     azimuth and elevation.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param gray: A value other than zero shades the intensity of each pixel.
     :type gray: :class:`bool`
@@ -2554,7 +2553,7 @@ def shade(image, gray, azimuth, elevation):
 def shadow(image, opacity, sigma, x, y):
     """simulates an image shadow.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param opacity: percentage transparency.
     :type opacity: :class:`numbers.Real`
@@ -2587,7 +2586,7 @@ def sharpen(image, radius, sigma, channel=None):
     Gaussian operator of the given radius and standard deviation (sigma).
     For reasonable results, the radius should be larger than sigma.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the Gaussian, in pixels,
                    not counting the center pixel.
@@ -2623,7 +2622,7 @@ def shave(image, columns, rows):
     memory necessary for the new Image structure and returns a pointer to the
     new image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param columns: the number of columns in the scaled image.
     :type columns: :class:`numbers.Integral`
@@ -2651,7 +2650,7 @@ def shear(image, background, x, y):
     to the X axis.  Empty triangles left over from
     shearing the image are filled with the background color.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param background: the background color
     :type background: :class:`wand.color.Color`
@@ -2683,7 +2682,7 @@ def sigmoidalcontrast(image, sharpen, alpha, beta, channel=None):
     3 is typical; 20 is pushing it); mid-point indicates where midtones fall in
     the resultant image (0 is white; 50% is middle-gray; 100% is black).
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param sharpen: Increase or decrease image contrast.
                     Set to True to increase the image contrast.
@@ -2726,7 +2725,7 @@ def sketch(image, radius, sigma, angle):
     a Gaussian operator of the given radius and standard deviation (sigma).
     For reasonable results, radius should be larger than sigma.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param radius: the radius of the Gaussian, in pixels,
                    not counting the center pixel.
@@ -2757,7 +2756,7 @@ def solarize(image, threshold, channel=None):
     sensitive paper to light.  Threshold ranges from 0 to QuantumRange and is a
     measure of the extent of the solarization.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param threshold: Define the extent of the solarization.
     :type threshold: :class:`numbers.Real`
@@ -2785,7 +2784,7 @@ def sparsecolor(image, channel, method, arguments):
     """given a set of coordinates, interpolates the colors found
     at those coordinates, across the whole image, using various methods.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
                     in the :const:`CHANNELS` mapping.
@@ -2821,7 +2820,7 @@ def sparsecolor(image, channel, method, arguments):
 def splice(image, x, y, width, height):
     """splices a solid color into the image.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param x: the region x offset.
     :type x: :class:`numbers.Integral`
@@ -2853,7 +2852,7 @@ def spread(image, amount):
     """is a special effects method that randomly displaces each
     pixel in a block defined by the radius parameter.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param amount: Choose a random pixel in a neighborhood of this extent.
     :type amount: :class:`numbers.Real`
@@ -2870,7 +2869,7 @@ def statistic(image, statistic_type, width, height, channel=None):
     """replace each pixel with corresponding statistic from
     the neighborhood of the specified width and height.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param statistic_type: the statistic type in :const:`STATISTIC_TYPES`.
     :type statistic_type: :class:`str`
@@ -2911,7 +2910,7 @@ def stegano(image, watermark, offset):
     an image.  Offset defines the start position within the image to hide
     the watermark.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param watermark: the watermark image.
     :type watermark: :class:`wand.image.Image`
@@ -2931,7 +2930,7 @@ def stereo(image, offsetimage):
     """composites two images and produces a single image that
     is the composite of a left and right image of a stereo pair.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param offsetimage: Another image.
     :type offsetimage: :class:`wand.image.Image`
@@ -2947,7 +2946,7 @@ def swirl(image, degrees):
     degrees indicates the sweep of the arc through which each pixel is moved.
     You get a more dramatic effect as the degrees move from 1 to 360.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param degrees: Define the tightness of the swirling effect.
     :type degrees: :class:`numbers.Real`
@@ -2963,7 +2962,7 @@ def swirl(image, degrees):
 def texture(image, textureimage):
     """repeatedly tiles the texture image across and down the image canvas.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param textureimage: the texture image.
     :type textureimage: :class:`wand.image.Image`
@@ -2979,7 +2978,7 @@ def thumbnail(image, columns, rows):
     and removes any associated profiles.  The goal is to produce small low cost
     thumbnail images suited for display on the Web.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param columns: the number of columns in the scaled image.
     :type columns: :class:`numbers.Integral`
@@ -3003,7 +3002,7 @@ def tint(image, tint, opacity):
     midtones.  The vector weighting function is
     f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param tint: the tint pixel wand.
     :type tint: :class:`wand.color.Color`
@@ -3027,7 +3026,7 @@ def tint(image, tint, opacity):
 def vignette(image, black, white, x, y):
     """softens the edges of the image in vignette style.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param black: the black point.
     :type black: :class:`numbers.Real`
@@ -3060,7 +3059,7 @@ def wave(image, amplitude, wave_length):
     the pixels vertically along a sine wave whose amplitude and wavelength
     is specified by the given parameters.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param amplitude: the amplitude of the sine wave.
     :type amplitude: :class:`numbers.Real`
@@ -3083,7 +3082,7 @@ def whitethreshold(image, threshold):
     above the threshold into white while leaving all pixels below the threshold
     unchanged.
 
-    :param image: target image.
+    :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param threshold: the color representing the threshold.
     :type threshold: :class:`wand.color.Color`
