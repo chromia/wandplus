@@ -3025,17 +3025,17 @@ def tint(image, tint, opacity):
 
 
 def vignette(image, black, white, x, y):
-    """
+    """softens the edges of the image in vignette style.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param black:
+    :param black: the black point.
     :type black: :class:`numbers.Real`
-    :param white:
+    :param white: the white point.
     :type white: :class:`numbers.Real`
-    :param x:
+    :param x: the x coord of the ellipse offset.
     :type x: :class:`numbers.Integral`
-    :param y:
+    :param y: the y coord of the ellipse offset.
     :type y: :class:`numbers.Integral`
     """
     if not isinstance(black, numbers.Real):
@@ -3056,13 +3056,15 @@ def vignette(image, black, white, x, y):
 
 
 def wave(image, amplitude, wave_length):
-    """
+    """creates a "ripple" effect in the image by shifting
+    the pixels vertically along a sine wave whose amplitude and wavelength
+    is specified by the given parameters.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param amplitude:
+    :param amplitude: the amplitude of the sine wave.
     :type amplitude: :class:`numbers.Real`
-    :param wave_length:
+    :param wave_length: the wave length of the sine wave.
     :type wave_length: :class:`numbers.Real`
     """
     if not isinstance(amplitude, numbers.Real):
@@ -3077,11 +3079,13 @@ def wave(image, amplitude, wave_length):
 
 
 def whitethreshold(image, threshold):
-    """
+    """is like ThresholdImage() but  force all pixels
+    above the threshold into white while leaving all pixels below the threshold
+    unchanged.
 
-    :param image:
+    :param image: target image.
     :type image: :class:`wand.image.Image`
-    :param threshold:
+    :param threshold: the color representing the threshold.
     :type threshold: :class:`wand.color.Color`
     """
     if not isinstance(threshold, Color):
