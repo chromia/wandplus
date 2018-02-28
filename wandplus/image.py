@@ -368,6 +368,17 @@ library.MagickImplodeImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double
 ]
+library.MagickImportImagePixels.restype = ctypes.c_bool
+library.MagickImportImagePixels.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_char_p,
+    ctypes.c_int,
+    ctypes.c_void_p
+]
 library.MagickInverseFourierTransformImage.restype = ctypes.c_bool
 library.MagickInverseFourierTransformImage.argtypes = [
     ctypes.c_void_p,
@@ -2094,6 +2105,89 @@ def implode(image, amount):
         raise TypeError('amount has to be a numbers.Real, not ' +
                         repr(amount))
     r = library.MagickImplodeImage(image.wand, amount)
+    if not r:
+        image.raise_exception()
+
+
+def importpixels(image, x, y, columns, rows, map, storage, pixels):
+    """accepts pixel datand stores it in the image at the
+    location you specify.  The pixel data can be either char,
+    short int, int, ssize_t, float, or double in the order specified by map.
+
+    For example, to create a 640x480 image from
+    unsigned red-green-blue character data, use
+
+        importpixels(image,0,0,640,480,"RGB",'char',pixels);
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param x: the x-coord of the region.
+    :type x: :class:`numbers.Integral`
+    :param y: the y-coord of the region.
+    :type y: :class:`numbers.Integral`
+    :param columns: width in pixels of the image.
+    :type columns: :class:`numbers.Integral`
+    :param rows: height in pixels of the image.
+    :type rows: :class:`numbers.Integral`
+    :param map: This string reflects the expected ordering of the pixel array.
+                It can be any combination or order of R = red, G = green,
+                B = blue, A = alpha (0 is transparent),
+                O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta,
+                K = black, I = intensity (for grayscale), P = pad.
+    :type map: :class:`str`
+    :param storage: Define the data type of the pixels.
+                    Float and double types are expected to be normalized [0..1]
+                    otherwise [0..QuantumRange].
+                    Choose from :const:`STORAGE_TYPES`.
+    :type storage: :class:`str`
+    :param pixels: This array of values contain the pixel components
+                   as defined by map and type. You must preallocate this array
+                   where the expected length varies depending on the values
+                   of width, height, map, and type.
+    :type pixels: :class:`collections.Sequence`,
+                  :class:type of `storage`
+    """
+    if not isinstance(x, numbers.Integral):
+        raise ValueError('x has to be a numbers.Integral, not ' +
+                         repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise ValueError('y has to be a numbers.Integral, not ' +
+                         repr(y))
+    elif not isinstance(columns, numbers.Integral):
+        raise ValueError('columns has to be a numbers.Integral, not ' +
+                         repr(columns))
+    elif not isinstance(rows, numbers.Integral):
+        raise ValueError('rows has to be a numbers.Integral, not ' +
+                         repr(rows))
+    elif not isinstance(map, string_type):
+        raise TypeError('expected a string, not ' + repr(map))
+    elif storage not in STORAGE_TYPES:
+        raise ValueError('expected string from STORAGE_TYPES, not ' +
+                         repr(storage))
+    elif not isinstance(pixels, collections.Sequence):
+        raise TypeError('expecting sequence of arguments, not ' +
+                        repr(pixels))
+
+    map_buffer = ctypes.create_string_buffer(map.encode())
+    storage_index = STORAGE_TYPES.index(storage)
+    pixels_buffer = None
+    length = len(pixels)
+
+    storage_dic = {
+        'char': ctypes.c_char,
+        'double': ctypes.c_double,
+        'float': ctypes.c_float,
+        'integer': ctypes.c_int,
+        'long': ctypes.c_long,
+        'short': ctypes.c_short
+    }
+    storage_dic['quantum'] = storage_dic[getquantumtype()]
+    stype = storage_dic[storage]
+    pixels_buffer = (stype * length)(*pixels)
+
+    r = library.MagickImportImagePixels(image.wand, x, y, columns, rows,
+                                        map_buffer, storage_index,
+                                        pixels_buffer)
     if not r:
         image.raise_exception()
 

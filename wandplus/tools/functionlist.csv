@@ -61,6 +61,7 @@ MagickForwardFourierTransformImage,library,b,Image,image,b,magnitude,,,,,,,,,,,,
 MagickHaldClutImage,library,b,Image,image,Image,clutimage,,,,,,,,,,,,
 MagickHaldClutImageChannel,library,b,Image,image,i,channel,Image,clutimage,,,,,,,,,,
 MagickImplodeImage,library,b,Image,image,d,amount,,,,,,,,,,,,
+MagickImportImagePixels,library,b,Image,image,ss,x,ss,y,s,columns,s,rows,S,map,i,storage,v,pixels
 MagickInverseFourierTransformImage,library,b,Image,image,Image,phase,b,magnitude,,,,,,,,,,
 MagickLabelImage,library,b,Image,image,S,label,,,,,,,,,,,,
 MagickLocalContrastImage,library,b,Image,image,d,radius,d,strength,,,,,,,,,,

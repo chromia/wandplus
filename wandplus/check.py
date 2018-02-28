@@ -437,6 +437,15 @@ class CheckImage(unittest.TestCase):
             f(t, 1.0)
             save(t, f)
 
+    def test_importpixels(self):
+        f = wpi.importpixels
+        with Image(width=4, height=4, background=Color('red')) as t:
+            w = 2
+            h = 2
+            b = b'\x00\x00\x00\xFF\xFF\xFF\xFF\x00\x00\x00\xFF\x00'
+            f(t, 1, 1, w, h, 'RGB', 'char', b)
+            save(t, f)
+
     def test_label(self):
         f = wpi.label
         with self.rose.clone() as t:
