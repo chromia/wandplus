@@ -370,12 +370,12 @@ class CheckImage(unittest.TestCase):
             f(t, channel='red')
             save(t, f, True)
 
-    def test_export(self):
+    def test_exportpixels(self):
         w = 1
         h = 1
         channels = 'RGB'
         with Image(width=w, height=h, background=Color('red')) as t:
-            r = wpi.export(t, 0, 0, w, h, channels, 'double')
+            r = wpi.exportpixels(t, 0, 0, w, h, channels, 'double')
             self.assertEqual(r[0], 1.0)
             self.assertEqual(r[1], 0.0)
             self.assertEqual(r[2], 0.0)

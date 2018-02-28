@@ -1789,7 +1789,7 @@ def equalize(image, channel=None):
         image.raise_exception()
 
 
-def export(image, x, y, columns, rows, map, storage):
+def exportpixels(image, x, y, columns, rows, map, storage):
     if not isinstance(x, numbers.Integral):
         raise TypeError('x has to be a numbers.Integral, not ' +
                         repr(x))
