@@ -682,6 +682,12 @@ library.MagickSketchImage.argtypes = [
     ctypes.c_double,
     ctypes.c_double
 ]
+library.MagickSmushImages.restype = ctypes.c_void_p
+library.MagickSmushImages.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_bool,
+    ctypes.c_ssize_t
+]
 library.MagickSolarizeImage.restype = ctypes.c_bool
 library.MagickSolarizeImage.argtypes = [
     ctypes.c_void_p,
@@ -3287,6 +3293,30 @@ def sketch(image, radius, sigma, angle):
     r = library.MagickSketchImage(image.wand, radius, sigma, angle)
     if not r:
         image.raise_exception()
+
+
+def smush(image, stack, offset):
+    """takes all images from the current image pointer to the
+    end of the image list and smushs them to each other
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param stack: if True, images are stacked top-to-bottom.
+                  otherwise, left-to-right
+    :type stack: :class:`bool`
+    :param offset: minimum distance in pixels between images.
+    :type offset: :class:`numbers.Integral`
+    """
+    if not isinstance(stack, bool):
+        raise TypeError('stack must be a bool, not ' +
+                        repr(stack))
+    elif not isinstance(offset, numbers.Integral):
+        raise TypeError('offset has to be a numbers.Integral, not ' +
+                        repr(offset))
+    new_wand = library.MagickSmushImages(image.wand, stack, offset)
+    if new_wand:
+        return Image(BaseImage(new_wand))
+    image.raise_exception()
 
 
 def solarize(image, threshold, channel=None):

@@ -683,6 +683,27 @@ class CheckImage(unittest.TestCase):
             f(t, 10, 10, 45)
             save(t, f)
 
+    def test_smush(self):
+        f = wpi.smush
+
+        def makeletter(letter, w, h):
+            img = Image(width=w, height=h)
+            with Drawing() as d:
+                d.font = 'Arial'
+                d.font_size = 24
+                d.gravity = 'center'
+                d.text(0, 0, letter)
+                d(img)
+            return img
+        with Image() as t:
+            with makeletter('A', 50, 30) as a:
+                with makeletter('B', 50, 30) as b:
+                    wpi.add(t, a)
+                    wpi.add(t, b)
+                    wpi.setfirstiterator(t)
+            with f(t, False, -3) as p:
+                save(p, f)
+
     def test_solarize(self):
         f = wpi.solarize
         with self.rose.clone() as t:
