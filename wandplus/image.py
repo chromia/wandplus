@@ -1562,20 +1562,15 @@ def constitute(image, columns, rows, map, storage, pixels):
     pixels_buffer = None
     length = len(pixels)
 
-    if image.quantum_range > 256:
-        qtype = ctypes.c_short
-    else:
-        qtype = ctypes.c_char
-
     storage_dic = {
         'char': ctypes.c_char,
         'double': ctypes.c_double,
         'float': ctypes.c_float,
         'integer': ctypes.c_int,
         'long': ctypes.c_long,
-        'quantum': qtype,
         'short': ctypes.c_short
     }
+    storage_dic['quantum'] = storage_dic[getquantumtype()]
     stype = storage_dic[storage]
     pixels_buffer = (stype * length)(*pixels)
 
