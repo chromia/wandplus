@@ -91,6 +91,8 @@ if __name__ == '__main__':
     with open(scriptpath, 'w') as f:
         for i in range(startline+1):
             f.write(scriptlines[i])
-        makedefs(csvpath, f)
-        for i in range(endline, len(scriptlines)):
-            f.write(scriptlines[i])
+        try:
+            makedefs(csvpath, f)
+        finally:
+            for i in range(endline, len(scriptlines)):
+                f.write(scriptlines[i])
