@@ -105,3 +105,6 @@ ENV/
 
 # images
 *.png
+*.jpg
+*.jpeg
+*.gif
