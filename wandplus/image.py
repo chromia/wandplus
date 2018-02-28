@@ -1824,9 +1824,7 @@ def export(image, x, y, columns, rows, map, storage):
         'long': ctypes.c_long,
         'short': ctypes.c_short
     }
-    image.raise_exception()
     storage_dic['quantum'] = storage_dic[getquantumtype()]
-    image.raise_exception()
     stype = storage_dic[storage]
     length = columns * rows * len(map)
     pixels = (stype * length)()
