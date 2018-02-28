@@ -487,6 +487,17 @@ class CheckImage(unittest.TestCase):
                     with f(dst, d, tile, thumb, mode, frame) as result:
                         save(result, f)
 
+    def test_morph(self):
+        f = wpi.morph
+        color = Color('white')
+        with self.rose.clone() as t:
+            with Image(width=t.width, height=t.height, background=color) as p:
+                wpi.add(t, p)
+                wpi.setfirstiterator(t)
+                wpi.setdelay(t, 60)
+                with f(t, 5) as q:
+                    save(q, f, ext='.gif')
+
     def test_morphology(self):
         f = wpi.morphology
         with self.logo.clone() as t:

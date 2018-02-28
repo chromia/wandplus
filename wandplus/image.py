@@ -352,6 +352,10 @@ library.MagickForwardFourierTransformImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_bool
 ]
+library.MagickGetImageDelay.restype = ctypes.c_size_t
+library.MagickGetImageDelay.argtypes = [
+    ctypes.c_void_p
+]
 library.MagickHaldClutImage.restype = ctypes.c_bool
 library.MagickHaldClutImage.argtypes = [
     ctypes.c_void_p,
@@ -412,6 +416,11 @@ library.MagickMontageImage.argtypes = [
     ctypes.c_char_p,
     ctypes.c_int,
     ctypes.c_char_p
+]
+library.MagickMorphImages.restype = ctypes.c_void_p
+library.MagickMorphImages.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t
 ]
 library.MagickMorphologyImage.restype = ctypes.c_bool
 library.MagickMorphologyImage.argtypes = [
@@ -588,6 +597,11 @@ library.MagickSepiaToneImage.argtypes = [
 library.MagickSetFirstIterator.restype = ctypes.c_bool
 library.MagickSetFirstIterator.argtypes = [
     ctypes.c_void_p
+]
+library.MagickSetImageDelay.restype = ctypes.c_bool
+library.MagickSetImageDelay.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t
 ]
 library.MagickSetIteratorIndex.restype = ctypes.c_bool
 library.MagickSetIteratorIndex.argtypes = [
@@ -2001,6 +2015,14 @@ def forwardfouriertransform(image, magnitude):
         image.raise_exception()
 
 
+def getdelay(image):
+    """gets the image delay, in ticks-per-second units.
+
+    :rtype: :class:`numbers.Integral`
+    """
+    return library.MagickGetImageDelay(image.wand)
+
+
 def getquantumtype():
     """returns the Quantum type name.
     the type is defined by configuration on build.
@@ -2325,6 +2347,25 @@ def montage(image, drawing, tile_geometry, thumbnail_geometry, mode, frame):
     image.raise_exception()
     if new_wand:
         return Image(image=BaseImage(new_wand))
+    image.raise_exception()
+
+
+def morph(image, frames):
+    """morphs a set of images.  Both the image pixels
+    and size are linearly interpolated to give the appearance of a
+    meta-morphosis from one image to the next.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param frames: the number of in-between images to generate.
+    :type frames: :class:`numbers.Integral`
+    """
+    if not isinstance(frames, numbers.Integral):
+        raise ValueError('frames has to be a numbers.Integral, not ' +
+                         repr(frames))
+    new_wand = library.MagickMorphImages(image.wand, frames)
+    if new_wand:
+        return Image(BaseImage(new_wand))
     image.raise_exception()
 
 
@@ -2914,6 +2955,22 @@ def sepiatone(image, threshold):
         raise TypeError('threshold has to be a numbers.Real, not ' +
                         repr(threshold))
     r = library.MagickSepiaToneImage(image.wand, threshold)
+    if not r:
+        image.raise_exception()
+
+
+def setdelay(image, delay):
+    """sets the image delay.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param delay: the image delay in ticks-per-second units.
+    :type delay: :class:`numbers.Integral`
+    """
+    if not isinstance(delay, numbers.Integral):
+        raise TypeError('delay has be a numbers.Integral, not ' +
+                        repr(delay))
+    r = library.MagickSetImageDelay(image.wand, delay)
     if not r:
         image.raise_exception()
 
