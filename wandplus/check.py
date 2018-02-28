@@ -9,11 +9,11 @@ import os
 import unittest
 
 
-def save(img, function, channel=False):
+def save(img, function, channel=False, ext='.png'):
     if channel:
-        path = 'image/' + function.__name__ + "_ch.png"
+        path = 'image/' + function.__name__ + "_ch" + ext
     else:
-        path = 'image/' + function.__name__ + ".png"
+        path = 'image/' + function.__name__ + ext
     # print(path)
     img.save(filename=path)
 
@@ -261,6 +261,32 @@ class CheckImage(unittest.TestCase):
         with self.grad.clone() as t:
             f(t, 'hello')
             save(t, f)
+
+    def test_compare(self):
+        f = wpi.compare
+        with self.rose.clone() as t:
+            with t.clone() as p:
+                (c, d) = f(t, p, metric='absolute')
+                save(c, f)
+                c.destroy()
+        with self.rose.clone() as t:
+            with t.clone() as p:
+                (c, d) = f(t, p, metric='absolute', channel='red')
+                save(c, f, True)
+                c.destroy()
+
+    def test_comparelayer(self):
+        f = wpi.comparelayer
+        with Image() as t:
+            with Image(width=50, height=50, background=Color('red')) as p:
+                wpi.add(t, p)
+                with Image(width=25, height=25, background=Color('green1')) as q:
+                    for i in range(4):
+                        with q.clone() as qq:
+                            wpi.resetpage(qq, 5*(i+1), 5*(i+1))
+                            wpi.add(t, qq)
+            with f(t, 'compareany') as r:
+                save(r, f, ext='.gif')
 
     def test_constitute(self):
         f = wpi.constitute

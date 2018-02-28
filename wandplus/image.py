@@ -2,6 +2,7 @@
 
 from wand.image import Image, BaseImage
 from wand.image import CHANNELS, FILTER_TYPES, COLORSPACE_TYPES
+from wand.image import COMPARE_METRICS, IMAGE_LAYER_METHOD
 from wand.api import library, libmagick
 from wand.drawing import Drawing
 from wand.color import Color
@@ -206,6 +207,26 @@ library.MagickCommentImage.restype = ctypes.c_bool
 library.MagickCommentImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p
+]
+library.MagickCompareImageChannels.restype = ctypes.c_void_p
+library.MagickCompareImageChannels.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.POINTER(ctypes.c_double)
+]
+library.MagickCompareImageLayers.restype = ctypes.c_void_p
+library.MagickCompareImageLayers.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int
+]
+library.MagickCompareImages.restype = ctypes.c_void_p
+library.MagickCompareImages.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.POINTER(ctypes.c_double)
 ]
 library.MagickConstituteImage.restype = ctypes.c_bool
 library.MagickConstituteImage.argtypes = [
@@ -477,6 +498,11 @@ library.MagickResampleImage.argtypes = [
     ctypes.c_double,
     ctypes.c_int,
     ctypes.c_double
+]
+library.MagickResetImagePage.restype = ctypes.c_bool
+library.MagickResetImagePage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p
 ]
 library.MagickRollImage.restype = ctypes.c_bool
 library.MagickRollImage.argtypes = [
@@ -1405,6 +1431,60 @@ def comment(image, text):
     r = library.MagickCommentImage(image.wand, buffer)
     if not r:
         image.raise_exception()
+
+
+def compare(image, reference, metric='undefined', channel=None):
+    """compares an image to a reconstructed image and returns
+    the specified difference image.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param reference: the reference image.
+    :type reference: :class:`wand.image.Image`
+    :param metric: The metric type to use for comparing.
+    :type metric: :class:`str`
+    :returns: The difference image(:class:`wand.image.Image`),
+              the computed distortion between the images
+              (:class:`numbers.Integral`)
+    :rtype: :class:`tuple`
+    """
+    if metric not in COMPARE_METRICS:
+        raise ValueError('expected string from COMPARE_METRICS, not ' +
+                         repr(type))
+    metric = COMPARE_METRICS.index(metric)
+    distortion = ctypes.c_double()
+    if channel:
+        if channel not in CHANNELS:
+            raise ValueError('expected value from CHANNELS, not ' +
+                             repr(channel))
+        diff = library.MagickCompareImageChannels(image.wand, reference.wand,
+                                                  CHANNELS[channel],
+                                                  metric,
+                                                  ctypes.byref(distortion))
+    else:
+        diff = library.MagickCompareImages(image.wand, reference.wand,
+                                           metric, ctypes.byref(distortion))
+    return Image(BaseImage(diff)), distortion.value
+
+
+def comparelayer(image, method):
+    """compares each image with the next in a sequence
+    and returns the maximum bounding region of any pixel differences it
+    discovers.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param method: the compare method in IMAGE_LAYER_METHOD.
+    :type method: :class:`str`
+    """
+    if method not in IMAGE_LAYER_METHOD:
+        raise ValueError('expected string from IMAGE_LAYER_METHOD, not ' +
+                         repr(type))
+    index = IMAGE_LAYER_METHOD.index(method)
+    diff = library.MagickCompareImageLayers(image.wand, index)
+    if diff:
+        return Image(BaseImage(diff))
+    image.raise_exception()
 
 
 def constitute(image, columns, rows, map, storage, pixels):
@@ -2398,6 +2478,39 @@ def resample(image, x_resolution, y_resolution, filtertype, blur):
     filterindex = FILTER_TYPES.index(filtertype)
     r = library.MagickResampleImage(image.wand, x_resolution, y_resolution,
                                     filterindex, blur)
+    if not r:
+        image.raise_exception()
+
+
+def resetpage(image, x, y, width=0, height=0):
+    """resets the Wand page canvas and position.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param x: the x-offset of the new page.
+    :type x: :class:`numbers.Integral`
+    :param y: the y-offset of the new page.
+    :type y: :class:`numbers.Integral`
+    :param width: the width of the new page.
+    :type width: :class:`numbers.Integral`
+    :param height: the height of the new page.
+    :type height: :class:`numbers.Integral`
+    """
+    if not isinstance(x, numbers.Integral):
+        raise ValueError('x has to be a numbers.Integral, not ' +
+                         repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise ValueError('y has to be a numbers.Integral, not ' +
+                         repr(y))
+    elif not isinstance(width, numbers.Integral):
+        raise ValueError('width has to be a numbers.Integral, not ' +
+                         repr(width))
+    elif not isinstance(height, numbers.Integral):
+        raise ValueError('height has to be a numbers.Integral, not ' +
+                         repr(height))
+    page = '{0}x{1}+{2}+{3}'.format(width, height, x, y)
+    buffer = ctypes.create_string_buffer(page.encode())
+    r = library.MagickResetImagePage(image.wand, buffer)
     if not r:
         image.raise_exception()
 
