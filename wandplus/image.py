@@ -20,6 +20,9 @@ libmagick.DestroyKernelInfo.restype = ctypes.c_void_p
 libmagick.DestroyKernelInfo.argtypes = [
     ctypes.c_void_p
 ]
+libmagick.GetMagickFeatures.restype = ctypes.c_char_p
+libmagick.GetMagickFeatures.argtypes = [
+]
 library.MagickAdaptiveBlurImage.restype = ctypes.c_bool
 library.MagickAdaptiveBlurImage.argtypes = [
     ctypes.c_void_p,
@@ -302,6 +305,17 @@ library.MagickEqualizeImageChannel.restype = ctypes.c_bool
 library.MagickEqualizeImageChannel.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int
+]
+library.MagickExportImagePixels.restype = ctypes.c_bool
+library.MagickExportImagePixels.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_ssize_t,
+    ctypes.c_ssize_t,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_char_p,
+    ctypes.c_int,
+    ctypes.c_void_p
 ]
 library.MagickExtentImage.restype = ctypes.c_bool
 library.MagickExtentImage.argtypes = [
@@ -722,6 +736,10 @@ library.MagickTintImage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_void_p,
     ctypes.c_void_p
+]
+library.MagickGetVersion.restype = ctypes.c_char_p
+library.MagickGetVersion.argtypes = [
+    ctypes.POINTER(ctypes.c_size_t)
 ]
 library.MagickVignetteImage.restype = ctypes.c_bool
 library.MagickVignetteImage.argtypes = [
@@ -1776,6 +1794,51 @@ def equalize(image, channel=None):
         image.raise_exception()
 
 
+def export(image, x, y, columns, rows, map, storage):
+    if not isinstance(x, numbers.Integral):
+        raise TypeError('x has to be a numbers.Integral, not ' +
+                        repr(x))
+    elif not isinstance(y, numbers.Integral):
+        raise TypeError('y has to be a numbers.Integral, not ' +
+                        repr(y))
+    elif not isinstance(columns, numbers.Integral):
+        raise TypeError('columns has to be a numbers.Integral, not ' +
+                        repr(columns))
+    elif not isinstance(rows, numbers.Integral):
+        raise TypeError('rows has to be a numbers.Integral, not ' +
+                        repr(rows))
+    elif not isinstance(map, string_type):
+        raise TypeError('expected a string, not ' + repr(map))
+    elif storage not in STORAGE_TYPES:
+        raise ValueError('expected value from CHANNELS, not ' +
+                         repr(storage))
+
+    map_buffer = ctypes.create_string_buffer(map.encode())
+    storage_index = STORAGE_TYPES.index(storage)
+
+    storage_dic = {
+        'char': ctypes.c_char,
+        'double': ctypes.c_double,
+        'float': ctypes.c_float,
+        'integer': ctypes.c_int,
+        'long': ctypes.c_long,
+        'short': ctypes.c_short
+    }
+    image.raise_exception()
+    storage_dic['quantum'] = storage_dic[getquantumtype()]
+    image.raise_exception()
+    stype = storage_dic[storage]
+    length = columns * rows * len(map)
+    pixels = (stype * length)()
+    r = library.MagickExportImagePixels(image.wand, x, y, columns, rows,
+                                        map_buffer, storage_index, pixels)
+    if r:
+        return pixels
+    else:
+        image.raise_exception()
+        return None
+
+
 def extent(image, x, y, width, height):
     """extends the image as defined by the geometry, gravity,
     and background color.  Set the (x,y) offset of the geometry to move
@@ -1932,6 +1995,67 @@ def forwardfouriertransform(image, magnitude):
     r = library.MagickForwardFourierTransformImage(image.wand, magnitude)
     if not r:
         image.raise_exception()
+
+
+def getquantumtype():
+    """returns the Quantum type name.
+    the type is defined by configuration on build.
+
+    :returns: a string in STORAGE_TYPES.
+    :rtype: :class:`str`
+    """
+    import re
+    unknowntype = 'char'
+
+    # get depth
+    v = getversion()
+    versionstring = v[3]
+    m = re.findall(r'Q\d+', versionstring)
+    if len(m) == 0:
+        return unknowntype
+    depth = int(m[0][1:])
+
+    # check HDRI support
+    features = libmagick.GetMagickFeatures().decode()
+    HDRI = re.search(r'HDRI', features)
+
+    # get quantum type(reference: magick/magick-type.h)
+    if depth == 8:
+        if HDRI:
+            return 'float'
+        else:
+            return 'char'
+    elif depth == 16:
+        if HDRI:
+            return 'float'
+        else:
+            return 'short'
+    elif depth == 32:
+        if HDRI:
+            return 'double'
+        else:
+            return 'integer'
+    elif depth == 64:
+        return 'double'
+    else:
+        return unknowntype
+
+
+def getversion():
+    """returns the ImageMagick API version as a string constant
+    and as a number.
+
+    :returns: [major, minor, build, versionstring]
+              e.g. [6, 9, 9, 'ImageMagick 6.9.9-36 Q8 x64 ...']
+    :rtype: :class:`tuple`
+    """
+    version = ctypes.c_size_t()
+    versionstring = library.MagickGetVersion(ctypes.byref(version))
+    v = version.value
+    major = v // 256
+    minor = (v % 256) // 16
+    build = v % 16
+    return major, minor, build, versionstring.decode()
 
 
 def haldclut(image, clutimage, channel=None):

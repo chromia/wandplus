@@ -370,6 +370,16 @@ class CheckImage(unittest.TestCase):
             f(t, channel='red')
             save(t, f, True)
 
+    def test_export(self):
+        w = 1
+        h = 1
+        channels = 'RGB'
+        with Image(width=w, height=h, background=Color('red')) as t:
+            r = wpi.export(t, 0, 0, w, h, channels, 'double')
+            self.assertEqual(r[0], 1.0)
+            self.assertEqual(r[1], 0.0)
+            self.assertEqual(r[2], 0.0)
+
     def test_extent(self):
         f = wpi.extent
         with self.rose.clone() as t:
