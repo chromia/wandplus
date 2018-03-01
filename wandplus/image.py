@@ -356,6 +356,10 @@ library.MagickGetImageDelay.restype = ctypes.c_size_t
 library.MagickGetImageDelay.argtypes = [
     ctypes.c_void_p
 ]
+library.MagickGetImageFuzz.restype = ctypes.c_double
+library.MagickGetImageFuzz.argtypes = [
+    ctypes.c_void_p
+]
 library.MagickHaldClutImage.restype = ctypes.c_bool
 library.MagickHaldClutImage.argtypes = [
     ctypes.c_void_p,
@@ -602,6 +606,11 @@ library.MagickSetImageDelay.restype = ctypes.c_bool
 library.MagickSetImageDelay.argtypes = [
     ctypes.c_void_p,
     ctypes.c_size_t
+]
+library.MagickSetImageFuzz.restype = ctypes.c_bool
+library.MagickSetImageFuzz.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double
 ]
 library.MagickSetIteratorIndex.restype = ctypes.c_bool
 library.MagickSetIteratorIndex.argtypes = [
@@ -2029,6 +2038,14 @@ def getdelay(image):
     return library.MagickGetImageDelay(image.wand)
 
 
+def getfuzz(image):
+    """gets the image fuzz.
+
+    :rtype: :class:`numbers.Real`
+    """
+    return library.MagickGetImageFuzz(image.wand)
+
+
 def getquantumtype():
     """returns the Quantum type name.
     the type is defined by configuration on build.
@@ -2991,6 +3008,19 @@ def setfirstiterator(image):
     :type image: :class:`wand.image.Image`
     """
     r = library.MagickSetFirstIterator(image.wand)
+    if not r:
+        image.raise_exception()
+
+
+def setfuzz(image, fuzz):
+    """sets the image fuzz.
+
+    :param image: the target image.
+    :type image: :class:`wand.image.Image`
+    :param fuzz: the image fuzz.
+    :type fuzz: :class:`numbers.Real`
+    """
+    r = library.MagickSetImageFuzz(image.wand, fuzz)
     if not r:
         image.raise_exception()
 
