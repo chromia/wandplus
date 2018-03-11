@@ -1603,12 +1603,12 @@ def constitute(image, columns, rows, map, storage, pixels):
     length = len(pixels)
 
     storage_dic = {
-        'char': ctypes.c_char,
+        'char': ctypes.c_ubyte,
         'double': ctypes.c_double,
         'float': ctypes.c_float,
-        'integer': ctypes.c_int,
-        'long': ctypes.c_long,
-        'short': ctypes.c_short
+        'integer': ctypes.c_uint,
+        'long': ctypes.c_ulong,
+        'short': ctypes.c_ushort
     }
     storage_dic['quantum'] = storage_dic[getquantumtype()]
     stype = storage_dic[storage]
@@ -1852,12 +1852,12 @@ def exportpixels(image, x, y, columns, rows, map, storage):
     storage_index = STORAGE_TYPES.index(storage)
 
     storage_dic = {
-        'char': ctypes.c_char,
+        'char': ctypes.c_ubyte,
         'double': ctypes.c_double,
         'float': ctypes.c_float,
-        'integer': ctypes.c_int,
-        'long': ctypes.c_long,
-        'short': ctypes.c_short
+        'integer': ctypes.c_uint,
+        'long': ctypes.c_ulong,
+        'short': ctypes.c_ushort
     }
     storage_dic['quantum'] = storage_dic[getquantumtype()]
     stype = storage_dic[storage]
@@ -2219,12 +2219,12 @@ def importpixels(image, x, y, columns, rows, map, storage, pixels):
     length = len(pixels)
 
     storage_dic = {
-        'char': ctypes.c_char,
+        'char': ctypes.c_ubyte,
         'double': ctypes.c_double,
         'float': ctypes.c_float,
-        'integer': ctypes.c_int,
-        'long': ctypes.c_long,
-        'short': ctypes.c_short
+        'integer': ctypes.c_uint,
+        'long': ctypes.c_ulong,
+        'short': ctypes.c_ushort
     }
     storage_dic['quantum'] = storage_dic[getquantumtype()]
     stype = storage_dic[storage]
