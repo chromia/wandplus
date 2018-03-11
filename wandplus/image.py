@@ -1845,7 +1845,7 @@ def exportpixels(image, x, y, columns, rows, map, storage):
     elif not isinstance(map, string_type):
         raise TypeError('expected a string, not ' + repr(map))
     elif storage not in STORAGE_TYPES:
-        raise ValueError('expected value from CHANNELS, not ' +
+        raise ValueError('expected value from STORAGE_TYPES, not ' +
                          repr(storage))
 
     map_buffer = ctypes.create_string_buffer(map.encode())
