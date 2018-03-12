@@ -293,7 +293,10 @@ class CheckImage(unittest.TestCase):
         with Image() as t:
             w = 2
             h = 2
-            b = b'\x00\x00\x00\xFF\xFF\xFF\xFF\x00\x00\x00\xFF\x00'
+            b = [0, 0, 0,
+                 255, 255, 255,
+                 255, 0, 0,
+                 0, 255, 0]
             f(t, w, h, 'RGB', 'char', b)
             save(t, f)
 
@@ -442,7 +445,10 @@ class CheckImage(unittest.TestCase):
         with Image(width=4, height=4, background=Color('red')) as t:
             w = 2
             h = 2
-            b = b'\x00\x00\x00\xFF\xFF\xFF\xFF\x00\x00\x00\xFF\x00'
+            b = [0, 0, 0,
+                 255, 255, 255,
+                 255, 0, 0,
+                 0, 255, 0]
             f(t, 1, 1, w, h, 'RGB', 'char', b)
             save(t, f)
 
