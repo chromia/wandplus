@@ -802,10 +802,68 @@ library.MagickWhiteThresholdImage.argtypes = [
 ]
 # %End Definition%  -- do not remove this comment!
 
+#: (:class:`tuple`) The list of dithering methods.
+#:
+#: - ``'undefined'``
+#: - ``'nodither'``
+#: - ``'riemersma'``
+#: - ``'floydsteinberg'``
 DITHER_METHODS = ('undefined', 'nodither', 'riemersma', 'floydsteinberg')
 
+#: (:class:`tuple`) The list of interpolation methods.
+#:
+#: - ``'undefined'``
+#: - ``'average'``
+#: - ``'bicubic'``
+#: - ``'bilinear'``
+#: - ``'filter'``
+#: - ``'integer'``
+#: - ``'mesh'``
+#: - ``'nearestneighbor'``
+#: - ``'spline'``
+#: - ``'average9'``
+#: - ``'average16'``
+#: - ``'blend'``
+#: - ``'background'``
+#: - ``'catrom'``
+INTERPOLATEPIXEL_METHODS = ('undefined', 'average', 'bicubic', 'bilinear',
+                            'filter', 'integer', 'mesh', 'nearestneighbor',
+                            'spline', 'average9', 'average16', 'blend',
+                            'background', 'catrom')
+
+#: (:class:`tuple`) The list of thumbnail framing modes.
+#:
+#: - ``'undefined'``
+#: - ``'frame'``
+#: - ``'unframe'``
+#: - ``'concatenate'``
 MONTAGE_MODES = ('undefined', 'frame', 'unframe', 'concatenate')
 
+#: (:class:`tuple`) The list of morphology methods.
+#:
+#: - ``'undefined'``
+#: - ``'convolve'``
+#: - ``'correlate'``
+#: - ``'erode'``
+#: - ``'dilate'``
+#: - ``'erodeintensity'``
+#: - ``'dilateintensity'``
+#: - ``'distance'``
+#: - ``'open'``
+#: - ``'close'``
+#: - ``'openintensity'``
+#: - ``'closeintensity'``
+#: - ``'smooth'``
+#: - ``'edgein'``
+#: - ``'edgeout'``
+#: - ``'edge'``
+#: - ``'tophat'``
+#: - ``'bottomhat'``
+#: - ``'hitandmiss'``
+#: - ``'thinning'``
+#: - ``'thicken'``
+#: - ``'voronoi'``
+#: - ``'iterativedistance'``
 MORPHOLOGY_METHODS = ('undefined', 'convolve', 'correlate', 'erode', 'dilate',
                       'erodeintensity', 'dilateintensity', 'distance',
                       'open', 'close', 'openintensity', 'closeintensity',
@@ -813,14 +871,29 @@ MORPHOLOGY_METHODS = ('undefined', 'convolve', 'correlate', 'erode', 'dilate',
                       'bottomhat', 'hitandmiss', 'thinning', 'thicken',
                       'voronoi', 'iterativedistance')
 
+#: (:class:`tuple`) The list of noise-type.
+#:
+#: - ``'undefined'``
+#: - ``'uniform'``
+#: - ``'gaussian'``
+#: - ``'multiplicative'``
+#: - ``'impulse'``
+#: - ``'laplacian'``
+#: - ``'poisson'``
+#: - ``'random'``
 NOISE_TYPES = ('undefined', 'uniform', 'gaussian', 'multiplicative',
                'impulse', 'laplacian', 'poisson', 'random')
 
-INTERPOLATEPIXEL_METHODS = ('undefined', 'average', 'bicubic', 'bilinear',
-                            'filter', 'integer', 'mesh', 'nearestneighbor',
-                            'spline', 'average9', 'average16', 'blend',
-                            'background', 'catrom')
-
+#: (:class:`dict`) The dictionary of methods for image sparseion.
+#:
+#: - ``'undefined'``
+#: - ``'barycentric'``
+#: - ``'bilinear'``
+#: - ``'polynomial'``
+#: - ``'shepards'``
+#: - ``'voronoi'``
+#: - ``'inverse'``
+#: - ``'manhattan'``
 SPARSE_METHODS = dict(undefined=0,  # DISTORTION_METHODS['undefined'],
                       barycentric=1,  # DISTORTION_METHODS['affine'],
                       bilinear=7,  # DISTORTION_METHODS['bilinear_reverse'],
@@ -830,10 +903,32 @@ SPARSE_METHODS = dict(undefined=0,  # DISTORTION_METHODS['undefined'],
                       inverse=19,
                       manhattan=20)
 
+#: (:class:`tuple`) The list of statistic types
+#:
+#: - ``'undefined'``
+#: - ``'gradient'``
+#: - ``'maximum'``
+#: - ``'mean'``
+#: - ``'median'``
+#: - ``'minimum'``
+#: - ``'mode'``
+#: - ``'nonpeak'``
+#: - ``'standarddeviation'``
+#: - ``'rootmeansquare'``
 STATISTIC_TYPES = ('undefined', 'gradient', 'maximum', 'mean', 'median',
                    'minimum', 'mode', 'nonpeak', 'standarddeviation',
                    'rootmeansquare')
 
+#: (:class:`tuple`) The list of pixel data types
+#:
+#: - ``'undefined'``
+#: - ``'char'``
+#: - ``'double'``
+#: - ``'float'``
+#: - ``'integer'``
+#: - ``'long'``
+#: - ``'quantum'``
+#: - ``'short'``
 STORAGE_TYPES = ('undefined', 'char', 'double', 'float', 'integer',
                  'long', 'quantum', 'short')
 
