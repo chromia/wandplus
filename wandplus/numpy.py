@@ -27,11 +27,11 @@ def numpy2wand(npimage, storage='char', bgr=False):
     :type npimage: :class:`numpy.ndarray`
     :param storage: the storage type represents size of the pixel.
                     this value must be defined in wand.image.STORAGE_TYPES.
-                      'char': unsigned char [0..255]  ('uint8' in numpy)
-                      'short': unsigned short [0..65535] ('uint16' in numpy)
-                      'integer': unsigned int [0..2^32] ('uint32' in numpy)
-                      'float': 32bit-float ('float32' in numpy)
-                      'double': 64bit-float ('float64' in numpy)
+                    'char': unsigned char [0..255]  ('uint8' in numpy)
+                    'short': unsigned short [0..65535] ('uint16' in numpy)
+                    'integer': unsigned int [0..2^32] ('uint32' in numpy)
+                    'float': 32bit-float ('float32' in numpy)
+                    'double': 64bit-float ('float64' in numpy)
     :type storage: :class:`str`
     :param bgr: if True, replace the order of the channels
                          from B,G,R-order to R,G,B-order(option for opencv).
@@ -76,17 +76,18 @@ def wand2numpy(wandimage, channels=3, storage='char', bgr=False):
     :type wandimage: :class:`wand.image.Image`
     :param channels: the numbers of the channels picked up
                      from the source image.
-                       1: grayscale image
-                       3: color image with R,G,B channels
-                       4: color image with R,G,B,A channels
+                     1: grayscale image
+                     3: color image with R,G,B channels
+                     4: color image with R,G,B,A channels
     :type channels: :class:`numbers.Integral`
     :param storage: the storage type represents size of the pixel.
-                    this value must be defined in wand.image.STORAGE_TYPES.
-                      'char': unsigned char [0..255]  ('uint8' in numpy)
-                      'short': unsigned short [0..65535] ('uint16' in numpy)
-                      'integer': unsigned int [0..2^32] ('uint32' in numpy)
-                      'float': 32bit-float ('float32' in numpy)
-                      'double': 64bit-float ('float64' in numpy)
+                    this value must be defined in
+                    :const:`wandplus.image.STORAGE_TYPES`.
+                    'char': unsigned char [0..255]  ('uint8' in numpy)
+                    'short': unsigned short [0..65535] ('uint16' in numpy)
+                    'integer': unsigned int [0..2^32] ('uint32' in numpy)
+                    'float': 32bit-float ('float32' in numpy)
+                    'double': 64bit-float ('float64' in numpy)
     :type storage: :class:`str`
     :param bgr: if True, replace the order of the color channels
                          from B,G,R-order to R,G,B-order(option for opencv).
