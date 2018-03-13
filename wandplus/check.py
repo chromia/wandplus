@@ -3,8 +3,8 @@
 from wand.image import Image
 from wand.drawing import Drawing
 from wand.color import Color
-import image as wpi
-from textutil import calcSuitableFontsize, calcSuitableImagesize
+import wandplus.image as wpi
+from wandplus.textutil import calcSuitableFontsize, calcSuitableImagesize
 import os
 import unittest
 
