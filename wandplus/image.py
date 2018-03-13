@@ -1455,20 +1455,20 @@ def coalesce(image):
 def colordecisionlist(image, ccc_text):
     """accepts a lightweight Color Correction
     Collection (CCC) file which solely contains one or more color corrections
-    and applies the color correction to the image.  Here is a sample CCC file:
+    and applies the color correction to the image.  Here is a sample CCC file::
 
-    <ColorCorrectionCollection xmlns="urn:ASC:CDL:v1.2">
-        <ColorCorrection id="cc03345">
-            <SOPNode>
-                <Slope> 0.9 1.2 0.5 </Slope>
-                <Offset> 0.4 -0.5 0.6 </Offset>
-                <Power> 1.0 0.8 1.5 </Power>
-            </SOPNode>
-            <SATNode>
-                <Saturation> 0.85 </Saturation>
-            </SATNode>
-        </ColorCorrection>
-    </ColorCorrectionCollection>
+        <ColorCorrectionCollection xmlns="urn:ASC:CDL:v1.2">
+            <ColorCorrection id="cc03345">
+                <SOPNode>
+                    <Slope> 0.9 1.2 0.5 </Slope>
+                    <Offset> 0.4 -0.5 0.6 </Offset>
+                    <Power> 1.0 0.8 1.5 </Power>
+                </SOPNode>
+                <SATNode>
+                    <Saturation> 0.85 </Saturation>
+                </SATNode>
+            </ColorCorrection>
+        </ColorCorrectionCollection>
 
     which includes the offset, slope, and power for each of the RGB channels
     as well as the saturation.
@@ -1675,7 +1675,7 @@ def constitute(image, columns, rows, map, storage, pixels):
                    where the expected length varies depending on the values
                    of width, height, map, and type.
     :type pixels: :class:`collections.Sequence`,
-                  :class:type of `storage`
+                  type of `storage`
     """
     if not isinstance(columns, numbers.Integral):
         raise ValueError('columns has to be a numbers.Integral, not ' +
@@ -2285,7 +2285,7 @@ def importpixels(image, x, y, columns, rows, map, storage, pixels):
                    where the expected length varies depending on the values
                    of width, height, map, and type.
     :type pixels: :class:`collections.Sequence`,
-                  :class:type of `storage`
+                  type of `storage`
     """
     if not isinstance(x, numbers.Integral):
         raise ValueError('x has to be a numbers.Integral, not ' +
