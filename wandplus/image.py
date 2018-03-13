@@ -838,7 +838,7 @@ STORAGE_TYPES = ('undefined', 'char', 'double', 'float', 'integer',
                  'long', 'quantum', 'short')
 
 
-class KernelInfo(ctypes.Structure):
+class _KernelInfo(ctypes.Structure):
     _fields_ = [
         ('type', ctypes.c_int),
         ('width', ctypes.c_size_t),
@@ -1416,7 +1416,7 @@ def colormatrix(image, width, height, color_matrix):
     elif not isinstance(height, numbers.Integral):
         raise ValueError('height has to be a numbers.Integral, not ' +
                          repr(height))
-    kernelinfo = KernelInfo(width, height, color_matrix)
+    kernelinfo = _KernelInfo(width, height, color_matrix)
     if kernelinfo:
         r = library.MagickColorMatrixImage(image.wand,
                                            ctypes.byref(kernelinfo))
@@ -1932,7 +1932,7 @@ def filterimage(image, columns, rows, kernel, channel=None):
         raise TypeError('expecting sequence of arguments, not ' +
                         repr(kernel))
     assert(columns * rows == len(kernel))
-    kernelinfo = KernelInfo(columns, rows, kernel)
+    kernelinfo = _KernelInfo(columns, rows, kernel)
     if channel:
         if channel not in CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
