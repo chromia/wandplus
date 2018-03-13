@@ -1502,7 +1502,7 @@ def colormatrix(image, width, height, color_matrix):
     :param height: the number of rows of ``color_matrix``.
     :type height: :class:`numbers.Integral`
     :param color_matrix: the color matrix.
-    :type color_matrix: :class:`collections.Sequence`,
+    :type color_matrix: :class:`collections.abc.Sequence`,
                         :class:`numbers.Real`
     """
     if not isinstance(width, numbers.Integral):
@@ -1674,7 +1674,7 @@ def constitute(image, columns, rows, map, storage, pixels):
                    as defined by map and type. You must preallocate this array
                    where the expected length varies depending on the values
                    of width, height, map, and type.
-    :type pixels: :class:`collections.Sequence`,
+    :type pixels: :class:`collections.abc.Sequence`,
                   type of `storage`
     """
     if not isinstance(columns, numbers.Integral):
@@ -1740,7 +1740,7 @@ def convolve(image, order, kernel, channel=None):
     :param order: the number of columns and rows in the filter kernel.
     :type order: :class:`numbers.Integral`
     :param kernel: An array of doubles representing the convolution kernel.
-    :type kernel: :class:`collections.Sequence`,
+    :type kernel: :class:`collections.abc.Sequence`,
                   :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :data:`wand.image.CHANNELS` mapping.
@@ -2010,7 +2010,7 @@ def filterimage(image, columns, rows, kernel, channel=None):
     :param rows: the rows of kernel.
     :type rows: :class:`numbers.Integral`
     :param kernel: An array of doubles representing the convolution kernel.
-    :type kernel: :class:`collections.Sequence`,
+    :type kernel: :class:`collections.abc.Sequence`,
                   :class:`numbers.Real`
     :param channel: the channel type. available values can be found
                     in the :data:`wand.image.CHANNELS` mapping.
@@ -2284,7 +2284,7 @@ def importpixels(image, x, y, columns, rows, map, storage, pixels):
                    as defined by map and type. You must preallocate this array
                    where the expected length varies depending on the values
                    of width, height, map, and type.
-    :type pixels: :class:`collections.Sequence`,
+    :type pixels: :class:`collections.abc.Sequence`,
                   type of `storage`
     """
     if not isinstance(x, numbers.Integral):
@@ -3491,7 +3491,7 @@ def sparsecolor(image, channel, method, arguments):
 
     :type method: :class:`str`
     :param arguments: the arguments for this sparseion method.
-    :type arguments: :class:`collections.Sequence`,
+    :type arguments: :class:`collections.abc.Sequence`,
                      :class:`numbers.Real`
     """
     if channel not in CHANNELS:
