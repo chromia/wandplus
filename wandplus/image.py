@@ -973,7 +973,7 @@ def adaptiveblur(image, radius, sigma, channel=None):
     :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1033,7 +1033,7 @@ def adaptivesharpen(image, radius, sigma, channel=None):
     :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1109,7 +1109,7 @@ def addnoise(image, type, channel=None):
                  e.g. 'uniform', 'gaussian', 'random'
     :type type: :class:`str`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1153,7 +1153,7 @@ def autogamma(image, channel=None):
     :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1175,7 +1175,7 @@ def autolevel(image, channel=None):
     :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1239,7 +1239,7 @@ def blur(image, radius, sigma, channel=None):
     :param sigma: the standard deviation of the , in pixels.
     :type sigma: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1273,7 +1273,7 @@ def brightnesscontrast(image, brightness, contrast, channel=None):
     :param contrast: the contrast percent (-100 .. 100).
     :type contrast: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1358,7 +1358,7 @@ def clamp(image, channel=None):
     :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1418,7 +1418,7 @@ def clut(image, clutimage, channel=None):
     :param clutimage: the clut image.
     :type clutimage: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1552,7 +1552,7 @@ def combine(image, channel):
     :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     and integer value will be accepted.
     :type channel: :class:`str` or :class:`numbers.Integral`
     """
@@ -1743,7 +1743,7 @@ def convolve(image, order, kernel, channel=None):
     :type kernel: :class:`collections.Sequence`,
                   :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -1909,7 +1909,7 @@ def equalize(image, channel=None):
     :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2013,7 +2013,7 @@ def filterimage(image, columns, rows, kernel, channel=None):
     :type kernel: :class:`collections.Sequence`,
                   :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2068,7 +2068,7 @@ def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
     :param invert: paint any pixel that does not match the target color.
     :type invert: :class:`bool`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2214,7 +2214,7 @@ def haldclut(image, clutimage, channel=None):
     :param clutimage: the hald CLUT image.
     :type clutimage: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2506,7 +2506,7 @@ def morphology(image, method, iterations, kernelinfo, channel=None):
                        see also http://www.imagemagick.org/Usage/morphology/
     :type kernelinfo: :class:`str`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2550,7 +2550,7 @@ def motionblur(image, radius, sigma, angle, channel=None):
     :param angle: Apply the effect along this angle.
     :type angle: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2613,7 +2613,7 @@ def opaquepaint(image, target, fill, fuzz, invert=False, channel=None):
     :param invert: paint any pixel that does not match the target color.
     :type invert: :class:`bool`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2661,7 +2661,7 @@ def orderedposterize(image, threshold_map, channel=None):
                           tho dither between.
     :type threshold_map: :class:`str`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2776,7 +2776,7 @@ def randomthreshold(image, low, high, channel=None):
     :param high: high threshold in range 0..QuantumRange.
     :type high: :class:`numbers.Integral`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2828,7 +2828,7 @@ def resample(image, x_resolution, y_resolution, filtertype, blur):
     :type x_resolution: :class:`numbers.Real`
     :param y_resolution: the new image y resolution.
     :type y_resolution: :class:`numbers.Real`
-    :param filter: Image filter in :const:`FILTER_TYPES`.
+    :param filter: Image filter in :data:`wand.image.FILTER_TYPES`.
     :type filter: :class:`numbers.Integral`
     :param blur: the blur factor where > 1 is blurry, < 1 is sharp.
     :type blur: :class:`numbers.Real`
@@ -2914,7 +2914,7 @@ def rotationalblur(image, angle, channel=None):
     :param angle: the angle of the blur in degrees.
     :type angle: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -2962,7 +2962,8 @@ def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
 
     :param image: the target image.
     :type image: :class:`wand.image.Image`
-    :param colorspace: the image colorspace in :const:`COLORSPACE_TYPES`.
+    :param colorspace: the image colorspace in
+                       :data:`wand.image.COLORSPACE_TYPES`.
     :type colorspace: :class:`str`
     :param verbose: Set to True to print detailed information
                     about the identified classes.
@@ -3012,7 +3013,7 @@ def selectiveblur(image, radius, sigma, threshold, channel=None):
                       in the blur operation.
     :type threshold: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -3047,7 +3048,7 @@ def separate_channel(image, channel):
     :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
     :type channel: :class:`str`
     """
     if channel not in CHANNELS:
@@ -3265,7 +3266,7 @@ def sharpen(image, radius, sigma, channel=None):
     :param sigma: the standard deviation of the Gaussian, in pixels.
     :type sigma: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -3363,7 +3364,7 @@ def sigmoidalcontrast(image, sharpen, alpha, beta, channel=None):
     :param beta: midpoint of the function as a color value 0 to QuantumRange.
     :type beta: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -3455,7 +3456,7 @@ def solarize(image, threshold, channel=None):
     :param threshold: Define the extent of the solarization.
     :type threshold: :class:`numbers.Real`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
@@ -3481,7 +3482,7 @@ def sparsecolor(image, channel, method, arguments):
     :param image: the target image.
     :type image: :class:`wand.image.Image`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
     :type channel: :class:`str`
     :param method: the method of image sparseion.
                    available values can be found in :const:`SPARSE_METHODS`.
@@ -3572,7 +3573,7 @@ def statistic(image, statistic_type, width, height, channel=None):
     :param height: the height of the pixel neighborhood.
     :type height: :class:`numbers.Integral`
     :param channel: the channel type. available values can be found
-                    in the :const:`CHANNELS` mapping.
+                    in the :data:`wand.image.CHANNELS` mapping.
                     If ``None``, select all channels.
     :type channel: :class:`str`
     """
