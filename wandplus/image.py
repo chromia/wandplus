@@ -6,8 +6,11 @@ Additional filtering and image-manipulation functions to strengthen Wand
 .. include:: summary/image.txt
 """
 from wand.image import Image, BaseImage
-from wand.image import CHANNELS, FILTER_TYPES, COLORSPACE_TYPES
-from wand.image import COMPARE_METRICS, IMAGE_LAYER_METHOD
+from wand.image import CHANNELS as _CHANNELS
+from wand.image import FILTER_TYPES as _FILTER_TYPES
+from wand.image import COLORSPACE_TYPES as _COLORSPACE_TYPES
+from wand.image import COMPARE_METRICS as _COMPARE_METRICS
+from wand.image import IMAGE_LAYER_METHOD as _IMAGE_LAYER_METHOD
 from wand.api import library, libmagick
 from wand.drawing import Drawing
 from wand.color import Color
@@ -989,11 +992,11 @@ def adaptiveblur(image, radius, sigma, channel=None):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
         r = library.MagickAdaptiveBlurImageChannel(image.wand,
-                                                   CHANNELS[channel],
+                                                   _CHANNELS[channel],
                                                    radius, sigma)
     else:
         r = library.MagickAdaptiveBlurImage(image.wand, radius, sigma)
@@ -1049,10 +1052,10 @@ def adaptivesharpen(image, radius, sigma, channel=None):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickAdaptiveSharpenImage(image.wand, CHANNELS[channel],
+        r = library.MagickAdaptiveSharpenImage(image.wand, _CHANNELS[channel],
                                                radius, sigma)
     else:
         r = library.MagickAdaptiveSharpenImage(image.wand, radius, sigma)
@@ -1123,10 +1126,10 @@ def addnoise(image, type, channel=None):
                          repr(type))
     index = NOISE_TYPES.index(type)
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickAddNoiseImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickAddNoiseImageChannel(image.wand, _CHANNELS[channel],
                                                index)
     else:
         r = library.MagickAddNoiseImage(image.wand, index)
@@ -1163,10 +1166,10 @@ def autogamma(image, channel=None):
     :type channel: :class:`str`
     """
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickAutoGammaImageChannel(image.wand, CHANNELS[channel])
+        r = library.MagickAutoGammaImageChannel(image.wand, _CHANNELS[channel])
     else:
         r = library.MagickAutoGammaImage(image.wand)
     if not r:
@@ -1185,10 +1188,10 @@ def autolevel(image, channel=None):
     :type channel: :class:`str`
     """
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickAutoLevelImageChannel(image.wand, CHANNELS[channel])
+        r = library.MagickAutoLevelImageChannel(image.wand, _CHANNELS[channel])
     else:
         r = library.MagickAutoLevelImage(image.wand)
     if not r:
@@ -1255,10 +1258,10 @@ def blur(image, radius, sigma, channel=None):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickBlurImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickBlurImageChannel(image.wand, _CHANNELS[channel],
                                            radius, sigma)
     else:
         r = library.MagickBlurImage(image.wand, radius, sigma)
@@ -1289,11 +1292,11 @@ def brightnesscontrast(image, brightness, contrast, channel=None):
         raise TypeError('contrast has to be a numbers.Real, not ' +
                         repr(contrast))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
         r = library.MagickBrightnessContrastImageChannel(image.wand,
-                                                         CHANNELS[channel],
+                                                         _CHANNELS[channel],
                                                          brightness,
                                                          contrast)
     else:
@@ -1368,10 +1371,10 @@ def clamp(image, channel=None):
     :type channel: :class:`str`
     """
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickClampImageChannel(image.wand, CHANNELS[channel])
+        r = library.MagickClampImageChannel(image.wand, _CHANNELS[channel])
     else:
         r = library.MagickClampImage(image.wand)
     if not r:
@@ -1428,10 +1431,10 @@ def clut(image, clutimage, channel=None):
     :type channel: :class:`str`
     """
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickClutImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickClutImageChannel(image.wand, _CHANNELS[channel],
                                            clutimage.wand)
     else:
         r = library.MagickClutImage(image.wand, clutimage.wand)
@@ -1561,14 +1564,14 @@ def combine(image, channel):
                     and integer value will be accepted.
     :type channel: :class:`str` or :class:`numbers.Integral`
     """
-    if channel not in CHANNELS:
+    if channel not in _CHANNELS:
         if isinstance(channel, numbers.Integral):
             index = channel
         else:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
     else:
-        index = CHANNELS[channel]
+        index = _CHANNELS[channel]
     new_wand = library.MagickCombineImages(image.wand, index)
     if new_wand:
         return Image(image=BaseImage(new_wand))
@@ -1606,17 +1609,17 @@ def compare(image, reference, metric='undefined', channel=None):
               (:class:`numbers.Integral`)
     :rtype: :class:`tuple`
     """
-    if metric not in COMPARE_METRICS:
+    if metric not in _COMPARE_METRICS:
         raise ValueError('expected string from COMPARE_METRICS, not ' +
                          repr(type))
-    metric = COMPARE_METRICS.index(metric)
+    metric = _COMPARE_METRICS.index(metric)
     distortion = ctypes.c_double()
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
         diff = library.MagickCompareImageChannels(image.wand, reference.wand,
-                                                  CHANNELS[channel],
+                                                  _CHANNELS[channel],
                                                   metric,
                                                   ctypes.byref(distortion))
     else:
@@ -1635,10 +1638,10 @@ def comparelayer(image, method):
     :param method: the compare method in IMAGE_LAYER_METHOD.
     :type method: :class:`str`
     """
-    if method not in IMAGE_LAYER_METHOD:
+    if method not in _IMAGE_LAYER_METHOD:
         raise ValueError('expected string from IMAGE_LAYER_METHOD, not ' +
                          repr(type))
-    index = IMAGE_LAYER_METHOD.index(method)
+    index = _IMAGE_LAYER_METHOD.index(method)
     diff = library.MagickCompareImageLayers(image.wand, index)
     if diff:
         return Image(BaseImage(diff))
@@ -1761,10 +1764,10 @@ def convolve(image, order, kernel, channel=None):
     assert(len(kernel) == order * order)
     p_kernel = (ctypes.c_double * len(kernel))(*kernel)
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickConvolveImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickConvolveImageChannel(image.wand, _CHANNELS[channel],
                                                order, p_kernel)
     else:
         r = library.MagickConvolveImage(image.wand, order, p_kernel)
@@ -1919,10 +1922,10 @@ def equalize(image, channel=None):
     :type channel: :class:`str`
     """
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickEqualizeImageChannel(image.wand, CHANNELS[channel])
+        r = library.MagickEqualizeImageChannel(image.wand, _CHANNELS[channel])
     else:
         r = library.MagickEqualizeImage(image.wand)
     if not r:
@@ -2034,10 +2037,10 @@ def filterimage(image, columns, rows, kernel, channel=None):
     assert(columns * rows == len(kernel))
     kernelinfo = _KernelInfo(columns, rows, kernel)
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickFilterImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickFilterImageChannel(image.wand, _CHANNELS[channel],
                                              ctypes.byref(kernelinfo))
     else:
         r = library.MagickFilterImage(image.wand, ctypes.byref(kernelinfo))
@@ -2097,13 +2100,13 @@ def floodfillpaint(image, fillcolor, fuzz, bordercolor, x, y,
                         repr(invert))
     if not channel:
         channel = 'default_channels'
-    if channel not in CHANNELS:
+    if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
     with fillcolor:
         with bordercolor:
             r = library.MagickFloodfillPaintImage(image.wand,
-                                                  CHANNELS[channel],
+                                                  _CHANNELS[channel],
                                                   fillcolor.resource, fuzz,
                                                   bordercolor.resource, x, y,
                                                   invert)
@@ -2224,10 +2227,10 @@ def haldclut(image, clutimage, channel=None):
     :type channel: :class:`str`
     """
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickHaldClutImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickHaldClutImageChannel(image.wand, _CHANNELS[channel],
                                                clutimage.wand)
     else:
         r = library.MagickHaldClutImage(image.wand, clutimage.wand)
@@ -2525,10 +2528,10 @@ def morphology(image, method, iterations, kernelinfo, channel=None):
     kinfo = ctypes.create_string_buffer(kernelinfo.encode())
     kernel = libmagick.AcquireKernelInfo(kinfo)
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickMorphologyImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickMorphologyImageChannel(image.wand, _CHANNELS[channel],
                                                  methodindex, iterations,
                                                  kernel)
     else:
@@ -2569,10 +2572,10 @@ def motionblur(image, radius, sigma, angle, channel=None):
         raise TypeError('angle has to be a numbers.Real, not ' +
                         repr(angle))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickMotionBlurImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickMotionBlurImageChannel(image.wand, _CHANNELS[channel],
                                                  radius, sigma, angle)
     else:
         r = library.MagickMotionBlurImage(image.wand, radius, sigma, angle)
@@ -2637,11 +2640,11 @@ def opaquepaint(image, target, fill, fuzz, invert=False, channel=None):
     with target:
         with fill:
             if channel:
-                if channel not in CHANNELS:
+                if channel not in _CHANNELS:
                     raise ValueError('expected value from CHANNELS, not ' +
                                      repr(channel))
                 r = library.MagickOpaquePaintImageChannel(image.wand,
-                                                          CHANNELS[channel],
+                                                          _CHANNELS[channel],
                                                           target.resource,
                                                           fill.resource,
                                                           fuzz, invert)
@@ -2674,11 +2677,11 @@ def orderedposterize(image, threshold_map, channel=None):
         raise TypeError('expected a string, not ' + repr(threshold_map))
     buffer = ctypes.create_string_buffer(threshold_map.encode())
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
         r = library.MagickOrderedPosterizeImageChannel(image.wand,
-                                                       CHANNELS[channel],
+                                                       _CHANNELS[channel],
                                                        buffer)
     else:
         r = library.MagickOrderedPosterizeImage(image.wand, buffer)
@@ -2792,11 +2795,11 @@ def randomthreshold(image, low, high, channel=None):
         raise TypeError('high has to be a numbers.Integral, not ' +
                         repr(high))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
         r = library.MagickRandomThresholdImageChannel(image.wand,
-                                                      CHANNELS[channel],
+                                                      _CHANNELS[channel],
                                                       low, high)
     else:
         r = library.MagickRandomThresholdImage(image.wand, low, high)
@@ -2844,13 +2847,13 @@ def resample(image, x_resolution, y_resolution, filtertype, blur):
     elif not isinstance(y_resolution, numbers.Real):
         raise TypeError('y_resolution has to be a numbers.Real, not ' +
                         repr(y_resolution))
-    elif filtertype not in FILTER_TYPES:
+    elif filtertype not in _FILTER_TYPES:
         raise ValueError('expected value from FILTER_TYPES, not ' +
                          repr(filter))
     elif not isinstance(blur, numbers.Real):
         raise TypeError('blur has to be a numbers.Real, not ' +
                         repr(blur))
-    filterindex = FILTER_TYPES.index(filtertype)
+    filterindex = _FILTER_TYPES.index(filtertype)
     r = library.MagickResampleImage(image.wand, x_resolution, y_resolution,
                                     filterindex, blur)
     if not r:
@@ -2927,11 +2930,11 @@ def rotationalblur(image, angle, channel=None):
         raise TypeError('angle has to be a numbers.Real, not ' +
                         repr(angle))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
         r = library.MagickRotationalBlurImageChannel(image.wand,
-                                                     CHANNELS[channel],
+                                                     _CHANNELS[channel],
                                                      angle)
     else:
         r = library.MagickRotationalBlurImage(image.wand, angle)
@@ -2983,7 +2986,7 @@ def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
                              smoother second derivative.
     :type smooth_threshold: :class:`numbers.Real`
     """
-    if colorspace not in COLORSPACE_TYPES:
+    if colorspace not in _COLORSPACE_TYPES:
         raise ValueError('colorspace value from COLORSPACE_TYPES, not ' +
                          repr(colorspace))
     elif not isinstance(verbose, bool):
@@ -2995,7 +2998,7 @@ def segment(image, colorspace, verbose, cluster_threshold, smooth_threshold):
     elif not isinstance(smooth_threshold, numbers.Real):
         raise TypeError('smooth_threshold has to be a numbers.Real, not ' +
                         repr(smooth_threshold))
-    csindex = COLORSPACE_TYPES.index(colorspace)
+    csindex = _COLORSPACE_TYPES.index(colorspace)
     r = library.MagickSegmentImage(image.wand, csindex, verbose,
                                    cluster_threshold, smooth_threshold)
     if not r:
@@ -3032,11 +3035,11 @@ def selectiveblur(image, radius, sigma, threshold, channel=None):
         raise TypeError('threshold has to be a numbers.Real, not ' +
                         repr(threshold))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
         r = library.MagickSelectiveBlurImageChannel(image.wand,
-                                                    CHANNELS[channel],
+                                                    _CHANNELS[channel],
                                                     radius, sigma, threshold)
     else:
         r = library.MagickSelectiveBlurImage(image.wand,
@@ -3056,10 +3059,10 @@ def separate_channel(image, channel):
                     in the :data:`wand.image.CHANNELS` mapping.
     :type channel: :class:`str`
     """
-    if channel not in CHANNELS:
+    if channel not in _CHANNELS:
         raise ValueError('channel value from CHANNELS, not ' +
                          repr(channel))
-    r = library.MagickSeparateImageChannel(image.wand, CHANNELS[channel])
+    r = library.MagickSeparateImageChannel(image.wand, _CHANNELS[channel])
     if not r:
         image.raise_exception()
 
@@ -3282,10 +3285,10 @@ def sharpen(image, radius, sigma, channel=None):
         raise TypeError('sigma has to be a numbers.Real, not ' +
                         repr(sigma))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickSharpenImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickSharpenImageChannel(image.wand, _CHANNELS[channel],
                                               radius, sigma)
     else:
         r = library.MagickSharpenImage(image.wand, radius, sigma)
@@ -3383,11 +3386,11 @@ def sigmoidalcontrast(image, sharpen, alpha, beta, channel=None):
         raise TypeError('beta has to be a numbers.Real, not ' +
                         repr(beta))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
         r = library.MagickSigmoidalContrastImageChannel(image.wand,
-                                                        CHANNELS[channel],
+                                                        _CHANNELS[channel],
                                                         sharpen, alpha, beta)
     else:
         r = library.MagickSigmoidalContrastImage(image.wand,
@@ -3469,10 +3472,10 @@ def solarize(image, threshold, channel=None):
         raise TypeError('threshold has to be a numbers.Real, not ' +
                         repr(threshold))
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickSolarizeImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickSolarizeImageChannel(image.wand, _CHANNELS[channel],
                                                threshold)
     else:
         r = library.MagickSolarizeImage(image.wand, threshold)
@@ -3499,7 +3502,7 @@ def sparsecolor(image, channel, method, arguments):
     :type arguments: :class:`collections.abc.Sequence`,
                      :class:`numbers.Real`
     """
-    if channel not in CHANNELS:
+    if channel not in _CHANNELS:
         raise ValueError('expected value from CHANNELS, not ' +
                          repr(channel))
     elif method not in SPARSE_METHODS:
@@ -3510,7 +3513,7 @@ def sparsecolor(image, channel, method, arguments):
                         repr(arguments))
     argc = len(arguments)
     argv = (ctypes.c_double * argc)(*arguments)
-    c = CHANNELS[channel]
+    c = _CHANNELS[channel]
     m = SPARSE_METHODS[method]
     r = library.MagickSparseColorImage(image.wand, c, m, argc, argv)
     if not r:
@@ -3593,10 +3596,10 @@ def statistic(image, statistic_type, width, height, channel=None):
                         repr(height))
     index = STATISTIC_TYPES.index(statistic_type)
     if channel:
-        if channel not in CHANNELS:
+        if channel not in _CHANNELS:
             raise ValueError('expected value from CHANNELS, not ' +
                              repr(channel))
-        r = library.MagickStatisticImageChannel(image.wand, CHANNELS[channel],
+        r = library.MagickStatisticImageChannel(image.wand, _CHANNELS[channel],
                                                 index, width, height)
     else:
         r = library.MagickStatisticImage(image.wand, index, width, height)
