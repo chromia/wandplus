@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+"""
+supply Logging functions(from MagickCore library)
+
+.. include:: summary/misc.txt
+"""
+
 from wand.api import libmagick
 from wand.compat import string_type
 import ctypes
@@ -24,6 +30,30 @@ libmagick.GetLogName.restype = ctypes.c_char_p
 libmagick.GetLogName.argtypes = []
 
 
+#: (:class:`dict`) The dictionary of log event types.
+#:
+#: - ``'undefined'``
+#: - ``'no'``
+#: - ``'trace'``
+#: - ``'annotate'``
+#: - ``'blob'``
+#: - ``'cache'``
+#: - ``'coder'``
+#: - ``'configure'``
+#: - ``'deprecate'``
+#: - ``'draw'``
+#: - ``'exception'``
+#: - ``'image'``
+#: - ``'locale'``
+#: - ``'module'``
+#: - ``'policy'``
+#: - ``'resource'``
+#: - ``'transform'``
+#: - ``'user'``
+#: - ``'wand'``
+#: - ``'X11'``
+#: - ``'accelerate'``
+#: - ``'all'``
 LOG_EVENT_TYPES = dict(undefined=0, no=0, trace=0x1, annotate=0x2,
                        blob=0x4, cache=0x8, coder=0x10, configure=0x20,
                        deprecate=0x40, draw=0x80, exception=0x100,
@@ -84,6 +114,10 @@ def setlogformat(format, encoding=None):
     \r   carriage return
 
     default is '%t %r %u %v %d %c[%p]: %m/%f/%l/%d\n  %e'
+
+    :param format: the log format.
+    :type format: :class:`str`
+    :param encoding: the encoding method for `format` param.
     """
     if not isinstance(format, string_type):
         raise TypeError('eventtypes must be string, not', repr(format))
@@ -99,6 +133,7 @@ def setlogmethod(callback):
     """sets the method that will be called when an event is logged.
 
     :param callback: f(eventtype: int, message: string)
+    :type callback: :class:`collections.abc.Callable`
     """
     global _logfunction
     _logfunction = callback

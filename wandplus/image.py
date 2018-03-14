@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+"""
+Additional filtering and image-manipulation functions to strengthen Wand
+
+.. include:: summary/image.txt
+"""
 from wand.image import Image, BaseImage
 from wand.image import CHANNELS, FILTER_TYPES, COLORSPACE_TYPES
 from wand.image import COMPARE_METRICS, IMAGE_LAYER_METHOD

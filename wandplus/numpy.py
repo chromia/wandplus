@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+"""
+Bridge functions with Numpy
+
+.. include:: summary/numpy.txt
+"""
+
+
 from wand.image import Image
 from wand.color import Color
 from wand.compat import string_type
@@ -26,7 +33,8 @@ def numpy2wand(npimage, storage='char', bgr=False):
     :param npimage: numpy image.
     :type npimage: :class:`numpy.ndarray`
     :param storage: the storage type represents size of the pixel.
-                    this value must be defined in wand.image.STORAGE_TYPES.
+                    this value must be defined in
+                    :const:`wandplus.image.STORAGE_TYPES`.
                     'char': unsigned char [0..255]  ('uint8' in numpy)
                     'short': unsigned short [0..65535] ('uint16' in numpy)
                     'integer': unsigned int [0..2^32] ('uint32' in numpy)
