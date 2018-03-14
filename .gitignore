@@ -108,3 +108,6 @@ ENV/
 *.jpg
 *.jpeg
 *.gif
+
+# Sphinx output
+_build/

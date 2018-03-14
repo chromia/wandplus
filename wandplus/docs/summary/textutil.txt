@@ -1,0 +1,5 @@
+Functions
+=========
+    * :meth:`calcSuitableFontsize <wandplus.textutil.calcSuitableFontsize>`
+    * :meth:`calcSuitableImagesize <wandplus.textutil.calcSuitableImagesize>`
+

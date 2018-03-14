@@ -1,0 +1,12 @@
+Constants
+=========
+    * :const:`LOG_EVENT_TYPES <wandplus.misc.LOG_EVENT_TYPES>`
+
+Functions
+=========
+    * :meth:`getlogname <wandplus.misc.getlogname>`
+    * :meth:`setlogeventmask <wandplus.misc.setlogeventmask>`
+    * :meth:`setlogformat <wandplus.misc.setlogformat>`
+    * :meth:`setlogmethod <wandplus.misc.setlogmethod>`
+    * :meth:`setlogname <wandplus.misc.setlogname>`
+
