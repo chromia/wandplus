@@ -10,7 +10,9 @@ Bridge functions with Numpy
 from wand.image import Image
 from wand.color import Color
 from wand.compat import string_type
-from wandplus.image import STORAGE_TYPES, exportpixels, importpixels
+from wandplus.image import STORAGE_TYPES as _STORAGE_TYPES
+from wandplus.image import exportpixels as _exportpixels
+from wandplus.image import importpixels as _importpixels
 import numbers
 import numpy
 
@@ -55,7 +57,7 @@ def numpy2wand(npimage, storage='char', bgr=False):
         (height, width, channels) = npimage.shape
     else:
         raise ValueError('the image has over 4-dimentions is not supported.')
-    if storage not in STORAGE_TYPES:
+    if storage not in _STORAGE_TYPES:
         raise ValueError('expected string from STORAGE_TYPES, not ' +
                          repr(storage))
     elif not isinstance(bgr, bool):
@@ -72,8 +74,8 @@ def numpy2wand(npimage, storage='char', bgr=False):
         raise ValueError('the image which has ' + channels +
                          'channels is not supported,' +
                          '1 or 3 or 4 channel-image is expected.')
-    importpixels(wandimage, 0, 0, width, height, channelmap, storage,
-                 npimage.flatten().tolist())
+    _importpixels(wandimage, 0, 0, width, height, channelmap, storage,
+                  npimage.flatten().tolist())
     return wandimage
 
 
@@ -116,15 +118,15 @@ def wand2numpy(wandimage, channels=3, storage='char', bgr=False):
         else:
             raise ValueError('expected value is 1 or 2 or 4, ' +
                              '{0} is not supported.'.format(channels))
-    if storage not in STORAGE_TYPES:
+    if storage not in _STORAGE_TYPES:
         raise ValueError('expected string from STORAGE_TYPES, not ' +
                          repr(storage))
     elif not isinstance(bgr, bool):
         raise TypeError('bgr must be a bool, not ' +
                         repr(bgr))
 
-    pixels = exportpixels(wandimage, 0, 0, wandimage.width, wandimage.height,
-                          channelmap, storage)
+    pixels = _exportpixels(wandimage, 0, 0, wandimage.width, wandimage.height,
+                           channelmap, storage)
     shape = (wandimage.height, wandimage.width, channels)
     npimage = numpy.reshape(pixels, shape)
     return npimage
