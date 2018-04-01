@@ -25,7 +25,7 @@ class CheckImage(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-        global tmpdir
+        os.mkdir(tmpdir)
         self.rose = Image(filename='rose:')
         self.grad = Image(filename='gradient:', width=400, height=400)
         self.logo = Image(filename='logo:')
