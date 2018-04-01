@@ -9,21 +9,23 @@ This repository includes:
 
 - 70 over image filtering functions not included in Wand  
 (blur, edge, emboss, filter, motionblur, posterize, sepiatone, and so on)
-- NOT DOCUMENTED!
+- Image conversion functions with Numpy
+    - You can achieve cooperation with PyOpenCV, Pillow, etc.
 
 ## Examples
 
 - Wand is good library. But there are few examples. So I translated only a small part of [ImageMagick command line examples](http://www.imagemagick.org/Usage/) to Python script
 
-    - [./text/](https://github.com/chromia/wandplus/text/): ["Text to Image Handling" examples](http://www.imagemagick.org/Usage/text/)
-    - [./fonteffects/](https://github.com/chromia/wandplus/fonteffects/): ["Compound Font Effects" examples](http://www.imagemagick.org/Usage/fonts/)
+    - [./examples/text/](https://github.com/chromia/wandplus/text/): ["Text to Image Handling" examples](http://www.imagemagick.org/Usage/text/)
+    - [./examples/fonteffects/](https://github.com/chromia/wandplus/fonteffects/): ["Compound Font Effects" examples](http://www.imagemagick.org/Usage/fonts/)
+    - [./examples/drawing/](https://github.com/chromia/wandplus/drawing/): ["Drawing" examples](http://www.imagemagick.org/Usage/draw/)
 
 # Prerequisites
 
-- [ImageMagick](http://imagemagick.org/script/index.php)
-- [Wand](http://docs.wand-py.org/en/0.4.4/)
+- [ImageMagick](http://imagemagick.org/script/index.php)(Version 6.x. not 7.x)
+- [Wand](http://docs.wand-py.org/en/0.4.4/)(Version 0.4.4)
 
 # License
 
-Wand+ is released under MIT License.  
+Wand+ is released under MIT License(same as Wand).  
 See ./LICENSE file
