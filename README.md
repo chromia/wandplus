@@ -16,9 +16,9 @@ This repository includes:
 
 - Wand is good library. But there are few examples. So I translated only a small part of [ImageMagick command line examples](http://www.imagemagick.org/Usage/) to Python script
 
-    - [./examples/text/](https://github.com/chromia/wandplus/text/): ["Text to Image Handling" examples](http://www.imagemagick.org/Usage/text/)
-    - [./examples/fonteffects/](https://github.com/chromia/wandplus/fonteffects/): ["Compound Font Effects" examples](http://www.imagemagick.org/Usage/fonts/)
-    - [./examples/drawing/](https://github.com/chromia/wandplus/drawing/): ["Drawing" examples](http://www.imagemagick.org/Usage/draw/)
+    - [./examples/text/](https://github.com/chromia/wandplus/tree/master/examples/text/): ["Text to Image Handling" examples](http://www.imagemagick.org/Usage/text/)
+    - [./examples/fonteffects/](https://github.com/chromia/wandplus/tree/master/examples/fonteffects/): ["Compound Font Effects" examples](http://www.imagemagick.org/Usage/fonts/)
+    - [./examples/drawing/](https://github.com/chromia/wandplus/tree/master/examples/drawing): ["Drawing" examples](http://www.imagemagick.org/Usage/draw/)
 
 # Prerequisites
 
