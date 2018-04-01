@@ -9,11 +9,14 @@ import os
 import unittest
 
 
+tmpdir = '_tmp/'
+
+
 def save(img, function, channel=False, ext='.png'):
     if channel:
-        path = 'image/' + function.__name__ + "_ch" + ext
+        path = tmpdir + function.__name__ + "_ch" + ext
     else:
-        path = 'image/' + function.__name__ + ext
+        path = tmpdir + function.__name__ + ext
     # print(path)
     img.save(filename=path)
 
@@ -22,6 +25,7 @@ class CheckImage(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
+        global tmpdir
         self.rose = Image(filename='rose:')
         self.grad = Image(filename='gradient:', width=400, height=400)
         self.logo = Image(filename='logo:')
@@ -36,11 +40,11 @@ class CheckImage(unittest.TestCase):
             draw.text(0, 0, 'A')
             draw(self.text_a)
 
-        self.rose.save(filename='image/rose.png')
-        self.grad.save(filename='image/grad.png')
-        self.logo.save(filename='image/logo.png')
-        self.text.save(filename='image/text.png')
-        self.text_a.save(filename='image/a.png')
+        self.rose.save(filename=tmpdir + 'rose.png')
+        self.grad.save(filename=tmpdir + 'grad.png')
+        self.logo.save(filename=tmpdir + 'logo.png')
+        self.text.save(filename=tmpdir + 'text.png')
+        self.text_a.save(filename=tmpdir + 'a.png')
 
     @classmethod
     def tearDownClass(self):
